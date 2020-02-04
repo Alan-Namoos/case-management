@@ -3,10 +3,10 @@ import { Card, Row, Col, Form, Button, ListGroup, Container } from 'react-bootst
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 
-const ImmigrationInformationForm = () => {
+const ImmigrationInformationForm = ({ client }) => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = size;
-	const { client, addImmigrationInformation } = useContext(ClientContext);
+	const { clients, addImmigrationInformation } = useContext(ClientContext);
 	const [immigrationInformation, setImmigrationInformation] = useState(
 		client.immigrationInformation
 	);
