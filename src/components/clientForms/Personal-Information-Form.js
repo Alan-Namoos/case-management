@@ -3,49 +3,34 @@ import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
+import { useFindClient } from '../customHooks/useFindClient';
 
 const PersonalInformationForm = () => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = size;
-	const { addPersonalInformation, clients } = useContext(ClientContext);
-	const [currentClient, setCurrentClient] = useState({});
-	const [clientFound, setClientFound] = useState(false);
-	const [personalInformation, setPersonalInformation] = useState({
-		// otherNamesUsed: '',
-		// dateOfBirth: '',
-		// countryOfBirth: '',
-		// countryOfResidence: '',
-		// nationalityAtBirth: '',
-		// currentNationality: '',
-		// maritalStatus: '',
-		// numberOfChildren: '',
-		// religionAndSect: '',
-		// raceEthnicityTribalGroup: '',
-		// languagesAndFluency: '',
-		// bestLanguage: '',
-		// employer: '',
-		// jobTitle: '',
-		// role: '',
-		// gender: ''
-	});
+	const { clients, addPersonalInformation } = useContext(ClientContext);
+	// const [currentClient, setCurrentClient] = useState({});
+	// const [clientFound, setClientFound] = useState(false);
+	const [personalInformation, setPersonalInformation] = useState({});
 	const history = useHistory();
 	const { id } = useParams();
+	const [clientFound, currentClient] = useFindClient(clients, id, history);
 
-	useEffect(() => {
-		setClientFound(false);
-		if (clients.length === 0) {
-			history.push('/');
-			return;
-		}
-		const client = clients.find((arrayClient) => {
-			return arrayClient.id === id;
-		});
-		if (client) {
-			setClientFound(true);
-			setCurrentClient(client);
-			setPersonalInformation(client.personalInformation);
-		}
-	}, [clients, id, history]);
+	// useEffect(() => {
+	// 	setClientFound(false);
+	// 	if (clients.length === 0) {
+	// 		history.push('/');
+	// 		return;
+	// 	}
+	// 	const client = clients.find((arrayClient) => {
+	// 		return arrayClient.id === id;
+	// 	});
+	// 	if (client) {
+	// 		setClientFound(true);
+	// 		setCurrentClient(client);
+	// 		setPersonalInformation(client.personalInformation);
+	// 	}
+	// }, [clients, id, history]);
 
 	const handleChange = (e) => {
 		setPersonalInformation({ ...personalInformation, [e.target.name]: e.target.value });
@@ -75,7 +60,7 @@ const PersonalInformationForm = () => {
 		history.push('/');
 	};
 
-	return !clientFound ? (
+	return !!!clientFound ? (
 		'Not Found'
 	) : (
 		<Container>
@@ -98,7 +83,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='otherNamesUsed'
-												value={personalInformation.otherNamesUsed || ''}
+												value={
+													currentClient.personalInformation.otherNamesUsed ||
+													personalInformation.otherNamesUsed
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -111,7 +99,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='dateOfBirth'
-												value={personalInformation.dateOfBirth || ''}
+												value={
+													currentClient.personalInformation.dateOfBirth ||
+													personalInformation.dateOfBirth
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -126,7 +117,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='countryOfBirth'
-												value={personalInformation.countryOfBirth || ''}
+												value={
+													currentClient.personalInformation.countryOfBirth ||
+													personalInformation.countryOfBirth
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -138,7 +132,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='countryOfResidence'
-												value={personalInformation.countryOfResidence || ''}
+												value={
+													currentClient.personalInformation.countryOfResidence ||
+													personalInformation.countryOfResidence
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -153,7 +150,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='nationalityAtBirth'
-												value={personalInformation.nationalityAtBirth || ''}
+												value={
+													currentClient.personalInformation.nationalityAtBirth ||
+													personalInformation.nationalityAtBirth
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -165,7 +165,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='currentNationality'
-												value={personalInformation.currentNationality || ''}
+												value={
+													currentClient.personalInformation.currentNationality ||
+													personalInformation.currentNationality
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -180,7 +183,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='maritalStatus'
-												value={personalInformation.maritalStatus || ''}
+												value={
+													currentClient.personalInformation.maritalStatus ||
+													personalInformation.maritalStatus
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -194,7 +200,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='numberOfChildren'
-												value={personalInformation.numberOfChildren || ''}
+												value={
+													currentClient.personalInformation.numberOfChildren ||
+													personalInformation.numberOfChildren
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -209,7 +218,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='religionAndSect'
-												value={personalInformation.religionAndSect || ''}
+												value={
+													currentClient.personalInformation.religionAndSect ||
+													personalInformation.religionAndSect
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -221,7 +233,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='raceEthnicityTribalGroup'
-												value={personalInformation.raceEthnicityTribalGroup || ''}
+												value={
+													currentClient.personalInformation.raceEthnicityTribalGroup ||
+													personalInformation.raceEthnicityTribalGroup
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -236,7 +251,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='languagesAndFluency'
-												value={personalInformation.languagesAndFluency || ''}
+												value={
+													currentClient.personalInformation.languagesAndFluency ||
+													personalInformation.languagesAndFluency
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -248,7 +266,10 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='bestLanguage'
-												value={personalInformation.bestLanguage || ''}
+												value={
+													currentClient.personalInformation.bestLanguage ||
+													personalInformation.bestLanguage
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -263,7 +284,9 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='employer'
-												value={personalInformation.employer || ''}
+												value={
+													currentClient.personalInformation.employer || personalInformation.employer
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -275,7 +298,9 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='jobTitle'
-												value={personalInformation.jobTitle || ''}
+												value={
+													currentClient.personalInformation.jobTitle || personalInformation.jobTitle
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -290,7 +315,7 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='role'
-												value={personalInformation.role || ''}
+												value={currentClient.personalInformation.role || personalInformation.role}
 												onChange={handleChange}
 											/>
 										</Form.Group>
@@ -302,7 +327,9 @@ const PersonalInformationForm = () => {
 												type='text'
 												size={textField}
 												name='gender'
-												value={personalInformation.gender || ''}
+												value={
+													currentClient.personalInformation.gender || personalInformation.gender
+												}
 												onChange={handleChange}
 											/>
 										</Form.Group>

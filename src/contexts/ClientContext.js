@@ -6,6 +6,7 @@ export const ClientContext = createContext();
 const ClientContextProvider = (props) => {
 	const [clients, setClients] = useState([]);
 	const [client, setClient] = useState({});
+	const [lastAddedClient, setLastAddedClient] = useState({});
 
 	const resetClient = () => {
 		setClient({
@@ -85,7 +86,11 @@ const ClientContextProvider = (props) => {
 	};
 
 	const addImmigrationInformation = (newImmigrationInformation, id) => {
-		setClients([...clients, { immigrationInformation: newImmigrationInformation }]);
+		const index = clients.findIndex((arrayClient) => {
+			return arrayClient.id === id;
+		});
+		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
+		clients[index].immigrationInformation = newImmigrationInformation;
 	};
 
 	const addMedicalHistory = (newMedicalHistory, id) => {
@@ -144,11 +149,18 @@ const ClientContextProvider = (props) => {
 		console.log('ClientContext.js - clients: ', clients);
 	}, [clients]);
 
+	useEffect(() => {
+		if (clients.length > 0) {
+			setLastAddedClient(clients[clients.length - 1]);
+		}
+	}, [clients]);
+
 	return (
 		<ClientContext.Provider
 			value={{
 				client,
 				clients,
+				lastAddedClient,
 				addBasicInformation,
 				addPersonalInformation,
 				addContactInformation,

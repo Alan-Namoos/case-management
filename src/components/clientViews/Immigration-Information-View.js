@@ -1,14 +1,20 @@
 import React, { useContext } from 'react';
-// import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Card, Table, Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
 const ImmigrationInformationView = ({ client }) => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle, button } = size;
-	// const { client } = useContext(ClientContext);
+	const history = useHistory();
+	const notSet = <i>Not Set</i>;
 	const { status, passport, lastVisitToUS, detention } = client.immigrationInformation;
-	return client.immigrationInformation.status.currentStatus === '' ? (
+
+	const viewClient = (id) => {
+		history.push(`/add-client-immigration-information/${id}`);
+	};
+
+	return client.immigrationInformation === {} ? (
 		<h5>No Immigration Information found</h5>
 	) : (
 		<>
@@ -18,17 +24,17 @@ const ImmigrationInformationView = ({ client }) => {
 					<h5 className='text-center'>Status</h5>
 					<Table bordered striped hover size='sm'>
 						<tbody>
+							{/* <tr>
+								<th>A#:</th>
+								<td>{status.aNumber || notSet}</td>
+							</tr> */}
 							<tr>
 								<th width='50%'>Current Status:</th>
-								<td>{status.currentStatus}</td>
+								<td>{status.currentStatus || notSet}</td>
 							</tr>
 							<tr>
 								<th>Expiration Date: </th>
-								<td>{status.expirationDate}</td>
-							</tr>
-							<tr>
-								<th>A#:</th>
-								<td>{status.aNumber}</td>
+								<td>{status.expirationDate || notSet}</td>
 							</tr>
 						</tbody>
 					</Table>
@@ -38,15 +44,15 @@ const ImmigrationInformationView = ({ client }) => {
 						<tbody>
 							<tr>
 								<th width='50%'>Issuing Country:</th>
-								<td>{passport.issuingCountry}</td>
+								<td>{passport.issuingCountry || notSet}</td>
 							</tr>
 							<tr>
 								<th>Expiration Date:</th>
-								<td>{passport.expirationDate}</td>
+								<td>{passport.expirationDate || notSet}</td>
 							</tr>
 							<tr>
 								<th>with Client ?</th>
-								<td>{passport.withClient}</td>
+								<td>{passport.withClient || notSet}</td>
 							</tr>
 						</tbody>
 					</Table>
@@ -56,19 +62,19 @@ const ImmigrationInformationView = ({ client }) => {
 						<tbody>
 							<tr>
 								<th width='50%'>Date of Entry:</th>
-								<td>{lastVisitToUS.dateOfEntry}</td>
+								<td>{lastVisitToUS.dateOfEntry || notSet}</td>
 							</tr>
 							<tr>
 								<th>Port of Entery:</th>
-								<td>{lastVisitToUS.portOfEntry}</td>
+								<td>{lastVisitToUS.portOfEntry || notSet}</td>
 							</tr>
 							<tr>
 								<th>Status:</th>
-								<td>{lastVisitToUS.status}</td>
+								<td>{lastVisitToUS.status || notSet}</td>
 							</tr>
 							<tr>
 								<th>Lawful entry ?</th>
-								<td>{lastVisitToUS.lawfulEntry}</td>
+								<td>{lastVisitToUS.lawfulEntry || notSet}</td>
 							</tr>
 						</tbody>
 					</Table>
@@ -78,25 +84,30 @@ const ImmigrationInformationView = ({ client }) => {
 						<tbody>
 							<tr>
 								<th width='50%'>Detained ?</th>
-								<td>{detention.isDetained}</td>
+								<td>{detention.isDetained || notSet}</td>
 							</tr>
 							<tr>
 								<th>Date of Arrest:</th>
-								<td>{detention.dateOfArrest}</td>
+								<td>{detention.dateOfArrest || notSet}</td>
 							</tr>
 							<tr>
 								<th>Location:</th>
-								<td>{detention.location}</td>
+								<td>{detention.location || notSet}</td>
 							</tr>
 							<tr>
 								<th>Date of Release:</th>
-								<td>{detention.dateOfRelease}</td>
+								<td>{detention.dateOfRelease || notSet}</td>
 							</tr>
 						</tbody>
 					</Table>
 				</Card.Body>
 				<Card.Footer>
-					<Button variant='primary float-right' size={button} type='submit'>
+					<Button
+						variant='primary float-right'
+						size={button}
+						type='submit'
+						onClick={() => viewClient(client.id)}
+					>
 						Edit
 					</Button>
 				</Card.Footer>

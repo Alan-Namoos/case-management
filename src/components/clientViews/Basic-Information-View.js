@@ -1,26 +1,24 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Link } from 'react-router-dom';
 import { Card, Table, Container, Row, Col } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { useFindClient } from '../customHooks/useFindClient';
 
 const BasicInformationView = () => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle } = size;
-	const { clients } = useContext(ClientContext);
-	const [lastAddedClient, setLastAddedClient] = useState({});
+	const { clients, lastAddedClient } = useContext(ClientContext);
+	const clientID = lastAddedClient.id;
+	const history = useHistory();
+	const [clientFound, currentClient] = useFindClient(clients, clientID, history); // <= custom hook
 
-	useEffect(() => {
-		if (clients.length > 0) {
-			setLastAddedClient(clients[clients.length - 1]);
-		}
-	}, [clients]);
-
-	return !lastAddedClient.id ? (
+	return !!!clientFound ? (
 		<Container>
 			<Row className='text-center'>
 				<Col>
-					<h4>No Clients Found!</h4>
+					<h4>Basic Information View - Client Not Found!</h4>
 					<h4>
 						<Link to='/add-client-basic-information'>+ New Client</Link>
 					</h4>
@@ -34,31 +32,30 @@ const BasicInformationView = () => {
 					<Col>
 						<Card className='mb-3'>
 							<Card.Header as={cardTitle}>
-								{lastAddedClient.basicInformation.firstName}{' '}
-								{lastAddedClient.basicInformation.lastName}
+								{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}
 							</Card.Header>
 							<Card.Body>
 								<Table bordered striped size='sm'>
 									<tbody>
 										<tr>
 											<th width='50%'>Mobile Phone:</th>
-											<td>{lastAddedClient.basicInformation.mobilePhone || 'None'}</td>
+											<td>{currentClient.basicInformation.mobilePhone || 'None'}</td>
 										</tr>
 										<tr>
 											<th>Home Phone:</th>
-											<td>{lastAddedClient.basicInformation.homePhone || 'None'}</td>
+											<td>{currentClient.basicInformation.homePhone || 'None'}</td>
 										</tr>
 										<tr>
 											<th>Email Address:</th>
-											<td>{lastAddedClient.basicInformation.email || 'None'}</td>
+											<td>{currentClient.basicInformation.email || 'None'}</td>
 										</tr>
 										<tr>
 											<th>Mailing Address:</th>
-											<td>{lastAddedClient.basicInformation.mailingAddress || 'None'}</td>
+											<td>{currentClient.basicInformation.mailingAddress || 'None'}</td>
 										</tr>
 										<tr>
 											<th>Physical Address:</th>
-											<td>{lastAddedClient.basicInformation.physicalAddress || 'None'}</td>
+											<td>{currentClient.basicInformation.physicalAddress || 'None'}</td>
 										</tr>
 									</tbody>
 								</Table>

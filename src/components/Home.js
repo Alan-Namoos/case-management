@@ -25,7 +25,6 @@ const Home = () => {
 		}
 	}, [clients]);
 
-	console.log('Home page -> clients: ', clients);
 	return lastFiveClients.length === 0 ? (
 		<Container>
 			<Row className='text-center'>

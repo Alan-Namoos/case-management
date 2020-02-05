@@ -9,6 +9,7 @@ const PersonalInformationView = ({ client }) => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle, button } = size;
 	const history = useHistory();
+	const notSet = <i>Not Set</i>;
 
 	console.log('Personal-Information-View.js - client: ', client);
 	const {
@@ -57,82 +58,82 @@ const PersonalInformationView = ({ client }) => {
 						<tbody>
 							<tr>
 								<th width='50%'>Also Known As</th>
-								<td>{otherNamesUsed || 'Not set'}</td>
+								<td>{otherNamesUsed || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Date of Birth</th>
-								<td>{dateOfBirth || 'Not set'}</td>
+								<td>{dateOfBirth || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Country of Birth</th>
-								<td>{countryOfBirth || 'Not set'}</td>
+								<td>{countryOfBirth || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Country of Residence</th>
-								<td>{countryOfResidence || 'Not set'}</td>
+								<td>{countryOfResidence || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Nationality at Birth</th>
-								<td>{nationalityAtBirth || 'Not set'}</td>
+								<td>{nationalityAtBirth || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Current Nationality</th>
-								<td>{currentNationality || 'Not set'}</td>
+								<td>{currentNationality || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Marital Status</th>
-								<td>{maritalStatus || 'Not set'}</td>
+								<td>{maritalStatus || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Number of Children</th>
-								<td>{numberOfChildren || 'Not set'}</td>
+								<td>{numberOfChildren || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Religion and Sect</th>
-								<td>{religionAndSect || 'Not set'}</td>
+								<td>{religionAndSect || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Race - Ethnicity - Tribal Group</th>
-								<td>{raceEthnicityTribalGroup || 'Not set'}</td>
+								<td>{raceEthnicityTribalGroup || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Languages and Fluency</th>
-								<td>{languagesAndFluency || 'Not set'}</td>
+								<td>{languagesAndFluency || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Best Language</th>
-								<td>{bestLanguage || 'Not set'}</td>
+								<td>{bestLanguage || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Employer</th>
-								<td>{employer || 'Not set'}</td>
+								<td>{employer || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Job Title</th>
-								<td>{jobTitle || 'Not set'}</td>
+								<td>{jobTitle || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Role</th>
-								<td>{role || 'Not set'}</td>
+								<td>{role || notSet}</td>
 							</tr>
 
 							<tr>
 								<th>Gender</th>
-								<td>{gender || 'Not set'}</td>
+								<td>{gender || notSet}</td>
 							</tr>
 						</tbody>
 					</Table>
