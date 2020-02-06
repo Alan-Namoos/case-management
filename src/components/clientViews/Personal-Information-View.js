@@ -52,7 +52,7 @@ const PersonalInformationView = ({ client }) => {
 	) : (
 		<>
 			<Card className='mb-3'>
-				<Card.Header as={cardTitle}>Personal Information</Card.Header>
+				{/* <Card.Header as={cardTitle}>Personal Information</Card.Header> */}
 				<Card.Body>
 					<Table bordered striped hover size='sm'>
 						<tbody>

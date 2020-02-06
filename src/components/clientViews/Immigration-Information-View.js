@@ -19,7 +19,7 @@ const ImmigrationInformationView = ({ client }) => {
 	) : (
 		<>
 			<Card className='mb-3'>
-				<Card.Header as={cardTitle}>Immigration Information</Card.Header>
+				{/* <Card.Header as={cardTitle}>Immigration Information</Card.Header> */}
 				<Card.Body>
 					<h5 className='text-center'>Status</h5>
 					<Table bordered striped hover size='sm'>

@@ -102,34 +102,38 @@ const ClientContextProvider = (props) => {
 	};
 
 	const addCriminalHistory = (newCriminalHistory, id) => {
-		setClients([...clients, [...clients.criminalHistory, newCriminalHistory]]);
-
-		// const addBasicInformation = (newBasicInformation) => {
-		// 	setClient({ ...client, basicInformation: newBasicInformation, id: uuid() });
-		// };
-
-		// const addPersonalInformation = (newPersonalInformation, id) => {
-		// 	let index = clients.findIndex((client) => {
-		// 		return client.id === id;
-		// 	});
-		// 	setClient({ ...clients[index], personalInformation: newPersonalInformation });
-		// };
-
-		// const addContactInformation = (newContactInformation) => {
-		// 	setClient({ ...client, contactInformation: newContactInformation });
-		// };
-
-		// const addImmigrationInformation = (newImmigrationInformation) => {
-		// 	setClient({ ...client, immigrationInformation: newImmigrationInformation });
-		// };
-
-		// const addMedicalHistory = (newMedicalHistory) => {
-		// 	setClient({ ...client, medicalHistory: [...client.medicalHistory, newMedicalHistory] });
-		// };
-
-		// const addCriminalHistory = (newCriminalHistory) => {
-		// 	setClient({ ...client, criminalHistory: [...client.criminalHistory, newCriminalHistory] });
+		const index = clients.findIndex((arrayClient) => {
+			return arrayClient.id === id;
+		});
+		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
+		clients[index].criminalHistory.push(newCriminalHistory);
 	};
+
+	// const addBasicInformation = (newBasicInformation) => {
+	// 	setClient({ ...client, basicInformation: newBasicInformation, id: uuid() });
+	// };
+
+	// const addPersonalInformation = (newPersonalInformation, id) => {
+	// 	let index = clients.findIndex((client) => {
+	// 		return client.id === id;
+	// 	});
+	// 	setClient({ ...clients[index], personalInformation: newPersonalInformation });
+	// };
+
+	// const addContactInformation = (newContactInformation) => {
+	// 	setClient({ ...client, contactInformation: newContactInformation });
+	// };
+
+	// const addImmigrationInformation = (newImmigrationInformation) => {
+	// 	setClient({ ...client, immigrationInformation: newImmigrationInformation });
+	// };
+
+	// const addMedicalHistory = (newMedicalHistory) => {
+	// 	setClient({ ...client, medicalHistory: [...client.medicalHistory, newMedicalHistory] });
+	// };
+
+	// const addCriminalHistory = (newCriminalHistory) => {
+	// 	setClient({ ...client, criminalHistory: [...client.criminalHistory, newCriminalHistory] });
 
 	// Find the updated client in the clients array using client.id then find the index of that item.
 	// useEffect(() => {

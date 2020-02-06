@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
@@ -12,11 +12,11 @@ const MedicalHistoryForm = () => {
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
-	const [medicalHistory, setMedicalHistory] = useState({});
-
-	useEffect(() => {
-		setMedicalHistory(currentClient.medicalHistory);
-	}, [currentClient]);
+	const [medicalHistory, setMedicalHistory] = useState({
+		date: '',
+		location: '',
+		description: ''
+	});
 
 	const handleChange = (e) => {
 		setMedicalHistory({ ...medicalHistory, [e.target.name]: e.target.value });

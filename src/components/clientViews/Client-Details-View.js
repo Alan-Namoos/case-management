@@ -35,8 +35,8 @@ const ClientDetailsView = () => {
 			<Container>
 				<Row>
 					<Col>
-						<Card>
-							<Card.Header as={cardTitle}>
+						<Card className='mb-3'>
+							<Card.Header as='h2'>
 								{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}{' '}
 								- A# {currentClient.basicInformation.aNumber || 'None'}
 							</Card.Header>

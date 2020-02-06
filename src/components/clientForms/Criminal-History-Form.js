@@ -1,12 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { useHistory, useParams } from 'react-router-dom';
+import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 
 const CriminalHistoryForm = () => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = size;
-	const { addCriminalHistory } = useContext(ClientContext);
+	const { clients, addCriminalHistory } = useContext(ClientContext);
+	const history = useHistory();
+	const { id } = useParams();
+	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
 	const [criminalHistory, setCriminalHistory] = useState({
 		date: '',
 		location: '',
@@ -19,21 +24,23 @@ const CriminalHistoryForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addCriminalHistory(criminalHistory);
-		setCriminalHistory({
-			date: '',
-			location: '',
-			CaseNumber: '',
-			description: ''
-		});
+		addCriminalHistory(criminalHistory, id);
+		history.push('/');
 	};
-	return (
+
+	return !criminalHistory ? (
+		'No Criminal History'
+	) : (
 		<>
 			<Container>
 				<Row>
 					<Col>
 						<Card className='mb-3'>
-							<Card.Header as={cardTitle}>Criminal History</Card.Header>
+							<Card.Header as={cardTitle}>
+								{currentClient.basicInformation && currentClient.basicInformation.firstName}{' '}
+								{currentClient.basicInformation && currentClient.basicInformation.lastName} -
+								Criminal History
+							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>

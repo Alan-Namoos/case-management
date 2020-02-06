@@ -31,7 +31,7 @@ const BasicInformationView = () => {
 				<Row className='text-center'>
 					<Col>
 						<Card className='mb-3'>
-							<Card.Header as={cardTitle}>
+							<Card.Header as='h2'>
 								{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}
 							</Card.Header>
 							<Card.Body>
@@ -84,13 +84,13 @@ const BasicInformationView = () => {
 										Immigration Information
 									</Link>
 									<Link
-										to='/add-client-medical-history'
+										to={`/add-client-medical-history/${lastAddedClient.id}`}
 										className='list-group-item list-group-item-action'
 									>
 										Medical History
 									</Link>
 									<Link
-										to='/add-client-criminal-history'
+										to={`/add-client-criminal-history/${lastAddedClient.id}`}
 										className='list-group-item list-group-item-action'
 									>
 										Criminal History

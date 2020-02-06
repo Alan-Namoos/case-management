@@ -9,15 +9,20 @@ const MedicalHistoryView = ({ client }) => {
 	const { cardTitle, button } = size;
 	const history = useHistory();
 	// const { client } = useContext(ClientContext);
+
 	return client.medicalHistory.length === 0 ? (
 		<>
-			<h5>No Medical Records found</h5>
-			<Link to={`/add-client-medical-history/${client.id}`}>+ Add Medical History</Link>
+			<Card className='mb-5'>
+				<Card.Body className='text-center'>
+					<h5>No Medical Records found</h5>
+					<Link to={`/add-client-medical-history/${client.id}`}>+ Add Medical History</Link>
+				</Card.Body>
+			</Card>
 		</>
 	) : (
 		<>
 			<Card className='mb-3'>
-				<Card.Header as={cardTitle}>Medical History</Card.Header>
+				{/* <Card.Header as={cardTitle}>Medical History</Card.Header> */}
 				<Card.Body>
 					<Table bordered striped hover size='sm'>
 						<thead>
