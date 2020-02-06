@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
@@ -39,29 +39,29 @@ const PersonalInformationForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addPersonalInformation(personalInformation, id);
-		setPersonalInformation({
-			otherNamesUsed: '',
-			dateOfBirth: '',
-			countryOfBirth: '',
-			countryOfResidence: '',
-			nationalityAtBirth: '',
-			currentNationality: '',
-			maritalStatus: '',
-			numberOfChildren: '',
-			religionAndSect: '',
-			raceEthnicityTribalGroup: '',
-			languagesAndFluency: '',
-			bestLanguage: '',
-			employer: '',
-			jobTitle: '',
-			role: '',
-			gender: ''
-		});
+		// setPersonalInformation({
+		// 	otherNamesUsed: '',
+		// 	dateOfBirth: '',
+		// 	countryOfBirth: '',
+		// 	countryOfResidence: '',
+		// 	nationalityAtBirth: '',
+		// 	currentNationality: '',
+		// 	maritalStatus: '',
+		// 	numberOfChildren: '',
+		// 	religionAndSect: '',
+		// 	raceEthnicityTribalGroup: '',
+		// 	languagesAndFluency: '',
+		// 	bestLanguage: '',
+		// 	employer: '',
+		// 	jobTitle: '',
+		// 	role: '',
+		// 	gender: ''
+		// });
 		history.push('/');
 	};
 
 	return !!!clientFound ? (
-		'Not Found'
+		'Client Not Found - [Personal Information]'
 	) : (
 		<Container>
 			<Row>

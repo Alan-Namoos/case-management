@@ -17,7 +17,6 @@ const ImmigrationInformationForm = () => {
 	const [status, setStatus] = useState({
 		currentStatus: '',
 		expirationDate: ''
-		// aNumber: ''
 	});
 	const [passport, setPassport] = useState({
 		issuingCountry: '',
@@ -70,9 +69,15 @@ const ImmigrationInformationForm = () => {
 		history.push('/');
 	};
 
-	console.log(currentClient);
-	return !!!clientFound ? (
-		'Client Not Found'
+	if (currentClient.id) {
+		console.log('currentStatus: ', currentClient.immigrationInformation.status.currentStatus);
+		console.log('expirationDate: ', currentClient.immigrationInformation.status.expirationDate);
+		console.log('status.currentStatus: ', status.currentStatus);
+		console.log({ clientFound });
+	}
+	// return !!!clientFound ? (
+	return !!!currentClient.id ? (
+		'Client Not Found - [Immigration Information]'
 	) : (
 		<>
 			<Container>
@@ -91,12 +96,15 @@ const ImmigrationInformationForm = () => {
 											<Row>
 												<Col>
 													<Form.Group>
-														<Form.Label>Current Status:</Form.Label>
+														<Form.Label>
+															Current Status:
+															{currentClient.immigrationInformation.status.currentStatus}
+														</Form.Label>
 														<Form.Control
 															type='text'
 															size={textField}
 															name='currentStatus'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.status.currentStatus ||
 																status.currentStatus
 															}
@@ -107,13 +115,15 @@ const ImmigrationInformationForm = () => {
 												<Col>
 													<Form.Group>
 														<Form.Label>
-															Expiration Date: <i>{'(if any)'}</i>
+															Expiration Date:{' '}
+															{currentClient.immigrationInformation.status.expirationDate}
+															<i>{'(if any)'}</i>
 														</Form.Label>
 														<Form.Control
 															type='text'
 															size={textField}
 															name='expirationDate'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.status.expirationDate ||
 																status.expirationDate
 															}
@@ -121,20 +131,6 @@ const ImmigrationInformationForm = () => {
 														/>
 													</Form.Group>
 												</Col>
-												{/* <Col>
-													<Form.Group>
-														<Form.Label>
-															A#: <i>{'(if any)'}</i>
-														</Form.Label>
-														<Form.Control
-															type='text'
-															size={textField}
-															name='aNumber'
-															vlaue={status.aNumber}
-															onChange={handleStatusChange}
-														/>
-													</Form.Group>
-												</Col> */}
 											</Row>
 										</ListGroup.Item>
 										<ListGroup.Item>
@@ -147,7 +143,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='issuingCountry'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.passport.issuingCountry ||
 																passport.issuingCountry
 															}
@@ -162,7 +158,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='expirationDate'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.passport.expirationDate ||
 																passport.expirationDate
 															}
@@ -178,7 +174,7 @@ const ImmigrationInformationForm = () => {
 															size={textField}
 															name='withClient'
 															selected={currentClient.immigrationInformation.passport.withClient}
-															vlaue={
+															value={
 																currentClient.immigrationInformation.passport.withClient ||
 																passport.withClient
 															}
@@ -202,7 +198,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='dateOfEntry'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.lastVisitToUS.dateOfEntry ||
 																lastVisitToUS.dateOfEntry
 															}
@@ -217,7 +213,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='portOfEntry'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.lastVisitToUS.portOfEntry ||
 																lastVisitToUS.portOfEntry
 															}
@@ -232,7 +228,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='status'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.lastVisitToUS.status ||
 																lastVisitToUS.status
 															}
@@ -250,7 +246,7 @@ const ImmigrationInformationForm = () => {
 															selected={
 																currentClient.immigrationInformation.lastVisitToUS.lawfulEntry
 															}
-															vlaue={
+															value={
 																currentClient.immigrationInformation.lastVisitToUS.lawfulEntry ||
 																lastVisitToUS.lawfulEntry
 															}
@@ -275,7 +271,7 @@ const ImmigrationInformationForm = () => {
 															size={textField}
 															name='isDetained'
 															selected={currentClient.immigrationInformation.detention.isDetained}
-															vlaue={
+															value={
 																currentClient.immigrationInformation.detention.isDetained ||
 																detention.isDetained
 															}
@@ -294,7 +290,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='dateOfArrest'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.detention.dateOfArrest ||
 																detention.dateOfArrest
 															}
@@ -309,7 +305,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='location'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.detention.location ||
 																detention.location
 															}
@@ -324,7 +320,7 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='dateOfRelease'
-															vlaue={
+															value={
 																currentClient.immigrationInformation.detention.dateOfRelease ||
 																detention.dateOfRelease
 															}
