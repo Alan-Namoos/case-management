@@ -1,6 +1,6 @@
 body {
 	background-color: #f5f5f5;
-	font-size: 0.8rem;
+	/* font-size: 0.8rem; */
 }
 .form-label {
 	margin-bottom: 0;
@@ -16,4 +16,11 @@ body {
 
 .client-personal-information-table {
 	background-color: #ffffff;
+}
+
+.nav-tabs .nav-link.active {
+	color: #ffffff;
+	background-color: #007bff;
+	/* border-color: #dee2e6 #dee2e6 #fff; */
+	font-size: 1.3rem;
 }

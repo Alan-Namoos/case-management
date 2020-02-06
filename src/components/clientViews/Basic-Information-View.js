@@ -12,9 +12,9 @@ const BasicInformationView = () => {
 	const { clients, lastAddedClient } = useContext(ClientContext);
 	const clientID = lastAddedClient.id;
 	const history = useHistory();
-	const [clientFound, currentClient] = useFindClient(clients, clientID, history); // <= custom hook
+	const [currentClient] = useFindClient(clients, clientID, history); // <= custom hook
 
-	return !!!clientFound ? (
+	return !!!currentClient.basicInformation ? (
 		<Container>
 			<Row className='text-center'>
 				<Col>
@@ -78,7 +78,7 @@ const BasicInformationView = () => {
 										Personal Information
 									</Link>
 									<Link
-										to='/add-client-immigration-information'
+										to={`/add-client-immigration-information/${lastAddedClient.id}`}
 										className='list-group-item list-group-item-action'
 									>
 										Immigration Information

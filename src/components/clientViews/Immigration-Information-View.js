@@ -51,7 +51,7 @@ const ImmigrationInformationView = ({ client }) => {
 								<td>{passport.expirationDate || notSet}</td>
 							</tr>
 							<tr>
-								<th>with Client ?</th>
+								<th>Passport with Client ?</th>
 								<td>{passport.withClient || notSet}</td>
 							</tr>
 						</tbody>

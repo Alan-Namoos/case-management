@@ -11,7 +11,7 @@ const PersonalInformationView = ({ client }) => {
 	const history = useHistory();
 	const notSet = <i>Not Set</i>;
 
-	console.log('Personal-Information-View.js - client: ', client);
+	// console.log('Personal-Information-View.js - client: ', client);
 	const {
 		otherNamesUsed,
 		dateOfBirth,

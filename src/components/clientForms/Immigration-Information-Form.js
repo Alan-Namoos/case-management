@@ -9,10 +9,10 @@ const ImmigrationInformationForm = () => {
 	const { size } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = size;
 	const { clients, addImmigrationInformation } = useContext(ClientContext);
-	const [immigrationInformation, setImmigrationInformation] = useState({});
 	const history = useHistory();
 	const { id } = useParams();
-	const [clientFound, currentClient] = useFindClient(clients, id, history);
+	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
+	const [immigrationInformation, setImmigrationInformation] = useState({});
 
 	const [status, setStatus] = useState({
 		currentStatus: '',
@@ -35,6 +35,19 @@ const ImmigrationInformationForm = () => {
 		location: '',
 		dateOfRelease: ''
 	});
+
+	useEffect(() => {
+		if (currentClient.immigrationInformation) {
+			setStatus(currentClient.immigrationInformation.status);
+			setPassport(currentClient.immigrationInformation.passport);
+			setLastVisitToUS(currentClient.immigrationInformation.lastVisitToUS);
+			setDetention(currentClient.immigrationInformation.detention);
+			return;
+		}
+		if (!currentClient) {
+			console.log('1st useEffect - currentClient is not set');
+		}
+	}, [currentClient]);
 
 	const handleStatusChange = (e) => {
 		setStatus({ ...status, [e.target.name]: e.target.value });
@@ -69,14 +82,7 @@ const ImmigrationInformationForm = () => {
 		history.push('/');
 	};
 
-	if (currentClient.id) {
-		console.log('currentStatus: ', currentClient.immigrationInformation.status.currentStatus);
-		console.log('expirationDate: ', currentClient.immigrationInformation.status.expirationDate);
-		console.log('status.currentStatus: ', status.currentStatus);
-		console.log({ clientFound });
-	}
-	// return !!!clientFound ? (
-	return !!!currentClient.id ? (
+	return immigrationInformation === undefined ? (
 		'Client Not Found - [Immigration Information]'
 	) : (
 		<>
@@ -85,8 +91,9 @@ const ImmigrationInformationForm = () => {
 					<Col>
 						<Card className='mb-3'>
 							<Card.Header as={cardTitle}>
-								{currentClient.basicInformation.firstName || ''}{' '}
-								{currentClient.basicInformation.lastName || ''} - Immigration Information
+								{currentClient.basicInformation && currentClient.basicInformation.firstName}{' '}
+								{currentClient.basicInformation && currentClient.basicInformation.lastName} -
+								Immigration Information
 							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
@@ -96,38 +103,30 @@ const ImmigrationInformationForm = () => {
 											<Row>
 												<Col>
 													<Form.Group>
-														<Form.Label>
-															Current Status:
-															{currentClient.immigrationInformation.status.currentStatus}
-														</Form.Label>
+														<Form.Label>Current Statu:</Form.Label>
 														<Form.Control
 															type='text'
 															size={textField}
 															name='currentStatus'
-															value={
-																currentClient.immigrationInformation.status.currentStatus ||
-																status.currentStatus
-															}
+															value={status.currentStatus}
 															onChange={handleStatusChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
 												<Col>
 													<Form.Group>
 														<Form.Label>
-															Expiration Date:{' '}
-															{currentClient.immigrationInformation.status.expirationDate}
+															Expiration Date:
 															<i>{'(if any)'}</i>
 														</Form.Label>
 														<Form.Control
 															type='text'
 															size={textField}
 															name='expirationDate'
-															value={
-																currentClient.immigrationInformation.status.expirationDate ||
-																status.expirationDate
-															}
+															value={status.expirationDate}
 															onChange={handleStatusChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -143,11 +142,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='issuingCountry'
-															value={
-																currentClient.immigrationInformation.passport.issuingCountry ||
-																passport.issuingCountry
-															}
+															value={passport.issuingCountry}
 															onChange={handlePassportChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -158,27 +155,23 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='expirationDate'
-															value={
-																currentClient.immigrationInformation.passport.expirationDate ||
-																passport.expirationDate
-															}
+															value={passport.expirationDate}
 															onChange={handlePassportChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
 												<Col>
 													<Form.Group>
-														<Form.Label>with Client ?</Form.Label>
+														<Form.Label>Passport with Client ?</Form.Label>
 														<Form.Control
 															as='select'
 															size={textField}
 															name='withClient'
-															selected={currentClient.immigrationInformation.passport.withClient}
-															value={
-																currentClient.immigrationInformation.passport.withClient ||
-																passport.withClient
-															}
+															selected={passport.withClient}
+															value={passport.withClient}
 															onChange={handlePassportChange}
+															// onChange={handleChange}
 														>
 															<option value=''>Select One</option>
 															<option value='Yes'>Yes</option>
@@ -198,11 +191,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='dateOfEntry'
-															value={
-																currentClient.immigrationInformation.lastVisitToUS.dateOfEntry ||
-																lastVisitToUS.dateOfEntry
-															}
+															value={lastVisitToUS.dateOfEntry}
 															onChange={handleLastVisitToUSChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -213,11 +204,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='portOfEntry'
-															value={
-																currentClient.immigrationInformation.lastVisitToUS.portOfEntry ||
-																lastVisitToUS.portOfEntry
-															}
+															value={lastVisitToUS.portOfEntry}
 															onChange={handleLastVisitToUSChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -228,11 +217,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='status'
-															value={
-																currentClient.immigrationInformation.lastVisitToUS.status ||
-																lastVisitToUS.status
-															}
+															value={lastVisitToUS.status}
 															onChange={handleLastVisitToUSChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -243,14 +230,10 @@ const ImmigrationInformationForm = () => {
 															as='select'
 															size={textField}
 															name='lawfulEntry'
-															selected={
-																currentClient.immigrationInformation.lastVisitToUS.lawfulEntry
-															}
-															value={
-																currentClient.immigrationInformation.lastVisitToUS.lawfulEntry ||
-																lastVisitToUS.lawfulEntry
-															}
+															selected={lastVisitToUS.lawfulEntry}
+															value={lastVisitToUS.lawfulEntry}
 															onChange={handleLastVisitToUSChange}
+															// onChange={handleChange}
 														>
 															<option value=''>Select One</option>
 															<option value='Yes'>Yes</option>
@@ -270,12 +253,10 @@ const ImmigrationInformationForm = () => {
 															as='select'
 															size={textField}
 															name='isDetained'
-															selected={currentClient.immigrationInformation.detention.isDetained}
-															value={
-																currentClient.immigrationInformation.detention.isDetained ||
-																detention.isDetained
-															}
+															selected={detention.isDetained}
+															value={detention.isDetained}
 															onChange={handleDetentionChange}
+															// onChange={handleChange}
 														>
 															<option value=''>Select One</option>
 															<option value='Yes'>Yes</option>
@@ -290,11 +271,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='dateOfArrest'
-															value={
-																currentClient.immigrationInformation.detention.dateOfArrest ||
-																detention.dateOfArrest
-															}
+															value={detention.dateOfArrest}
 															onChange={handleDetentionChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -305,11 +284,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='location'
-															value={
-																currentClient.immigrationInformation.detention.location ||
-																detention.location
-															}
+															value={detention.location}
 															onChange={handleDetentionChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
@@ -320,11 +297,9 @@ const ImmigrationInformationForm = () => {
 															type='text'
 															size={textField}
 															name='dateOfRelease'
-															value={
-																currentClient.immigrationInformation.detention.dateOfRelease ||
-																detention.dateOfRelease
-															}
+															value={detention.dateOfRelease}
 															onChange={handleDetentionChange}
+															// onChange={handleChange}
 														/>
 													</Form.Group>
 												</Col>
