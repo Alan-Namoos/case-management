@@ -9,10 +9,6 @@ const ImmigrationInformationView = ({ client }) => {
 	const history = useHistory();
 	const { status, passport, lastVisitToUS, detention } = client.immigrationInformation;
 
-	const viewClient = (id) => {
-		history.push(`/add-client-immigration-information/${id}`);
-	};
-
 	return client.immigrationInformation === {} ? (
 		<h5>No Immigration Information found</h5>
 	) : (
@@ -105,7 +101,7 @@ const ImmigrationInformationView = ({ client }) => {
 						variant='primary float-right'
 						size={button}
 						type='submit'
-						onClick={() => viewClient(client.id)}
+						onClick={() => history.push(`/add-client-immigration-information/${client.id}`)}
 					>
 						Edit
 					</Button>

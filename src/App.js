@@ -10,7 +10,7 @@ import ImmigrationInformationForm from './components/clientForms/Immigration-Inf
 import MedicalHistoryForm from './components/clientForms/Medical-History-Form';
 import CriminalHistoryForm from './components/clientForms/Criminal-History-Form';
 import ClientDetailsView from './components/clientViews/Client-Details-View';
-import BasicInformationView from './components/clientViews/Basic-Information-View';
+import NewClientInformationView from './components/clientViews/New-Client-Information-View';
 import NewClientForm from './components/clientForms/New-Client-Form';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
 						<Navbar />
 						<Switch>
 							<Route exact path='/' component={Home} />
-							<Route path='/new-client' component={NewClientForm} />
+							<Route path='/add-new-client' component={NewClientForm} />
 							<Route path='/add-client-basic-information/:id' component={BasicInformationForm} />
 							<Route
 								path='/add-client-personal-information/:id'
@@ -35,8 +35,8 @@ function App() {
 							/>
 							<Route path='/add-client-medical-history/:id' component={MedicalHistoryForm} />
 							<Route path='/add-client-criminal-history/:id' component={CriminalHistoryForm} />
-							<Route path='/view-client-basic-information' component={BasicInformationView} />
-							<Route path='/client-details/:id' component={ClientDetailsView} />
+							<Route path='/view-new-client-information' component={NewClientInformationView} />
+							<Route path='/view-client-details/:id' component={ClientDetailsView} />
 						</Switch>
 					</AppearanceContextProvider>
 				</ClientContextProvider>

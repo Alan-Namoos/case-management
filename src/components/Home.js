@@ -13,7 +13,7 @@ const Home = () => {
 	const history = useHistory();
 
 	const viewClient = (id) => {
-		history.push(`/client-details/${id}`);
+		history.push(`/view-client-details/${id}`);
 	};
 
 	useEffect(() => {
@@ -31,7 +31,7 @@ const Home = () => {
 				<Col>
 					<h4>No Clients Found!</h4>
 					<h4>
-						<Link to='/new-client'>+ New Client</Link>
+						<Link to='/add-new-client'>+ New Client</Link>
 					</h4>
 				</Col>
 			</Row>

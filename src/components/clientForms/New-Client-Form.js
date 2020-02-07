@@ -38,7 +38,7 @@ const NewClientForm = () => {
 			mailingAddress: '',
 			physicalAddress: ''
 		});
-		history.push('/view-client-basic-information');
+		history.push('/view-new-client-information');
 	};
 
 	const saveAndContinue = () => {
@@ -167,10 +167,10 @@ const NewClientForm = () => {
 									<Row>
 										<Col className='text-center'>
 											<Button variant='primary' size={button} type='submit'>
-												Save & Exit
+												Save -> Exit
 											</Button>{' '}
 											<Button variant='primary' size={button} onClick={saveAndContinue}>
-												Save & continue
+												Save -> Add Personal Information
 											</Button>
 										</Col>
 									</Row>

@@ -14,10 +14,6 @@ const BasicInformationForm = () => {
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
 	const [basicInformation, setBasicInformation] = useState({});
 
-	console.log('basicInformation: ', basicInformation);
-	console.log('currentClient: ', currentClient);
-	console.log('clients: ', clients);
-
 	useEffect(() => {
 		setBasicInformation(currentClient.basicInformation);
 	}, [currentClient]);
@@ -29,23 +25,7 @@ const BasicInformationForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addBasicInformation(basicInformation, id);
-		// setBasicInformation({
-		// 	firstName: '',
-		// 	lastName: '',
-		// 	aNumber: '',
-		// 	mobilePhone: '',
-		// 	homePhone: '',
-		// 	email: '',
-		// 	mailingAddress: '',
-		// 	physicalAddress: ''
-		// });
-		history.push(`/client-details/${id}`);
-	};
-
-	const saveAndContinue = () => {
-		addBasicInformation(basicInformation);
-
-		history.push(`/add-client-personal-information/${id}`);
+		history.push(`/view-client-details/${id}`);
 	};
 
 	return !basicInformation ? (
@@ -170,11 +150,8 @@ const BasicInformationForm = () => {
 									<Row>
 										<Col className='text-center'>
 											<Button variant='primary' size={button} type='submit'>
-												Done
+												Save
 											</Button>{' '}
-											<Button variant='primary' size={button} onClick={saveAndContinue}>
-												Save & continue
-											</Button>
 										</Col>
 									</Row>
 								</Form>
