@@ -4,10 +4,9 @@ import { Card, Table, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 const ImmigrationInformationView = ({ client }) => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { button, notSet } = appearance;
 	const history = useHistory();
-	const notSet = <i>Not Set</i>;
 	const { status, passport, lastVisitToUS, detention } = client.immigrationInformation;
 
 	const viewClient = (id) => {

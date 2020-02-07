@@ -11,6 +11,7 @@ import MedicalHistoryForm from './components/clientForms/Medical-History-Form';
 import CriminalHistoryForm from './components/clientForms/Criminal-History-Form';
 import ClientDetailsView from './components/clientViews/Client-Details-View';
 import BasicInformationView from './components/clientViews/Basic-Information-View';
+import NewClientForm from './components/clientForms/New-Client-Form';
 
 function App() {
 	return (
@@ -21,7 +22,8 @@ function App() {
 						<Navbar />
 						<Switch>
 							<Route exact path='/' component={Home} />
-							<Route path='/add-client-basic-information' component={BasicInformationForm} />
+							<Route path='/new-client' component={NewClientForm} />
+							<Route path='/add-client-basic-information/:id' component={BasicInformationForm} />
 							<Route
 								path='/add-client-personal-information/:id'
 								component={PersonalInformationForm}

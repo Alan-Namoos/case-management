@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { useHistory, useParams } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
+import { useHistory, useParams } from 'react-router-dom';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 
 const PersonalInformationForm = () => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, textField, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { cardTitle, textField, button } = appearance;
 	const { clients, addPersonalInformation } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
@@ -31,7 +31,6 @@ const PersonalInformationForm = () => {
 	if (!personalInformation) {
 		return 'Client Not Found - [Personal Information]';
 	} else {
-		// return 'Client Found';
 		return (
 			<Container>
 				<Row>

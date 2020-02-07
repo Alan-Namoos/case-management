@@ -10,8 +10,8 @@ import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { useParams, useHistory } from 'react-router-dom';
 
 const ClientDetailsView = () => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { button, notSet } = appearance;
 	const { clients } = useContext(ClientContext);
 	const { id } = useParams();
 	const [currentClient, setCurrentClient] = useState();
@@ -38,7 +38,7 @@ const ClientDetailsView = () => {
 						<Card className='mb-3'>
 							<Card.Header as='h2'>
 								{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}{' '}
-								- A# {currentClient.basicInformation.aNumber || 'None'}
+								- A# {currentClient.basicInformation.aNumber || notSet}
 							</Card.Header>
 							<Card.Body>
 								<ListGroup>
@@ -47,18 +47,18 @@ const ClientDetailsView = () => {
 									</ListGroup.Item>
 									<ListGroup.Item>
 										<strong>Home Phone:</strong>{' '}
-										{currentClient.basicInformation.homePhone || 'Not set'}
+										{currentClient.basicInformation.homePhone || notSet}
 									</ListGroup.Item>
 									<ListGroup.Item>
-										<strong>Email:</strong> {currentClient.basicInformation.email || 'Not set'}
+										<strong>Email:</strong> {currentClient.basicInformation.email || notSet}
 									</ListGroup.Item>
 									<ListGroup.Item>
 										<strong>Mailing Address:</strong>{' '}
-										{currentClient.basicInformation.mailingAddress || 'Not set'}
+										{currentClient.basicInformation.mailingAddress || notSet}
 									</ListGroup.Item>
 									<ListGroup.Item>
 										<strong>Physical Address:</strong>{' '}
-										{currentClient.basicInformation.physicalAddress || 'Not set'}
+										{currentClient.basicInformation.physicalAddress || notSet}
 									</ListGroup.Item>
 								</ListGroup>
 							</Card.Body>
@@ -66,9 +66,7 @@ const ClientDetailsView = () => {
 								<Button
 									variant='primary float-right'
 									size={button}
-									onClick={(currentClient) =>
-										history.push(`/add-client-basic-information/${currentClient.id}`)
-									}
+									onClick={() => history.push(`/add-client-basic-information/${id}`)}
 								>
 									Edit
 								</Button>
@@ -80,19 +78,19 @@ const ClientDetailsView = () => {
 					<Col>
 						<Tabs justify defaultActiveKey='personal-information' id='uncontrolled-tab-example'>
 							<Tab eventKey='personal-information' title='Personal Information'>
-								<PersonalInformationView client={currentClient} />
+								<PersonalInformationView client={currentClient} notSet={notSet} />
 							</Tab>
 
 							<Tab eventKey='immigration-information' title='Immigration Information'>
-								<ImmigrationInformationView client={currentClient} />
+								<ImmigrationInformationView client={currentClient} notSet={notSet} />
 							</Tab>
 
 							<Tab eventKey='medical-history' title='Medical History'>
-								<MedicalHistoryView client={currentClient} />
+								<MedicalHistoryView client={currentClient} notSet={notSet} />
 							</Tab>
 
 							<Tab eventKey='criminal-history' title='Criminal History'>
-								<CriminalHistoryView client={currentClient} />
+								<CriminalHistoryView client={currentClient} notSet={notSet} />
 							</Tab>
 						</Tabs>
 					</Col>

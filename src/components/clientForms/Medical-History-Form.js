@@ -6,8 +6,8 @@ import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 
 const MedicalHistoryForm = () => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, textField, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { cardTitle, textField, button } = appearance;
 	const { clients, addMedicalHistory } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();

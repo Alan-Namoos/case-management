@@ -5,8 +5,8 @@ import { Card, Table, Button } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 const CriminalHistoryView = ({ client }) => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { button, notSet } = appearance;
 	const history = useHistory();
 	// const { client } = useContext(ClientContext);
 
@@ -37,10 +37,10 @@ const CriminalHistoryView = ({ client }) => {
 							{client.criminalHistory.map((criminalCase, i) => {
 								return (
 									<tr key={i}>
-										<td>{criminalCase.date}</td>
-										<td>{criminalCase.location}</td>
-										<td>{criminalCase.description}</td>
-										<td>{criminalCase.CaseNumber}</td>
+										<td>{criminalCase.date || notSet}</td>
+										<td>{criminalCase.location || notSet}</td>
+										<td>{criminalCase.description || notSet}</td>
+										<td>{criminalCase.CaseNumber || notSet}</td>
 									</tr>
 								);
 							})}

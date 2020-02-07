@@ -1,26 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { useFindClient } from '../customHooks/useFindClient';
-import { useHistory, useParams } from 'react-router-dom';
-import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
-const BasicInformationForm = () => {
+const NewClientForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, addBasicInformation } = useContext(ClientContext);
+	const { newClient } = useContext(ClientContext);
+	const [basicInformation, setBasicInformation] = useState({
+		firstName: '',
+		lastName: '',
+		aNumber: '',
+		mobilePhone: '',
+		homePhone: '',
+		email: '',
+		mailingAddress: '',
+		physicalAddress: ''
+	});
+
 	const history = useHistory();
-	const { id } = useParams();
-	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
-	const [basicInformation, setBasicInformation] = useState({});
-
-	console.log('basicInformation: ', basicInformation);
-	console.log('currentClient: ', currentClient);
-	console.log('clients: ', clients);
-
-	useEffect(() => {
-		setBasicInformation(currentClient.basicInformation);
-	}, [currentClient]);
 
 	const handleChange = (e) => {
 		setBasicInformation({ ...basicInformation, [e.target.name]: e.target.value });
@@ -28,35 +27,33 @@ const BasicInformationForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addBasicInformation(basicInformation, id);
-		// setBasicInformation({
-		// 	firstName: '',
-		// 	lastName: '',
-		// 	aNumber: '',
-		// 	mobilePhone: '',
-		// 	homePhone: '',
-		// 	email: '',
-		// 	mailingAddress: '',
-		// 	physicalAddress: ''
-		// });
-		history.push(`/client-details/${id}`);
+		newClient(basicInformation);
+		setBasicInformation({
+			firstName: '',
+			lastName: '',
+			aNumber: '',
+			mobilePhone: '',
+			homePhone: '',
+			email: '',
+			mailingAddress: '',
+			physicalAddress: ''
+		});
+		history.push('/view-client-basic-information');
 	};
 
 	const saveAndContinue = () => {
-		addBasicInformation(basicInformation);
+		newClient(basicInformation);
 
-		history.push(`/add-client-personal-information/${id}`);
+		history.push('/add-client-personal-information');
 	};
 
-	return !basicInformation ? (
-		'No Basic Information Found'
-	) : (
+	return (
 		<>
 			<Container>
 				<Row>
 					<Col>
 						<Card className='mb-3'>
-							<Card.Header as={cardTitle}>Basic Information</Card.Header>
+							<Card.Header as={cardTitle}>New Client - Basic Information</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>
@@ -67,7 +64,7 @@ const BasicInformationForm = () => {
 													type='text'
 													name='firstName'
 													size={textField}
-													value={basicInformation.firstName}
+													value={basicInformation.firstName || ''}
 													onChange={handleChange}
 													required
 												/>
@@ -88,7 +85,7 @@ const BasicInformationForm = () => {
 										<Col>
 											<Form.Group>
 												<Form.Label>
-													A-Number:<i>{'(if any)'}</i>
+													A-Number: <i>{'( if any )'}</i>
 												</Form.Label>
 												<Form.Control
 													type='text'
@@ -170,7 +167,7 @@ const BasicInformationForm = () => {
 									<Row>
 										<Col className='text-center'>
 											<Button variant='primary' size={button} type='submit'>
-												Done
+												Save & Exit
 											</Button>{' '}
 											<Button variant='primary' size={button} onClick={saveAndContinue}>
 												Save & continue
@@ -187,4 +184,4 @@ const BasicInformationForm = () => {
 	);
 };
 
-export default BasicInformationForm;
+export default NewClientForm;

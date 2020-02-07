@@ -2,12 +2,15 @@ import React, { createContext } from 'react';
 
 export const AppearanceContext = createContext();
 const AppearanceContextProvider = (props) => {
-	const size = {
+	const appearance = {
 		cardTitle: 'h5',
 		textField: 'sm',
-		button: 'sm'
+		button: 'sm',
+		notSet: <i style={{ color: '#5d5d5d' }}>Not Set</i>
 	};
-	return <AppearanceContext.Provider value={{ size }}>{props.children}</AppearanceContext.Provider>;
+	return (
+		<AppearanceContext.Provider value={{ appearance }}>{props.children}</AppearanceContext.Provider>
+	);
 };
 
 export default AppearanceContextProvider;

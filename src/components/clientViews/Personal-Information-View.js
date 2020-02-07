@@ -6,12 +6,10 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 const PersonalInformationView = ({ client }) => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { button, notSet } = appearance;
 	const history = useHistory();
-	const notSet = <i>Not Set</i>;
 
-	// console.log('Personal-Information-View.js - client: ', client);
 	const {
 		otherNamesUsed,
 		dateOfBirth,

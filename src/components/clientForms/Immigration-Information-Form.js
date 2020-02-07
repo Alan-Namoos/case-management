@@ -6,8 +6,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
 
 const ImmigrationInformationForm = () => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, textField, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { cardTitle, textField, button } = appearance;
 	const { clients, addImmigrationInformation } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();

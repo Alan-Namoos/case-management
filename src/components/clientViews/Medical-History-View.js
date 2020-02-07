@@ -5,8 +5,8 @@ import { Card, Table, Button } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 const MedicalHistoryView = ({ client }) => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { button, notSet } = appearance;
 	const history = useHistory();
 	// const { client } = useContext(ClientContext);
 
@@ -36,9 +36,9 @@ const MedicalHistoryView = ({ client }) => {
 							{client.medicalHistory.map((event, i) => {
 								return (
 									<tr key={i}>
-										<td>{event.date}</td>
-										<td>{event.location}</td>
-										<td>{event.description}</td>
+										<td>{event.date || notSet}</td>
+										<td>{event.location || notSet}</td>
+										<td>{event.description || notSet}</td>
 									</tr>
 								);
 							})}

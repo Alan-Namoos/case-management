@@ -68,10 +68,22 @@ const ClientContextProvider = (props) => {
 		});
 	};
 
-	const addBasicInformation = (newBasicInformation) => {
-		setClients([...clients, { ...client, basicInformation: newBasicInformation, id: uuid() }]);
-		resetClient();
+	const newClient = (initialBasicInformation) => {
+		setClients([...clients, { ...client, basicInformation: initialBasicInformation, id: uuid() }]);
 	};
+
+	const addBasicInformation = (newBasicInformation, id) => {
+		const index = clients.findIndex((arrayClient) => {
+			return arrayClient.id === id;
+		});
+		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
+		clients[index].basicInformation = newBasicInformation;
+	};
+
+	// const addBasicInformation = (newBasicInformation) => {
+	// 	setClients([...clients, { ...client, basicInformation: newBasicInformation, id: uuid() }]);
+	// 	resetClient();
+	// };
 
 	const addPersonalInformation = (newPersonalInformation, id) => {
 		const index = clients.findIndex((arrayClient) => {
@@ -168,6 +180,7 @@ const ClientContextProvider = (props) => {
 			value={{
 				client,
 				clients,
+				newClient,
 				lastAddedClient,
 				addBasicInformation,
 				addPersonalInformation,

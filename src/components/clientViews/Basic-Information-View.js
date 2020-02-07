@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Link } from 'react-router-dom';
-import { Card, Table, Container, Row, Col } from 'react-bootstrap';
+import { Card, Table, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
 
 const BasicInformationView = () => {
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { cardTitle, notSet } = appearance;
 	const { clients, lastAddedClient } = useContext(ClientContext);
 	const clientID = lastAddedClient.id;
 	const history = useHistory();
@@ -29,7 +29,7 @@ const BasicInformationView = () => {
 		<>
 			<Container>
 				<Row className='text-center'>
-					<Col>
+					<Col lg={8}>
 						<Card className='mb-3'>
 							<Card.Header as='h2'>
 								{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}
@@ -39,63 +39,67 @@ const BasicInformationView = () => {
 									<tbody>
 										<tr>
 											<th width='50%'>Mobile Phone:</th>
-											<td>{currentClient.basicInformation.mobilePhone || 'None'}</td>
+											<td>{currentClient.basicInformation.mobilePhone || notSet}</td>
 										</tr>
 										<tr>
 											<th>Home Phone:</th>
-											<td>{currentClient.basicInformation.homePhone || 'None'}</td>
+											<td>{currentClient.basicInformation.homePhone || notSet}</td>
 										</tr>
 										<tr>
 											<th>Email Address:</th>
-											<td>{currentClient.basicInformation.email || 'None'}</td>
+											<td>{currentClient.basicInformation.email || notSet}</td>
 										</tr>
 										<tr>
 											<th>Mailing Address:</th>
-											<td>{currentClient.basicInformation.mailingAddress || 'None'}</td>
+											<td>{currentClient.basicInformation.mailingAddress || notSet}</td>
 										</tr>
 										<tr>
 											<th>Physical Address:</th>
-											<td>{currentClient.basicInformation.physicalAddress || 'None'}</td>
+											<td>{currentClient.basicInformation.physicalAddress || notSet}</td>
 										</tr>
 									</tbody>
 								</Table>
 							</Card.Body>
 						</Card>
 					</Col>
-					<Col>
+					<Col lg={4}>
 						<Card>
-							<Card.Header as={cardTitle}>Now you can add:</Card.Header>
+							<Card.Header as={cardTitle}>Continue:</Card.Header>
 							<Card.Body>
-								<div className='list-group'>
-									<Link
-										// to={{
-										// 	pathname: '/add-client-personal-information',
-										// 	state: lastAddedClient
-										// }}
-										to={`/add-client-personal-information/${lastAddedClient.id}`}
-										className='list-group-item list-group-item-action'
-									>
-										Personal Information
-									</Link>
-									<Link
-										to={`/add-client-immigration-information/${lastAddedClient.id}`}
-										className='list-group-item list-group-item-action'
-									>
-										Immigration Information
-									</Link>
-									<Link
-										to={`/add-client-medical-history/${lastAddedClient.id}`}
-										className='list-group-item list-group-item-action'
-									>
-										Medical History
-									</Link>
-									<Link
-										to={`/add-client-criminal-history/${lastAddedClient.id}`}
-										className='list-group-item list-group-item-action'
-									>
-										Criminal History
-									</Link>
-								</div>
+								<ListGroup>
+									<ListGroup.Item>
+										<Link
+											to={`/add-client-personal-information/${lastAddedClient.id}`}
+											// className='list-group-item list-group-item-action'
+										>
+											+ Add Personal Information
+										</Link>
+									</ListGroup.Item>
+									<ListGroup.Item>
+										<Link
+											to={`/add-client-immigration-information/${lastAddedClient.id}`}
+											// className='list-group-item list-group-item-action'
+										>
+											+ Add Immigration Information
+										</Link>
+									</ListGroup.Item>
+									<ListGroup.Item>
+										<Link
+											to={`/add-client-medical-history/${lastAddedClient.id}`}
+											// className='list-group-item list-group-item-action'
+										>
+											+ Add Medical History
+										</Link>
+									</ListGroup.Item>
+									<ListGroup.Item>
+										<Link
+											to={`/add-client-criminal-history/${lastAddedClient.id}`}
+											// className='list-group-item list-group-item-action'
+										>
+											+ Add Criminal History
+										</Link>
+									</ListGroup.Item>
+								</ListGroup>
 							</Card.Body>
 						</Card>
 					</Col>

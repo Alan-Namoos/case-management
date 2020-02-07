@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 
 const Home = () => {
 	const { clients } = useContext(ClientContext);
-	const { size } = useContext(AppearanceContext);
-	const { cardTitle, button } = size;
+	const { appearance } = useContext(AppearanceContext);
+	const { cardTitle, button, notSet } = appearance;
 	const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
 
@@ -31,7 +31,7 @@ const Home = () => {
 				<Col>
 					<h4>No Clients Found!</h4>
 					<h4>
-						<Link to='/add-client-basic-information'>+ New Client</Link>
+						<Link to='/new-client'>+ New Client</Link>
 					</h4>
 				</Col>
 			</Row>
@@ -60,7 +60,7 @@ const Home = () => {
 													{client.basicInformation.firstName} {client.basicInformation.lastName}
 												</td>
 
-												<td>{client.basicInformation.aNumber || 'None'}</td>
+												<td>{client.basicInformation.aNumber || notSet}</td>
 												<td>{client.basicInformation.mobilePhone}</td>
 												<td>
 													<Button size={button} onClick={() => viewClient(client.id)}>
