@@ -18,8 +18,8 @@ const ClientContextProvider = (props) => {
 				homePhone: '',
 				email: '',
 				mailingAddress: '',
-				physicalAddress: '',
-				aNumber: ''
+				physicalAddress: ''
+				// aNumber: ''
 			},
 			personalInformation: {
 				otherNamesUsed: '',
@@ -42,6 +42,7 @@ const ClientContextProvider = (props) => {
 
 			immigrationInformation: {
 				status: {
+					aNumber: '',
 					currentStatus: '',
 					expirationDate: ''
 				},
@@ -68,8 +69,19 @@ const ClientContextProvider = (props) => {
 		});
 	};
 
-	const newClient = (initialBasicInformation) => {
-		setClients([...clients, { ...client, basicInformation: initialBasicInformation, id: uuid() }]);
+	const newClient = (initialBasicInformation, immigrationInformationStatus) => {
+		setClients([
+			...clients,
+			{
+				...client,
+				basicInformation: initialBasicInformation,
+				immigrationInformation: {
+					...client.immigrationInformation,
+					status: immigrationInformationStatus
+				},
+				id: uuid()
+			}
+		]);
 	};
 
 	const addBasicInformation = (newBasicInformation, id) => {

@@ -19,15 +19,28 @@ const NewClientForm = () => {
 		physicalAddress: ''
 	});
 
+	const [immigrationInformationStatus, setImmigrationInformationStatus] = useState({
+		aNumber: '',
+		currentStatus: '',
+		expirationDate: ''
+	});
+
 	const history = useHistory();
 
-	const handleChange = (e) => {
+	const handleBasicInformationChange = (e) => {
 		setBasicInformation({ ...basicInformation, [e.target.name]: e.target.value });
+	};
+
+	const handleImmigrationInformationChange = (e) => {
+		setImmigrationInformationStatus({
+			...immigrationInformationStatus,
+			[e.target.name]: e.target.value
+		});
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		newClient(basicInformation);
+		newClient(basicInformation, immigrationInformationStatus);
 		setBasicInformation({
 			firstName: '',
 			lastName: '',
@@ -65,7 +78,7 @@ const NewClientForm = () => {
 													name='firstName'
 													size={textField}
 													value={basicInformation.firstName || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 													required
 												/>
 											</Form.Group>
@@ -78,7 +91,7 @@ const NewClientForm = () => {
 													name='lastName'
 													size={textField}
 													value={basicInformation.lastName || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -91,8 +104,8 @@ const NewClientForm = () => {
 													type='text'
 													name='aNumber'
 													size={textField}
-													value={basicInformation.aNumber || ''}
-													onChange={handleChange}
+													value={immigrationInformationStatus.aNumber || ''}
+													onChange={handleImmigrationInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -106,7 +119,7 @@ const NewClientForm = () => {
 													name='mobilePhone'
 													size={textField}
 													value={basicInformation.mobilePhone || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 													required
 												/>
 											</Form.Group>
@@ -119,7 +132,7 @@ const NewClientForm = () => {
 													name='homePhone'
 													size={textField}
 													value={basicInformation.homePhone || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -133,7 +146,7 @@ const NewClientForm = () => {
 													name='email'
 													size={textField}
 													value={basicInformation.email || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -147,7 +160,7 @@ const NewClientForm = () => {
 													name='mailingAddress'
 													size={textField}
 													value={basicInformation.mailingAddress || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -159,7 +172,7 @@ const NewClientForm = () => {
 													name='physicalAddress'
 													size={textField}
 													value={basicInformation.physicalAddress || ''}
-													onChange={handleChange}
+													onChange={handleBasicInformationChange}
 												/>
 											</Form.Group>
 										</Col>

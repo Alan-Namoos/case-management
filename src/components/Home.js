@@ -12,10 +12,6 @@ const Home = () => {
 	const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
 
-	const viewClient = (id) => {
-		history.push(`/view-client-details/${id}`);
-	};
-
 	useEffect(() => {
 		if (clients.length > 4) {
 			const lastFive = clients.slice(clients.length, clients.length + 1);
@@ -60,10 +56,13 @@ const Home = () => {
 													{client.basicInformation.firstName} {client.basicInformation.lastName}
 												</td>
 
-												<td>{client.basicInformation.aNumber || notSet}</td>
+												<td>{client.immigrationInformation.status.aNumber || notSet}</td>
 												<td>{client.basicInformation.mobilePhone}</td>
 												<td>
-													<Button size={button} onClick={() => viewClient(client.id)}>
+													<Button
+														size={button}
+														onClick={() => history.push(`/view-client-details/${client.id}`)}
+													>
 														More details
 													</Button>
 												</td>

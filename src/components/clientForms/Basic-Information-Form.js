@@ -65,7 +65,7 @@ const BasicInformationForm = () => {
 												/>
 											</Form.Group>
 										</Col>
-										<Col>
+										{/* <Col>
 											<Form.Group>
 												<Form.Label>
 													A-Number:<i>{'(if any)'}</i>
@@ -78,7 +78,7 @@ const BasicInformationForm = () => {
 													onChange={handleChange}
 												/>
 											</Form.Group>
-										</Col>
+										</Col> */}
 									</Row>
 									<Row>
 										<Col>

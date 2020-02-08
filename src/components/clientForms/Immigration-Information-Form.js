@@ -15,6 +15,7 @@ const ImmigrationInformationForm = () => {
 	const [immigrationInformation, setImmigrationInformation] = useState({});
 
 	const [status, setStatus] = useState({
+		aNumber: '',
 		currentStatus: '',
 		expirationDate: ''
 	});
@@ -101,6 +102,20 @@ const ImmigrationInformationForm = () => {
 										<ListGroup.Item>
 											<h5>Status</h5>
 											<Row>
+												<Col>
+													<Form.Group>
+														<Form.Label>
+															A-Number:<i>{'(if any)'}</i>
+														</Form.Label>
+														<Form.Control
+															type='text'
+															name='aNumber'
+															size={textField}
+															value={status.aNumber || ''}
+															onChange={handleStatusChange}
+														/>
+													</Form.Group>
+												</Col>
 												<Col>
 													<Form.Group>
 														<Form.Label>Current Statu:</Form.Label>

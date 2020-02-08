@@ -39,8 +39,9 @@ const ClientDetailsView = () => {
 						{/* <Card className='mb-3'>
 							<Card.Header as='h2'> */}
 						<h2 className='text-center'>
-							{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName} -
-							A# {currentClient.basicInformation.aNumber || notSet}
+							{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}{' '}
+							{' | '}
+							<i>A-Number: {currentClient.immigrationInformation.status.aNumber || notSet}</i>
 						</h2>
 						<hr />
 						{/* </Card.Header>

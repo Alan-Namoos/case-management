@@ -19,10 +19,10 @@ const ImmigrationInformationView = ({ client }) => {
 					<h5 className='text-center'>Status</h5>
 					<Table bordered striped hover size='sm'>
 						<tbody>
-							{/* <tr>
-								<th>A#:</th>
+							<tr>
+								<th>A-Number:</th>
 								<td>{status.aNumber || notSet}</td>
-							</tr> */}
+							</tr>
 							<tr>
 								<th width='50%'>Current Status:</th>
 								<td>{status.currentStatus || notSet}</td>
