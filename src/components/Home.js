@@ -53,11 +53,12 @@ const Home = () => {
 										return (
 											<tr key={client.id}>
 												<td>
-													{client.basicInformation.firstName} {client.basicInformation.lastName}
+													{client.personalInformation.firstName}{' '}
+													{client.personalInformation.lastName}
 												</td>
 
 												<td>{client.immigrationInformation.status.aNumber || notSet}</td>
-												<td>{client.basicInformation.mobilePhone}</td>
+												<td>{client.contactInformation.mobilePhone}</td>
 												<td>
 													<Button
 														size={button}

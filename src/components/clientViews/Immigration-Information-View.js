@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button } from 'react-bootstrap';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 const ImmigrationInformationView = ({ client }) => {
@@ -97,14 +97,18 @@ const ImmigrationInformationView = ({ client }) => {
 					</Table>
 				</Card.Body>
 				<Card.Footer>
-					<Button
-						variant='primary float-right'
-						size={button}
-						type='submit'
-						onClick={() => history.push(`/add-client-immigration-information/${client.id}`)}
-					>
-						Edit
-					</Button>
+					<Row>
+						<Col className='text-center'>
+							<Button
+								variant='primary'
+								size={button}
+								type='submit'
+								onClick={() => history.push(`/add-client-immigration-information/${client.id}`)}
+							>
+								Edit
+							</Button>
+						</Col>
+					</Row>
 				</Card.Footer>
 			</Card>
 		</>

@@ -11,17 +11,18 @@ const ClientContextProvider = (props) => {
 	const resetClient = () => {
 		setClient({
 			id: '',
-			basicInformation: {
-				firstName: '',
-				lastName: '',
-				mobilePhone: '',
-				homePhone: '',
-				email: '',
-				mailingAddress: '',
-				physicalAddress: ''
-				// aNumber: ''
-			},
+			// basicInformation: {
+			// 	firstName: '',
+			// 	lastName: '',
+			// 	mobilePhone: '',
+			// 	homePhone: '',
+			// 	email: '',
+			// 	mailingAddress: '',
+			// 	physicalAddress: ''
+			// },
 			personalInformation: {
+				firstName: '', // <= from basicInformation
+				lastName: '', // <= from basicInformation
 				otherNamesUsed: '',
 				dateOfBirth: '',
 				countryOfBirth: '',
@@ -38,6 +39,14 @@ const ClientContextProvider = (props) => {
 				jobTitle: '',
 				role: '',
 				gender: ''
+			},
+
+			contactInformation: {
+				mobilePhone: '', // <= from basicInformation
+				homePhone: '', // <= from basicInformation
+				email: '', // <= from basicInformation
+				mailingAddress: '', // <= from basicInformation
+				physicalAddress: '' // <= from basicInformation
 			},
 
 			immigrationInformation: {
@@ -69,12 +78,17 @@ const ClientContextProvider = (props) => {
 		});
 	};
 
-	const newClient = (initialBasicInformation, immigrationInformationStatus) => {
+	const newClient = (
+		initialPersonalInformation,
+		initialContactInformation,
+		immigrationInformationStatus
+	) => {
 		setClients([
 			...clients,
 			{
 				...client,
-				basicInformation: initialBasicInformation,
+				personalInformation: initialPersonalInformation,
+				contactInformation: initialContactInformation,
 				immigrationInformation: {
 					...client.immigrationInformation,
 					status: immigrationInformationStatus
@@ -84,12 +98,12 @@ const ClientContextProvider = (props) => {
 		]);
 	};
 
-	const addBasicInformation = (newBasicInformation, id) => {
+	const addContactInformation = (newContactInformation, id) => {
 		const index = clients.findIndex((arrayClient) => {
 			return arrayClient.id === id;
 		});
 		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-		clients[index].basicInformation = newBasicInformation;
+		clients[index].contactInformation = newContactInformation;
 	};
 
 	// const addBasicInformation = (newBasicInformation) => {
@@ -177,9 +191,9 @@ const ClientContextProvider = (props) => {
 		resetClient();
 	}, []);
 
-	// useEffect(() => {
-	// 	console.log('ClientContext.js - clients: ', clients);
-	// }, [clients]);
+	useEffect(() => {
+		console.log('ClientContext.js - clients: ', clients);
+	}, [clients]);
 
 	useEffect(() => {
 		if (clients.length > 0) {
@@ -194,9 +208,8 @@ const ClientContextProvider = (props) => {
 				clients,
 				newClient,
 				lastAddedClient,
-				addBasicInformation,
 				addPersonalInformation,
-				// addContactInformation,
+				addContactInformation,
 				addImmigrationInformation,
 				addMedicalHistory,
 				addCriminalHistory

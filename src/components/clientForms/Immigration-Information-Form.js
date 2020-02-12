@@ -80,7 +80,7 @@ const ImmigrationInformationForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addImmigrationInformation(immigrationInformation, id);
-		history.push('/');
+		history.push(`/view-client-details/${id}`);
 	};
 
 	return immigrationInformation === undefined ? (
@@ -92,8 +92,8 @@ const ImmigrationInformationForm = () => {
 					<Col>
 						<Card className='mb-3'>
 							<Card.Header as={cardTitle}>
-								{currentClient.basicInformation && currentClient.basicInformation.firstName}{' '}
-								{currentClient.basicInformation && currentClient.basicInformation.lastName} -
+								{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
+								{currentClient.personalInformation && currentClient.personalInformation.lastName} -
 								Immigration Information
 							</Card.Header>
 							<Card.Body>
@@ -321,9 +321,20 @@ const ImmigrationInformationForm = () => {
 											</Row>
 										</ListGroup.Item>
 									</ListGroup>
-									<Button variant='primary float-right' size={button} type='submit'>
-										Save
-									</Button>
+									<Row>
+										<Col className='text-center'>
+											<Button variant='primary' size={button} type='submit'>
+												Save
+											</Button>{' '}
+											<Button
+												variant='primary'
+												size={button}
+												onClick={() => history.push(`/view-client-details/${id}`)}
+											>
+												Cancel
+											</Button>
+										</Col>
+									</Row>
 								</Form>
 							</Card.Body>
 						</Card>
