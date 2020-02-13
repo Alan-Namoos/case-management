@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Row, Col, Tabs, Tab, Container } from 'react-bootstrap';
-import PersonalInformationView from './Personal-Information-View';
-import ImmigrationInformationView from './Immigration-Information-View';
-// import ContactInformationView from './Contact-Information-View';
-import BaiscInformationView from './Basic-Information-View';
-import MedicalHistoryView from './Medical-History-View';
-import CriminalHistoryView from './Criminal-History-View';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { useParams, useHistory } from 'react-router-dom';
+import PersonalInformationView from './Personal-Information-View';
+import ImmigrationInformationView from './Immigration-Information-View';
+import ContactInformationView from './Contact-Information-View';
+// import BaiscInformationView from './Contact-Information-View';
+import MedicalHistoryView from './Medical-History-View';
+import CriminalHistoryView from './Criminal-History-View';
+import { Row, Col, Tabs, Tab, Container } from 'react-bootstrap';
 
 const ClientDetailsView = () => {
 	const { appearance } = useContext(AppearanceContext);
@@ -36,20 +36,19 @@ const ClientDetailsView = () => {
 			<Container>
 				<Row>
 					<Col>
-						{/* <Card className='mb-3'>
-							<Card.Header as='h2'> */}
 						<h2 className='text-center'>
-							{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}{' '}
-							{' | '}
-							<i>A-Number: {currentClient.immigrationInformation.status.aNumber || notSet}</i>
+							{currentClient.personalInformation.firstName}{' '}
+							{currentClient.personalInformation.lastName}
+							{/* {' | '} */}
+							{/* <i>A-Number: {currentClient.immigrationInformation.status.aNumber || notSet}</i> */}
 						</h2>
+						<h4 className='text-center'>
+							<i>A-Number: {currentClient.immigrationInformation.status.aNumber || notSet}</i>
+						</h4>
 						<hr />
-						{/* </Card.Header>
-							<Card.Body> */}
-
-						<Tabs justify defaultActiveKey='basic-information' id='uncontrolled-tab-example'>
-							<Tab eventKey='basic-information' title='Basic Information'>
-								<BaiscInformationView client={currentClient} notSet={notSet} />
+						<Tabs justify defaultActiveKey='contact-information' id='uncontrolled-tab'>
+							<Tab eventKey='contact-information' title='Contact Information'>
+								<ContactInformationView client={currentClient} notSet={notSet} />
 							</Tab>
 
 							<Tab eventKey='personal-information' title='Personal Information'>

@@ -14,7 +14,7 @@ const NewClientInformationView = () => {
 	const history = useHistory();
 	const [currentClient] = useFindClient(clients, clientID, history); // <= custom hook
 
-	return !!!currentClient.basicInformation ? (
+	return !currentClient.contactInformation ? (
 		<Container>
 			<Row className='text-center'>
 				<Col>
@@ -32,30 +32,31 @@ const NewClientInformationView = () => {
 					<Col lg={8}>
 						<Card className='mb-3'>
 							<Card.Header as='h2'>
-								{currentClient.basicInformation.firstName} {currentClient.basicInformation.lastName}
+								{currentClient.personalInformation.firstName}{' '}
+								{currentClient.personalInformation.lastName}
 							</Card.Header>
 							<Card.Body>
 								<Table bordered striped size='sm'>
 									<tbody>
 										<tr>
 											<th width='50%'>Mobile Phone:</th>
-											<td>{currentClient.basicInformation.mobilePhone || notSet}</td>
+											<td>{currentClient.contactInformation.mobilePhone || notSet}</td>
 										</tr>
 										<tr>
 											<th>Home Phone:</th>
-											<td>{currentClient.basicInformation.homePhone || notSet}</td>
+											<td>{currentClient.contactInformation.homePhone || notSet}</td>
 										</tr>
 										<tr>
 											<th>Email Address:</th>
-											<td>{currentClient.basicInformation.email || notSet}</td>
+											<td>{currentClient.contactInformation.email || notSet}</td>
 										</tr>
 										<tr>
 											<th>Mailing Address:</th>
-											<td>{currentClient.basicInformation.mailingAddress || notSet}</td>
+											<td>{currentClient.contactInformation.mailingAddress || notSet}</td>
 										</tr>
 										<tr>
 											<th>Physical Address:</th>
-											<td>{currentClient.basicInformation.physicalAddress || notSet}</td>
+											<td>{currentClient.contactInformation.physicalAddress || notSet}</td>
 										</tr>
 									</tbody>
 								</Table>

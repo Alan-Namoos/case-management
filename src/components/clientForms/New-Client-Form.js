@@ -7,11 +7,28 @@ import { useHistory } from 'react-router-dom';
 const NewClientForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { newClient } = useContext(ClientContext);
-	const [basicInformation, setBasicInformation] = useState({
+	const { CreateNewClient } = useContext(ClientContext);
+	const [personalInformation, setPersonalInformation] = useState({
 		firstName: '',
 		lastName: '',
-		aNumber: '',
+		otherNamesUsed: '',
+		dateOfBirth: '',
+		countryOfBirth: '',
+		countryOfResidence: '',
+		nationalityAtBirth: '',
+		currentNationality: '',
+		maritalStatus: '',
+		numberOfChildren: '',
+		religionAndSect: '',
+		raceEthnicityTribalGroup: '',
+		languagesAndFluency: '',
+		bestLanguage: '',
+		employer: '',
+		jobTitle: '',
+		role: '',
+		gender: ''
+	});
+	const [contactInformation, setContactInformation] = useState({
 		mobilePhone: '',
 		homePhone: '',
 		email: '',
@@ -27,8 +44,12 @@ const NewClientForm = () => {
 
 	const history = useHistory();
 
-	const handleBasicInformationChange = (e) => {
-		setBasicInformation({ ...basicInformation, [e.target.name]: e.target.value });
+	const handlePersonalInformationChange = (e) => {
+		setPersonalInformation({ ...personalInformation, [e.target.name]: e.target.value });
+	};
+
+	const handleContactInformationChange = (e) => {
+		setContactInformation({ ...contactInformation, [e.target.name]: e.target.value });
 	};
 
 	const handleImmigrationInformationChange = (e) => {
@@ -40,24 +61,9 @@ const NewClientForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		newClient(basicInformation, immigrationInformationStatus);
-		setBasicInformation({
-			firstName: '',
-			lastName: '',
-			aNumber: '',
-			mobilePhone: '',
-			homePhone: '',
-			email: '',
-			mailingAddress: '',
-			physicalAddress: ''
-		});
+		CreateNewClient(personalInformation, contactInformation, immigrationInformationStatus);
+
 		history.push('/view-new-client-information');
-	};
-
-	const saveAndContinue = () => {
-		newClient(basicInformation);
-
-		history.push('/add-client-personal-information');
 	};
 
 	return (
@@ -77,8 +83,8 @@ const NewClientForm = () => {
 													type='text'
 													name='firstName'
 													size={textField}
-													value={basicInformation.firstName || ''}
-													onChange={handleBasicInformationChange}
+													value={personalInformation.firstName || ''}
+													onChange={handlePersonalInformationChange}
 													required
 												/>
 											</Form.Group>
@@ -90,8 +96,8 @@ const NewClientForm = () => {
 													type='text'
 													name='lastName'
 													size={textField}
-													value={basicInformation.lastName || ''}
-													onChange={handleBasicInformationChange}
+													value={personalInformation.lastName || ''}
+													onChange={handlePersonalInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -118,8 +124,8 @@ const NewClientForm = () => {
 													type='text'
 													name='mobilePhone'
 													size={textField}
-													value={basicInformation.mobilePhone || ''}
-													onChange={handleBasicInformationChange}
+													value={contactInformation.mobilePhone || ''}
+													onChange={handleContactInformationChange}
 													required
 												/>
 											</Form.Group>
@@ -131,8 +137,8 @@ const NewClientForm = () => {
 													type='text'
 													name='homePhone'
 													size={textField}
-													value={basicInformation.homePhone || ''}
-													onChange={handleBasicInformationChange}
+													value={contactInformation.homePhone || ''}
+													onChange={handleContactInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -145,8 +151,8 @@ const NewClientForm = () => {
 													type='text'
 													name='email'
 													size={textField}
-													value={basicInformation.email || ''}
-													onChange={handleBasicInformationChange}
+													value={contactInformation.email || ''}
+													onChange={handleContactInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -159,8 +165,8 @@ const NewClientForm = () => {
 													type='text'
 													name='mailingAddress'
 													size={textField}
-													value={basicInformation.mailingAddress || ''}
-													onChange={handleBasicInformationChange}
+													value={contactInformation.mailingAddress || ''}
+													onChange={handleContactInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -171,8 +177,8 @@ const NewClientForm = () => {
 													type='text'
 													name='physicalAddress'
 													size={textField}
-													value={basicInformation.physicalAddress || ''}
-													onChange={handleBasicInformationChange}
+													value={contactInformation.physicalAddress || ''}
+													onChange={handleContactInformationChange}
 												/>
 											</Form.Group>
 										</Col>
@@ -180,10 +186,10 @@ const NewClientForm = () => {
 									<Row>
 										<Col className='text-center'>
 											<Button variant='primary' size={button} type='submit'>
-												Save -> Exit
+												Save
 											</Button>{' '}
-											<Button variant='primary' size={button} onClick={saveAndContinue}>
-												Save -> Add Personal Information
+											<Button variant='primary' size={button} onClick={() => history.push('/')}>
+												Cancel
 											</Button>
 										</Col>
 									</Row>

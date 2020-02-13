@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 // import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button } from 'react-bootstrap';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 const MedicalHistoryView = ({ client }) => {
@@ -46,15 +46,19 @@ const MedicalHistoryView = ({ client }) => {
 					</Table>
 				</Card.Body>
 				<Card.Footer>
-					<Button
-						variant='primary float-right'
-						size={button}
-						onClick={() => {
-							history.push(`/add-client-medical-history/${client.id}`);
-						}}
-					>
-						Add Medical History
-					</Button>
+					<Row>
+						<Col className='text-center'>
+							<Button
+								variant='primary float-right'
+								size={button}
+								onClick={() => {
+									history.push(`/add-client-medical-history/${client.id}`);
+								}}
+							>
+								Add Medical History
+							</Button>
+						</Col>
+					</Row>
 				</Card.Footer>
 			</Card>
 		</>

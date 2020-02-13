@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 // import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button } from 'react-bootstrap';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ const PersonalInformationView = ({ client }) => {
 	const history = useHistory();
 
 	const {
+		firstName,
+		lastName,
 		otherNamesUsed,
 		dateOfBirth,
 		countryOfBirth,
@@ -44,7 +46,13 @@ const PersonalInformationView = ({ client }) => {
 					<Table bordered size='sm'>
 						<tbody>
 							<tr>
-								<th width='50%'>Also Known As:</th>
+								<th width='50%'>Name</th>
+								<td>
+									{firstName} {lastName}
+								</td>
+							</tr>
+							<tr>
+								<th>Also Known As:</th>
 								<td>{otherNamesUsed || notSet}</td>
 							</tr>
 
@@ -126,13 +134,17 @@ const PersonalInformationView = ({ client }) => {
 					</Table>
 				</Card.Body>
 				<Card.Footer>
-					<Button
-						variant='primary float-right'
-						size={button}
-						onClick={() => history.push(`/add-client-personal-information/${client.id}`)}
-					>
-						Edit
-					</Button>
+					<Row>
+						<Col className='text-center'>
+							<Button
+								variant='primary text-center'
+								size={button}
+								onClick={() => history.push(`/add-client-personal-information/${client.id}`)}
+							>
+								Edit
+							</Button>
+						</Col>
+					</Row>
 				</Card.Footer>
 			</Card>
 		</>

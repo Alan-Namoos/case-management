@@ -25,7 +25,7 @@ const MedicalHistoryForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addMedicalHistory(medicalHistory, id);
-		history.push('/');
+		history.push(`/view-client-details/${id}`);
 	};
 
 	if (!medicalHistory) {
@@ -38,9 +38,9 @@ const MedicalHistoryForm = () => {
 						<Col>
 							<Card className='mb-3'>
 								<Card.Header as={cardTitle}>
-									{currentClient.basicInformation && currentClient.basicInformation.firstName}{' '}
-									{currentClient.basicInformation && currentClient.basicInformation.lastName} -
-									Medical History
+									{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
+									{currentClient.personalInformation && currentClient.personalInformation.lastName}{' '}
+									- Medical History
 								</Card.Header>
 								<Card.Body>
 									<Form onSubmit={handleSubmit}>
@@ -88,10 +88,20 @@ const MedicalHistoryForm = () => {
 												</Form.Group>
 											</Col>
 										</Row>
-
-										<Button variant='primary float-right' size={button} type='submit'>
-											Save
-										</Button>
+										<Row>
+											<Col className='text-center'>
+												<Button variant='primary' size={button} type='submit'>
+													Save
+												</Button>{' '}
+												<Button
+													variant='primary'
+													size={button}
+													onClick={() => history.push(`/view-client-details/${id}`)}
+												>
+													Cancel
+												</Button>
+											</Col>
+										</Row>
 									</Form>
 								</Card.Body>
 							</Card>

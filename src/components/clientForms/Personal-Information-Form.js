@@ -25,7 +25,7 @@ const PersonalInformationForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addPersonalInformation(personalInformation, id);
-		history.push('/');
+		history.push(`/view-client-details/${id}`);
 	};
 
 	if (!personalInformation) {
@@ -37,12 +37,37 @@ const PersonalInformationForm = () => {
 					<Col>
 						<Card className='mb-3'>
 							<Card.Header as={cardTitle}>
-								{currentClient.basicInformation && currentClient.basicInformation.firstName}{' '}
-								{currentClient.basicInformation && currentClient.basicInformation.lastName} -
-								Personal Information
+								{personalInformation.firstName} {personalInformation.lastName} - Personal
+								Information
 							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
+									<Row>
+										<Col>
+											<Form.Group>
+												<Form.Label>First Name:</Form.Label>
+												<Form.Control
+													type='text'
+													size={textField}
+													name='firstName'
+													value={personalInformation.firstName}
+													onChange={handleChange}
+												/>
+											</Form.Group>
+										</Col>
+										<Col>
+											<Form.Group>
+												<Form.Label>Last Name:</Form.Label>
+												<Form.Control
+													type='text'
+													size={textField}
+													name='lastName'
+													value={personalInformation.lastName}
+													onChange={handleChange}
+												/>
+											</Form.Group>
+										</Col>
+									</Row>
 									<Row>
 										<Col>
 											<Form.Group>
@@ -263,10 +288,20 @@ const PersonalInformationForm = () => {
 											</Form.Group>
 										</Col>
 									</Row>
-
-									<Button variant='primary float-right' size={button} type='submit'>
-										Save
-									</Button>
+									<Row>
+										<Col className='text-center'>
+											<Button variant='primary' size={button} type='submit'>
+												Save
+											</Button>{' '}
+											<Button
+												variant='primary'
+												size={button}
+												onClick={() => history.push(`/view-client-details/${id}`)}
+											>
+												Cancel
+											</Button>
+										</Col>
+									</Row>
 								</Form>
 							</Card.Body>
 						</Card>

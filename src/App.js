@@ -4,7 +4,7 @@ import AppearanceContextProvider from './contexts/AppearanceContext';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
-import BasicInformationForm from './components/clientForms/Basic-Information-Form';
+import ContactInformationForm from './components/clientForms/Contact-Information-Form';
 import PersonalInformationForm from './components/clientForms/Personal-Information-Form';
 import ImmigrationInformationForm from './components/clientForms/Immigration-Information-Form';
 import MedicalHistoryForm from './components/clientForms/Medical-History-Form';
@@ -23,7 +23,10 @@ function App() {
 						<Switch>
 							<Route exact path='/' component={Home} />
 							<Route path='/add-new-client' component={NewClientForm} />
-							<Route path='/add-client-basic-information/:id' component={BasicInformationForm} />
+							<Route
+								path='/add-client-contact-information/:id'
+								component={ContactInformationForm}
+							/>
 							<Route
 								path='/add-client-personal-information/:id'
 								component={PersonalInformationForm}
