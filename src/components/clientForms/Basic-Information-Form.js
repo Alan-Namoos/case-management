@@ -36,7 +36,11 @@ const BasicInformationForm = () => {
 				<Row>
 					<Col>
 						<Card className='mb-3'>
-							<Card.Header as={cardTitle}>Basic Information</Card.Header>
+							<Card.Header as={cardTitle}>
+								{currentClient.basicInformation && currentClient.basicInformation.firstName}{' '}
+								{currentClient.basicInformation && currentClient.basicInformation.lastName} - Basic
+								Information
+							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>
