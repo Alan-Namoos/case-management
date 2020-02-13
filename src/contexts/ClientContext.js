@@ -1,28 +1,77 @@
 import React, { useState, createContext, useEffect } from 'react';
 import uuid from 'uuid/v1';
+// import firebase from '../firebase';
+import { db } from '../firebase';
 
 export const ClientContext = createContext();
 
 const ClientContextProvider = (props) => {
 	const [clients, setClients] = useState([]);
-	const [client, setClient] = useState({});
+	const [client, setClient] = useState({
+		personalInformation: {
+			firstName: '',
+			lastName: '',
+			otherNamesUsed: '',
+			dateOfBirth: '',
+			countryOfBirth: '',
+			countryOfResidence: '',
+			nationalityAtBirth: '',
+			currentNationality: '',
+			maritalStatus: '',
+			numberOfChildren: '',
+			religionAndSect: '',
+			raceEthnicityTribalGroup: '',
+			languagesAndFluency: '',
+			bestLanguage: '',
+			employer: '',
+			jobTitle: '',
+			role: '',
+			gender: ''
+		},
+
+		contactInformation: {
+			mobilePhone: '',
+			homePhone: '',
+			email: '',
+			mailingAddress: '',
+			physicalAddress: ''
+		},
+
+		immigrationInformation: {
+			status: {
+				aNumber: '',
+				currentStatus: '',
+				expirationDate: ''
+			},
+			passport: {
+				issuingCountry: '',
+				expirationDate: '',
+				withClient: ''
+			},
+			lastVisitToUS: {
+				dateOfEntry: '',
+				portOfEntry: '',
+				status: '',
+				lawfulEntry: ''
+			},
+			detention: {
+				isDetained: '',
+				dateOfArrest: '',
+				location: '',
+				dateOfRelease: ''
+			}
+		},
+		medicalHistory: [],
+		criminalHistory: []
+	});
 	const [lastAddedClient, setLastAddedClient] = useState({});
 
 	const resetClient = () => {
 		setClient({
 			id: '',
-			// basicInformation: {
-			// 	firstName: '',
-			// 	lastName: '',
-			// 	mobilePhone: '',
-			// 	homePhone: '',
-			// 	email: '',
-			// 	mailingAddress: '',
-			// 	physicalAddress: ''
-			// },
 			personalInformation: {
-				firstName: '', // <= from basicInformation
-				lastName: '', // <= from basicInformation
+				firstName: '',
+				lastName: '',
 				otherNamesUsed: '',
 				dateOfBirth: '',
 				countryOfBirth: '',
@@ -42,11 +91,11 @@ const ClientContextProvider = (props) => {
 			},
 
 			contactInformation: {
-				mobilePhone: '', // <= from basicInformation
-				homePhone: '', // <= from basicInformation
-				email: '', // <= from basicInformation
-				mailingAddress: '', // <= from basicInformation
-				physicalAddress: '' // <= from basicInformation
+				mobilePhone: '',
+				homePhone: '',
+				email: '',
+				mailingAddress: '',
+				physicalAddress: ''
 			},
 
 			immigrationInformation: {
@@ -78,25 +127,25 @@ const ClientContextProvider = (props) => {
 		});
 	};
 
-	const newClient = (
-		initialPersonalInformation,
-		initialContactInformation,
-		immigrationInformationStatus
-	) => {
-		setClients([
-			...clients,
-			{
-				...client,
-				personalInformation: initialPersonalInformation,
-				contactInformation: initialContactInformation,
-				immigrationInformation: {
-					...client.immigrationInformation,
-					status: immigrationInformationStatus
-				},
-				id: uuid()
-			}
-		]);
-	};
+	// const newClient = (
+	// 	initialPersonalInformation,
+	// 	initialContactInformation,
+	// 	immigrationInformationStatus
+	// ) => {
+	// 	setClients([
+	// 		...clients,
+	// 		{
+	// 			...client,
+	// 			personalInformation: initialPersonalInformation,
+	// 			contactInformation: initialContactInformation,
+	// 			immigrationInformation: {
+	// 				...client.immigrationInformation,
+	// 				status: immigrationInformationStatus
+	// 			},
+	// 			id: uuid()
+	// 		}
+	// 	]);
+	// };
 
 	const addContactInformation = (newContactInformation, id) => {
 		const index = clients.findIndex((arrayClient) => {
@@ -147,9 +196,21 @@ const ClientContextProvider = (props) => {
 		clients[index].criminalHistory.push(newCriminalHistory);
 	};
 
-	// const addBasicInformation = (newBasicInformation) => {
-	// 	setClient({ ...client, basicInformation: newBasicInformation, id: uuid() });
-	// };
+	const CreateNewClient = (
+		initialPersonalInformation,
+		initialContactInformation,
+		immigrationInformationStatus
+	) => {
+		setClient({
+			...client,
+			personalInformation: initialPersonalInformation,
+			contactInformation: initialContactInformation,
+			immigrationInformation: {
+				...client.immigrationInformation,
+				status: immigrationInformationStatus
+			}
+		});
+	};
 
 	// const addPersonalInformation = (newPersonalInformation, id) => {
 	// 	let index = clients.findIndex((client) => {
@@ -173,27 +234,26 @@ const ClientContextProvider = (props) => {
 	// const addCriminalHistory = (newCriminalHistory) => {
 	// 	setClient({ ...client, criminalHistory: [...client.criminalHistory, newCriminalHistory] });
 
-	// Find the updated client in the clients array using client.id then find the index of that item.
 	// useEffect(() => {
-	// 	let index = clients.findIndex((arrayClient) => {
-	// 		return arrayClient.id === client.id;
-	// 	});
-	// 	if (client.id === '' || client.id === clients[index].id) {
-	// 		return;
-	// 	}
+	// 	resetClient();
+	// }, []);
 
-	// 	setClients((clients) => {
-	// 		return [...clients, client];
-	// 	});
-	// }, [client]);
+	// useEffect(() => {
+	// 	console.log('ClientContext.js - clients: ', clients);
+	// }, [clients]);
 
 	useEffect(() => {
-		resetClient();
-	}, []);
-
-	useEffect(() => {
-		console.log('ClientContext.js - clients: ', clients);
-	}, [clients]);
+		if (client.personalInformation.firstName) {
+			db.collection('clients')
+				.add(client)
+				.then((docRef) => {
+					console.log('document reference ID: ', docRef.id);
+				})
+				.catch((error) => {
+					console.log('Error Message: ', error.message);
+				});
+		}
+	}, [client]);
 
 	useEffect(() => {
 		if (clients.length > 0) {
@@ -206,7 +266,8 @@ const ClientContextProvider = (props) => {
 			value={{
 				client,
 				clients,
-				newClient,
+				// newClient,
+				CreateNewClient,
 				lastAddedClient,
 				addPersonalInformation,
 				addContactInformation,

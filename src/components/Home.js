@@ -4,12 +4,15 @@ import { AppearanceContext } from '../contexts/AppearanceContext';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { useEffect } from 'react';
+import { db } from '../firebase';
+import Loader from './Loader';
 
 const Home = () => {
 	const { clients } = useContext(ClientContext);
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, button, notSet } = appearance;
 	const [lastFiveClients, setLastFiveClients] = useState([]);
+	const [users, setUsers] = useState([]);
 	const history = useHistory();
 
 	useEffect(() => {
@@ -21,14 +24,30 @@ const Home = () => {
 		}
 	}, [clients]);
 
-	return lastFiveClients.length === 0 ? (
+	useEffect(() => {
+		db.collection('clients')
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					setUsers((users) => [...users, doc.data()]);
+					// console.log('doc.data(): ', doc.data());
+				});
+			});
+	}, []);
+
+	useEffect(() => {
+		console.log('users: ', users);
+	}, [users]);
+
+	return users.length === 0 ? (
 		<Container>
 			<Row className='text-center'>
 				<Col>
-					<h4>No Clients Found!</h4>
+					{/* <h4>No Clients Found!</h4>
 					<h4>
 						<Link to='/add-new-client'>+ New Client</Link>
-					</h4>
+					</h4> */}
+					<Loader />
 				</Col>
 			</Row>
 		</Container>
@@ -49,9 +68,9 @@ const Home = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{lastFiveClients.map((client, i) => {
+									{users.map((client, i) => {
 										return (
-											<tr key={client.id}>
+											<tr key={i}>
 												<td>
 													{client.personalInformation.firstName}{' '}
 													{client.personalInformation.lastName}

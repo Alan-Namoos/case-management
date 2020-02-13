@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 const NewClientForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { newClient } = useContext(ClientContext);
+	const { CreateNewClient } = useContext(ClientContext);
 	const [personalInformation, setPersonalInformation] = useState({
 		firstName: '',
 		lastName: '',
@@ -61,7 +61,7 @@ const NewClientForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		newClient(personalInformation, contactInformation, immigrationInformationStatus);
+		CreateNewClient(personalInformation, contactInformation, immigrationInformationStatus);
 
 		history.push('/view-new-client-information');
 	};
