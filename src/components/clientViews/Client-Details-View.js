@@ -5,7 +5,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import PersonalInformationView from './Personal-Information-View';
 import ImmigrationInformationView from './Immigration-Information-View';
 import ContactInformationView from './Contact-Information-View';
-// import BaiscInformationView from './Contact-Information-View';
 import MedicalHistoryView from './Medical-History-View';
 import CriminalHistoryView from './Criminal-History-View';
 import { Row, Col, Tabs, Tab, Container } from 'react-bootstrap';
@@ -15,7 +14,7 @@ const ClientDetailsView = () => {
 	const { notSet } = appearance;
 	const { clients } = useContext(ClientContext);
 	const { id } = useParams();
-	const [currentClient, setCurrentClient] = useState();
+	const [currentClient, setCurrentClient] = useState(null);
 	const history = useHistory();
 
 	useEffect(() => {

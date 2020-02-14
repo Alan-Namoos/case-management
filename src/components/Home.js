@@ -1,59 +1,56 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { ClientContext } from '../contexts/ClientContext';
 import { AppearanceContext } from '../contexts/AppearanceContext';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
-import { useEffect } from 'react';
-import { db } from '../firebase';
-import Loader from './Loader';
+import LoadingSpinner from './LoadingSpinner';
 
 const Home = () => {
-	const { clients } = useContext(ClientContext);
+	const { clients, isLoading } = useContext(ClientContext);
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, button, notSet } = appearance;
-	const [lastFiveClients, setLastFiveClients] = useState([]);
-	const [users, setUsers] = useState([]);
+	// const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
 
-	useEffect(() => {
-		if (clients.length > 4) {
-			const lastFive = clients.slice(clients.length, clients.length + 1);
-			setLastFiveClients(lastFive);
-		} else {
-			setLastFiveClients(clients);
-		}
-	}, [clients]);
+	// useEffect(() => {
+	// 	if (clients.length > 4) {
+	// 		const lastFive = clients.slice(clients.length, clients.length + 1);
+	// 		setLastFiveClients(lastFive);
+	// 	} else {
+	// 		setLastFiveClients(clients);
+	// 	}
+	// }, [clients]);
 
-	useEffect(() => {
-		db.collection('clients')
-			.get()
-			.then((snapshot) => {
-				console.log('snapshot.docs: ', snapshot.docs);
-				const data = snapshot.docs.map((doc) => {
-					return { ...doc.data(), id: doc.id };
-					// setUsers((users) => [...users, doc.data()]);
-				});
-				console.log('data: ', data);
-				setUsers(data);
-			});
-	}, []);
+	// useEffect(() => {
+	// 	db.collection('clients')
+	// 		.get()
+	// 		.then((snapshot) => {
+	// 			console.log('snapshot.docs: ', snapshot.docs);
+	// 			const data = snapshot.docs.map((doc) => {
+	// 				return { ...doc.data(), id: doc.id };
+	// 			});
+	// 			console.log('data: ', data);
+	// 			setUsers(data);
+	// 		});
+	// }, []);
 
-	useEffect(() => {
-		console.log('users: ', users);
-	}, [users]);
+	// console.log('isLoading: ', isLoading);
 
-	return users.length === 0 ? (
-		<Container>
-			<Row className='text-center'>
-				<Col>
-					{/* <h4>No Clients Found!</h4>
-					<h4>
-						<Link to='/add-new-client'>+ New Client</Link>
-					</h4> */}
-					<Loader />
-				</Col>
-			</Row>
-		</Container>
+	return clients.length === 0 ? (
+		isLoading ? (
+			<LoadingSpinner />
+		) : (
+			<Container>
+				<Row>
+					<Col className='text-center'>
+						<h4>No Clients Found!</h4>
+						<h4>
+							<Link to='/add-new-client'>+ New Client</Link>
+						</h4>
+					</Col>
+				</Row>
+			</Container>
+		)
 	) : (
 		<Container>
 			<Row>
@@ -71,9 +68,9 @@ const Home = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{users.map((client, i) => {
+									{clients.map((client, i) => {
 										return (
-											<tr key={i}>
+											<tr key={client.id}>
 												<td>
 													{client.personalInformation.firstName}{' '}
 													{client.personalInformation.lastName}

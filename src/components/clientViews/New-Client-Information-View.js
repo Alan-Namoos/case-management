@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Link } from 'react-router-dom';
@@ -9,16 +9,26 @@ import { useFindClient } from '../customHooks/useFindClient';
 const NewClientInformationView = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, notSet } = appearance;
-	const { clients, lastAddedClient } = useContext(ClientContext);
-	const clientID = lastAddedClient.id;
+	const { clients, lastAddedClient, currentClientID, currentClient } = useContext(ClientContext);
+	// const clientID = lastAddedClient.id;
 	const history = useHistory();
-	const [currentClient] = useFindClient(clients, clientID, history); // <= custom hook
+	// const [currentClient] = useFindClient(clients, currentClientID, history); // <= custom hook
 
-	return !currentClient.contactInformation ? (
+	// console.log('New Client Info -> currentClientID: ', currentClientID);
+	console.log('New Client Info -> currentClient: ', currentClient);
+
+	useEffect(() => {
+		if (!currentClient) {
+			history.push('/');
+			return;
+		}
+	}, [currentClient, history]);
+
+	return !currentClient ? (
 		<Container>
 			<Row className='text-center'>
 				<Col>
-					<h4>Basic Information View - Client Not Found!</h4>
+					<h4>New Client Information - Client Not Found!</h4>
 					<h4>
 						<Link to='/add-new-client'>+ New Client</Link>
 					</h4>
@@ -32,8 +42,8 @@ const NewClientInformationView = () => {
 					<Col lg={8}>
 						<Card className='mb-3'>
 							<Card.Header as='h2'>
-								{currentClient.personalInformation.firstName}{' '}
-								{currentClient.personalInformation.lastName}
+								{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
+								{currentClient.personalInformation && currentClient.personalInformation.lastName}
 							</Card.Header>
 							<Card.Body>
 								<Table bordered striped size='sm'>
