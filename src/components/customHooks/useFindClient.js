@@ -8,7 +8,7 @@ export const useFindClient = (clients, id, history) => {
 		// 	history.push('/');
 		// 	return;
 		// }
-
+		console.log('custom hook');
 		if (clients.length > 0) {
 			const client = clients.find((arrayClient) => {
 				return arrayClient.id === id;
@@ -17,6 +17,6 @@ export const useFindClient = (clients, id, history) => {
 				setCurrentClient(client);
 			}
 		}
-	}, [clients, id, history]);
+	}, [clients, id]);
 	return [currentClient];
 };

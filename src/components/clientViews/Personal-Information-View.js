@@ -52,7 +52,7 @@ const PersonalInformationView = ({ client }) => {
 								</td>
 							</tr>
 							<tr>
-								<th>Also Known As:</th>
+								<th>Other Names Used:</th>
 								<td>{otherNamesUsed || notSet}</td>
 							</tr>
 

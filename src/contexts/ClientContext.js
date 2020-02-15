@@ -9,7 +9,7 @@ const ClientContextProvider = (props) => {
 	const [isNewClient, setIsNewClient] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentClientID, setCurrentClientID] = useState('');
-	const [currentClient, setCurrentClient] = useState({});
+	const [currentClient, setCurrentClient] = useState(null);
 	const [clients, setClients] = useState([]);
 	const [lastAddedClient, setLastAddedClient] = useState({});
 	const [client, setClient] = useState({
@@ -250,15 +250,17 @@ const ClientContextProvider = (props) => {
 	// 	console.log('ClientContext.js - clients: ', clients);
 	// }, [clients]);
 
+	// [1] Add New Client to Firestore
 	useEffect(() => {
 		if (isNewClient) {
 			db.collection('clients')
 				.add(client)
 				.then((docRef) => {
-					console.log('New Client Added!');
-					console.log('document reference ID: ', docRef.id);
-					setCurrentClientID(docRef.id);
+					// console.log('New Client Added!');
+					// console.log('document reference ID: ', docRef.id);
+					setCurrentClientID(docRef.id); // set currentID to the document ID from Firestore
 					setIsNewClient(false);
+					console.log('ClientContext - useEffect [1] ->  ADD NEW CLIENT');
 				})
 				.catch((error) => {
 					console.log('Failed to add New Client');
@@ -267,6 +269,7 @@ const ClientContextProvider = (props) => {
 		}
 	}, [client, isNewClient]);
 
+	// [2] tracks client and gets all Firestore clients documents
 	useEffect(() => {
 		setIsLoading(true);
 		db.collection('clients')
@@ -275,30 +278,38 @@ const ClientContextProvider = (props) => {
 				const data = snapshot.docs.map((doc) => {
 					return { ...doc.data(), id: doc.id };
 				});
-				console.log('data: ', data);
+				// console.log('data: ', data);
 				setClients(data);
 				setIsLoading(false);
+				console.log('ClientContext - useEffect [2] ->  GET ALL CLIENTS');
 			});
 	}, [client]);
 
-	useEffect(() => {
-		if (clients.length > 0) {
-			const thisClient = clients.find((client) => {
-				return client.id === currentClientID;
-			});
-			setCurrentClient(thisClient);
-		}
-	}, [clients, currentClientID]);
+	// [3] find the last added client
+	// useEffect(() => {
+	// 	if (clients.length > 0 && currentClientID !== '') {
+	// 		setIsLoading(true);
+	// 		const thisClient = clients.find((client) => {
+	// 			return client.id === currentClientID;
+	// 		});
+	// 		setCurrentClient(thisClient);
+	// 	}
+	// 	setIsLoading(false);
+	// }, [clients, currentClientID]);
 
-	useEffect(() => {
-		if (clients.length > 0) {
-			setLastAddedClient(clients[clients.length - 1]);
-		}
-	}, [clients]);
+	// useEffect(() => {
+	// 	if (clients.length > 0) {
+	// 		setLastAddedClient(clients[clients.length - 1]);
+	// 	}
+	// }, [clients]);
 
 	// console.log('currentClinetID: ', currentClientID);
-	console.log('ClientContext -> currentClient: ', currentClient);
-	console.log('ClientContext -> clients: ', clients);
+	// console.log('ClientContext -> currentClient: ', currentClient);
+	// console.log('ClientContext -> clients: ', clients);
+	// console.log('ClientContext -> isLoading: ', isLoading);
+	console.log('CleintContext RENDERED');
+
+	// console.count('counter');
 	return (
 		<ClientContext.Provider
 			value={{

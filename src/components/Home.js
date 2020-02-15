@@ -11,6 +11,7 @@ const Home = () => {
 	const { cardTitle, button, notSet } = appearance;
 	// const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
+	console.log('Home - clients -> ', clients);
 
 	// useEffect(() => {
 	// 	if (clients.length > 4) {
