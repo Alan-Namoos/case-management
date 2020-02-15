@@ -225,7 +225,7 @@ const ClientContextProvider = (props) => {
 				[itemToUpdate]: newInformation
 			})
 			.then(() => {
-				// setIsUpdated(true);
+				setIsUpdated(true);
 				console.log('ClientContext -> Information was UPDATED!');
 			})
 			.catch((error) => {
@@ -240,6 +240,7 @@ const ClientContextProvider = (props) => {
 				[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation)
 			})
 			.then(() => {
+				setIsUpdated(true);
 				console.log('ClientContext -> Information was UPDATED!');
 			})
 			.catch((error) => {
