@@ -11,15 +11,15 @@ const NewClientInformationView = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, notSet } = appearance;
 	// const { clients, lastAddedClient, currentClientID, currentClient } = useContext(ClientContext);
-	const { clients, lastAddedClient, currentClientID, isLoading } = useContext(ClientContext);
+	const { clients, currentClientID, isLoading } = useContext(ClientContext);
 	// const clientID = lastAddedClient.id;
 	const history = useHistory();
 	const [currentClient] = useFindClient(clients, currentClientID, history); // <= custom hook
 
-	console.log('New Client Info -> currentClientID: ', currentClientID);
-	console.log('New Client Info -> clients: ', clients.length);
-	console.log('New Client Info -> currentClient: ', currentClient);
-	console.log('New Client Info -> isLoading: ', isLoading);
+	console.log('NewClientInfoView -> currentClientID:  ', currentClientID);
+	console.log('NewClientInfoView -> clients:          ', clients.length);
+	console.log('NewClientInfoView -> currentClient:    ', currentClient);
+	console.log('NewClientInfoView -> isLoading:        ', isLoading);
 
 	useEffect(() => {
 		if (clients.length === 0) {
@@ -90,22 +90,22 @@ const NewClientInformationView = () => {
 						<Card.Body>
 							<ListGroup>
 								<ListGroup.Item>
-									<Link to={`/add-client-personal-information/${lastAddedClient.id}`}>
+									<Link to={`/add-client-personal-information/${currentClient.id}`}>
 										+ Add Personal Information
 									</Link>
 								</ListGroup.Item>
 								<ListGroup.Item>
-									<Link to={`/add-client-immigration-information/${lastAddedClient.id}`}>
+									<Link to={`/add-client-immigration-information/${currentClient.id}`}>
 										+ Add Immigration Information
 									</Link>
 								</ListGroup.Item>
 								<ListGroup.Item>
-									<Link to={`/add-client-medical-history/${lastAddedClient.id}`}>
+									<Link to={`/add-client-medical-history/${currentClient.id}`}>
 										+ Add Medical History
 									</Link>
 								</ListGroup.Item>
 								<ListGroup.Item>
-									<Link to={`/add-client-criminal-history/${lastAddedClient.id}`}>
+									<Link to={`/add-client-criminal-history/${currentClient.id}`}>
 										+ Add Criminal History
 									</Link>
 								</ListGroup.Item>

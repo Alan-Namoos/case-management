@@ -1,6 +1,5 @@
 import React, { useState, createContext, useEffect } from 'react';
-// import uuid from 'uuid/v1';
-// import firebase from '../firebase';
+import firebase from '../firebase';
 import { db } from '../firebase';
 
 export const ClientContext = createContext();
@@ -8,10 +7,11 @@ export const ClientContext = createContext();
 const ClientContextProvider = (props) => {
 	const [isNewClient, setIsNewClient] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isUpdated, setIsUpdated] = useState(false);
 	const [currentClientID, setCurrentClientID] = useState('');
-	const [currentClient, setCurrentClient] = useState(null);
+	// const [currentClient, setCurrentClient] = useState(null);
 	const [clients, setClients] = useState([]);
-	const [lastAddedClient, setLastAddedClient] = useState({});
+	// const [lastAddedClient, setLastAddedClient] = useState({});
 	const [client, setClient] = useState({
 		personalInformation: {
 			firstName: '',
@@ -164,13 +164,13 @@ const ClientContextProvider = (props) => {
 	// 	resetClient();
 	// };
 
-	const addPersonalInformation = (newPersonalInformation, id) => {
-		const index = clients.findIndex((arrayClient) => {
-			return arrayClient.id === id;
-		});
-		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-		clients[index].personalInformation = newPersonalInformation;
-	};
+	// const addPersonalInformation = (newPersonalInformation, id) => {
+	// 	const index = clients.findIndex((arrayClient) => {
+	// 		return arrayClient.id === id;
+	// 	});
+	// 	// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
+	// 	clients[index].personalInformation = newPersonalInformation;
+	// };
 
 	// const addContactInformation = (newContactInformation, id) => {
 	// 	setClients([...clients, { contactInformation: newContactInformation }]);
@@ -217,18 +217,34 @@ const ClientContextProvider = (props) => {
 		setIsNewClient(true);
 	};
 
-	// const addPersonalInformation = (newPersonalInformation, id) => {
-	// 	let index = clients.findIndex((client) => {
-	// 		return client.id === id;
-	// 	});
-	// 	setClient({ ...clients[index], personalInformation: newPersonalInformation });
-	// };
+	const updateClientInformation = (itemToUpdate, newInformation, id) => {
+		db.collection('clients')
+			.doc(id)
+			.update({
+				// contactInformation: newContactInformation
+				[itemToUpdate]: newInformation
+			})
+			.then(() => {
+				// setIsUpdated(true);
+				console.log('ClientContext -> Information was UPDATED!');
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	};
 
-	const addContactInformation = (newContactInformation, id) => {
-		let index = clients.findIndex((client) => {
-			return client.id === id;
-		});
-		setClient({ ...clients[index], contactInformation: newContactInformation });
+	const updateMedicalCriminalHistory = (itemToUpdate, newInformation, id) => {
+		db.collection('clients')
+			.doc(id)
+			.update({
+				[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation)
+			})
+			.then(() => {
+				console.log('ClientContext -> Information was UPDATED!');
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
 	};
 
 	// const addImmigrationInformation = (newImmigrationInformation) => {
@@ -246,21 +262,18 @@ const ClientContextProvider = (props) => {
 	// 	resetClient();
 	// }, []);
 
-	// useEffect(() => {
-	// 	console.log('ClientContext.js - clients: ', clients);
-	// }, [clients]);
-
 	// [1] Add New Client to Firestore
 	useEffect(() => {
 		if (isNewClient) {
+			console.log('ClientContext -> useEffect [1] ADD CLIENT STARTED');
 			db.collection('clients')
 				.add(client)
 				.then((docRef) => {
-					// console.log('New Client Added!');
 					// console.log('document reference ID: ', docRef.id);
+					console.log('ClientContext - useEffect [1] ->  ADD NEW CLIENT promise');
 					setCurrentClientID(docRef.id); // set currentID to the document ID from Firestore
+					console.log('New Client Added!');
 					setIsNewClient(false);
-					console.log('ClientContext - useEffect [1] ->  ADD NEW CLIENT');
 				})
 				.catch((error) => {
 					console.log('Failed to add New Client');
@@ -279,35 +292,18 @@ const ClientContextProvider = (props) => {
 					return { ...doc.data(), id: doc.id };
 				});
 				// console.log('data: ', data);
+				console.log('ClientContext - useEffect [2] ->  GET ALL CLIENTS');
 				setClients(data);
 				setIsLoading(false);
-				console.log('ClientContext - useEffect [2] ->  GET ALL CLIENTS');
+				setIsUpdated(false);
 			});
-	}, [client]);
-
-	// [3] find the last added client
-	// useEffect(() => {
-	// 	if (clients.length > 0 && currentClientID !== '') {
-	// 		setIsLoading(true);
-	// 		const thisClient = clients.find((client) => {
-	// 			return client.id === currentClientID;
-	// 		});
-	// 		setCurrentClient(thisClient);
-	// 	}
-	// 	setIsLoading(false);
-	// }, [clients, currentClientID]);
-
-	// useEffect(() => {
-	// 	if (clients.length > 0) {
-	// 		setLastAddedClient(clients[clients.length - 1]);
-	// 	}
-	// }, [clients]);
+	}, [isUpdated]);
 
 	// console.log('currentClinetID: ', currentClientID);
 	// console.log('ClientContext -> currentClient: ', currentClient);
 	// console.log('ClientContext -> clients: ', clients);
 	// console.log('ClientContext -> isLoading: ', isLoading);
-	console.log('CleintContext RENDERED');
+	console.count('ClientContext RENDERED');
 
 	// console.count('counter');
 	return (
@@ -315,17 +311,19 @@ const ClientContextProvider = (props) => {
 			value={{
 				client,
 				currentClientID,
-				currentClient,
+				// currentClient,
 				clients,
 				isLoading,
 				// newClient,
 				CreateNewClient,
-				lastAddedClient,
-				addPersonalInformation,
-				addContactInformation,
+				// lastAddedClient,
+				// addPersonalInformation,
+				// addContactInformation,
 				addImmigrationInformation,
 				addMedicalHistory,
-				addCriminalHistory
+				addCriminalHistory,
+				updateClientInformation,
+				updateMedicalCriminalHistory
 			}}
 		>
 			{props.children}

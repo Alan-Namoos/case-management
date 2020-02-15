@@ -8,7 +8,7 @@ import { useFindClient } from '../customHooks/useFindClient';
 const ImmigrationInformationForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, addImmigrationInformation } = useContext(ClientContext);
+	const { clients, updateClientInformation } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
@@ -79,12 +79,12 @@ const ImmigrationInformationForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addImmigrationInformation(immigrationInformation, id);
+		updateClientInformation('immigrationInformation', immigrationInformation, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
-	return immigrationInformation === undefined ? (
-		'Client Not Found - [Immigration Information]'
+	return !immigrationInformation ? (
+		'No Immigration Information Found!'
 	) : (
 		<>
 			<Container>

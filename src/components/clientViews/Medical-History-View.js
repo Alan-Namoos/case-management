@@ -8,7 +8,7 @@ const MedicalHistoryView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
 	const { button, notSet } = appearance;
 	const history = useHistory();
-	// const { client } = useContext(ClientContext);
+	// const { medicalHistory } = client;
 
 	return client.medicalHistory.length === 0 ? (
 		<>

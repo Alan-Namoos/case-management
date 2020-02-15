@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button, Row, Col } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { Container, Card, Table, Button, Row, Col } from 'react-bootstrap';
+import { useHistory, Link } from 'react-router-dom';
 
 const ImmigrationInformationView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -10,14 +10,30 @@ const ImmigrationInformationView = ({ client }) => {
 	const { status, passport, lastVisitToUS, detention } = client.immigrationInformation;
 
 	return client.immigrationInformation === {} ? (
-		<h5>No Immigration Information found</h5>
+		<Container>
+			<Row className='text-center'>
+				<Col>
+					<h4>No Immigration Information Found!</h4>
+					<h4>
+						<Link to={`/add-client-immigration-information/${client.id}`}>
+							+ Immigration Information
+						</Link>
+					</h4>
+					<h4>
+						<Link to='/add-new-client'>+ New Client</Link>
+					</h4>
+					<h4>
+						<Link to='/'>Home</Link>
+					</h4>
+				</Col>
+			</Row>
+		</Container>
 	) : (
 		<>
-			<Card className='mb-3'>
-				{/* <Card.Header as={cardTitle}>Immigration Information</Card.Header> */}
+			<Card className=''>
 				<Card.Body>
 					<h5 className='text-center'>Status</h5>
-					<Table bordered striped hover size='sm'>
+					<Table bordered size='sm'>
 						<tbody>
 							<tr>
 								<th>A-Number:</th>
@@ -35,7 +51,7 @@ const ImmigrationInformationView = ({ client }) => {
 					</Table>
 
 					<h5 className='text-center'>Passport</h5>
-					<Table bordered striped hover size='sm'>
+					<Table bordered size='sm'>
 						<tbody>
 							<tr>
 								<th width='50%'>Issuing Country:</th>
@@ -53,7 +69,7 @@ const ImmigrationInformationView = ({ client }) => {
 					</Table>
 
 					<h5 className='text-center'>Last visit to the US</h5>
-					<Table bordered striped hover size='sm'>
+					<Table bordered size='sm'>
 						<tbody>
 							<tr>
 								<th width='50%'>Date of Entry:</th>

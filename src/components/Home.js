@@ -11,7 +11,8 @@ const Home = () => {
 	const { cardTitle, button, notSet } = appearance;
 	// const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
-	console.log('Home - clients -> ', clients);
+	console.count('Home RENDERED');
+	console.log('Home - clients Array -> ', clients.length);
 
 	// useEffect(() => {
 	// 	if (clients.length > 4) {
@@ -62,6 +63,7 @@ const Home = () => {
 							<Table striped bordered size='sm' className='text-center'>
 								<thead>
 									<tr>
+										<th>ID</th>
 										<th>Name</th>
 										<th>A#</th>
 										<th>Phone #</th>
@@ -72,6 +74,7 @@ const Home = () => {
 									{clients.map((client, i) => {
 										return (
 											<tr key={client.id}>
+												<td>{client.id}</td>
 												<td>
 													{client.personalInformation.firstName}{' '}
 													{client.personalInformation.lastName}

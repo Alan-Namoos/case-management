@@ -8,7 +8,7 @@ import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 const PersonalInformationForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, addPersonalInformation } = useContext(ClientContext);
+	const { clients, updateClientInformation } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
@@ -24,12 +24,12 @@ const PersonalInformationForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addPersonalInformation(personalInformation, id);
+		updateClientInformation('personalInformation', personalInformation, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
 	if (!personalInformation) {
-		return 'Client Not Found - [Personal Information]';
+		return 'No Personal Information Found!';
 	} else {
 		return (
 			<Container>

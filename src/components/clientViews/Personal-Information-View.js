@@ -1,15 +1,12 @@
 import React, { useContext } from 'react';
-// import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { Card, Table, Button, Container, Row, Col } from 'react-bootstrap';
+import { useHistory, Link } from 'react-router-dom';
 
 const PersonalInformationView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
 	const { button, notSet } = appearance;
 	const history = useHistory();
-
 	const {
 		firstName,
 		lastName,
@@ -31,13 +28,23 @@ const PersonalInformationView = ({ client }) => {
 		gender
 	} = client.personalInformation;
 
-	return client.personalInformation === {} ? (
-		<>
-			<h5>No Personal Information Found</h5>
-			<h5>
-				<Link to={`/add-client-personal-information/${client.id}`}>+ Personal Information</Link>
-			</h5>
-		</>
+	return !client.personalInformation ? (
+		<Container>
+			<Row className='text-center'>
+				<Col>
+					<h4>No Personal Information Found!</h4>
+					<h4>
+						<Link to={`/add-client-personal-information/${client.id}`}>+ Personal Information</Link>
+					</h4>
+					<h4>
+						<Link to='/add-new-client'>+ New Client</Link>
+					</h4>
+					<h4>
+						<Link to='/'>Home</Link>
+					</h4>
+				</Col>
+			</Row>
+		</Container>
 	) : (
 		<>
 			<Card className='mb-3'>

@@ -8,7 +8,7 @@ import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 const CriminalHistoryForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, addCriminalHistory } = useContext(ClientContext);
+	const { clients, updateMedicalCriminalHistory } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
@@ -24,7 +24,7 @@ const CriminalHistoryForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addCriminalHistory(criminalHistory, id);
+		updateMedicalCriminalHistory('criminalHistory', criminalHistory, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
