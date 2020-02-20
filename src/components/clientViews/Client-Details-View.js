@@ -8,6 +8,7 @@ import ContactInformationView from './Contact-Information-View';
 import MedicalHistoryView from './Medical-History-View';
 import CriminalHistoryView from './Criminal-History-View';
 import { Row, Col, Tabs, Tab, Container } from 'react-bootstrap';
+import NotesView from './NotesView';
 
 const ClientDetailsView = () => {
 	const { appearance } = useContext(AppearanceContext);
@@ -64,6 +65,10 @@ const ClientDetailsView = () => {
 
 							<Tab eventKey='criminal-history' title='Criminal History'>
 								<CriminalHistoryView client={currentClient} notSet={notSet} />
+							</Tab>
+
+							<Tab eventKey='client-notes' title='Notes'>
+								<NotesView client={currentClient} notSet={notSet} />
 							</Tab>
 						</Tabs>
 

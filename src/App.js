@@ -12,6 +12,7 @@ import CriminalHistoryForm from './components/clientForms/Criminal-History-Form'
 import ClientDetailsView from './components/clientViews/Client-Details-View';
 import NewClientInformationView from './components/clientViews/New-Client-Information-View';
 import NewClientForm from './components/clientForms/New-Client-Form';
+import NotesForm from './components/clientForms/Notes-Form';
 
 function App() {
 	return (
@@ -40,6 +41,7 @@ function App() {
 							<Route path='/add-client-criminal-history/:id' component={CriminalHistoryForm} />
 							<Route path='/view-new-client-information' component={NewClientInformationView} />
 							<Route path='/view-client-details/:id' component={ClientDetailsView} />
+							<Route path='/add-client-note/:id' component={NotesForm} />
 						</Switch>
 					</AppearanceContextProvider>
 				</ClientContextProvider>

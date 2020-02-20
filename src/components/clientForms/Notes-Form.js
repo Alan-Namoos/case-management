@@ -5,31 +5,30 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 
-const CriminalHistoryForm = () => {
+const NotesForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
 	const { clients, updateMedicalCriminalHistoryNotes } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
-	const [criminalHistory, setCriminalHistory] = useState({
+	const [note, setNote] = useState({
 		date: '',
-		location: '',
-		CaseNumber: '',
-		description: ''
+		title: '',
+		text: ''
 	});
 	const handleChange = (e) => {
-		setCriminalHistory({ ...criminalHistory, [e.target.name]: e.target.value });
+		setNote({ ...note, [e.target.name]: e.target.value });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		updateMedicalCriminalHistoryNotes('criminalHistory', criminalHistory, id);
+		updateMedicalCriminalHistoryNotes('notes', note, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
-	return !criminalHistory ? (
-		'No Criminal History'
+	return !note ? (
+		'No Note Found'
 	) : (
 		<>
 			<Container>
@@ -39,45 +38,32 @@ const CriminalHistoryForm = () => {
 							<Card.Header as={cardTitle}>
 								{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
 								{currentClient.personalInformation && currentClient.personalInformation.lastName} -
-								Criminal History
+								Notes
 							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>
-										<Col>
+										<Col md={4}>
 											<Form.Group>
 												<Form.Label>Date:</Form.Label>
 												<Form.Control
 													type='text'
 													size={textField}
 													name='date'
-													value={criminalHistory.date}
+													value={note.date}
 													onChange={handleChange}
 													required
 												/>
 											</Form.Group>
 										</Col>
-										<Col>
+										<Col md={8}>
 											<Form.Group>
-												<Form.Label>Location:</Form.Label>
+												<Form.Label>Title:</Form.Label>
 												<Form.Control
 													type='text'
 													size={textField}
-													name='location'
-													value={criminalHistory.location}
-													onChange={handleChange}
-													required
-												/>
-											</Form.Group>
-										</Col>
-										<Col>
-											<Form.Group>
-												<Form.Label>Criminal Case #:</Form.Label>
-												<Form.Control
-													type='text'
-													size={textField}
-													name='CaseNumber'
-													value={criminalHistory.CaseNumber}
+													name='title'
+													value={note.title}
 													onChange={handleChange}
 													required
 												/>
@@ -88,14 +74,13 @@ const CriminalHistoryForm = () => {
 									<Row>
 										<Col>
 											<Form.Group>
-												<Form.Label>Description:</Form.Label>
+												<Form.Label>Note:</Form.Label>
 												<Form.Control
-													type='text'
-													size={textField}
-													name='description'
-													value={criminalHistory.description}
+													as='textarea'
+													rows='3'
+													name='text'
+													value={note.text}
 													onChange={handleChange}
-													required
 												/>
 											</Form.Group>
 										</Col>
@@ -124,4 +109,4 @@ const CriminalHistoryForm = () => {
 	);
 };
 
-export default CriminalHistoryForm;
+export default NotesForm;

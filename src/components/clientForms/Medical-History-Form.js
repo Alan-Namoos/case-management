@@ -8,7 +8,7 @@ import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 const MedicalHistoryForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, updateMedicalCriminalHistory } = useContext(ClientContext);
+	const { clients, updateMedicalCriminalHistoryNotes } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
@@ -24,7 +24,7 @@ const MedicalHistoryForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		updateMedicalCriminalHistory('medicalHistory', medicalHistory, id);
+		updateMedicalCriminalHistoryNotes('medicalHistory', medicalHistory, id);
 		history.push(`/view-client-details/${id}`);
 	};
 

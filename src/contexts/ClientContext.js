@@ -68,7 +68,8 @@ const ClientContextProvider = (props) => {
 			}
 		},
 		medicalHistory: [],
-		criminalHistory: []
+		criminalHistory: [],
+		notes: []
 	});
 
 	const CreateNewClient = (
@@ -104,7 +105,7 @@ const ClientContextProvider = (props) => {
 			});
 	};
 
-	const updateMedicalCriminalHistory = (itemToUpdate, newInformation, id) => {
+	const updateMedicalCriminalHistoryNotes = (itemToUpdate, newInformation, id) => {
 		db.collection('clients')
 			.doc(id)
 			.update({
@@ -112,7 +113,7 @@ const ClientContextProvider = (props) => {
 			})
 			.then(() => {
 				setIsUpdated(true);
-				console.log('ClientContext -> Information was UPDATED!');
+				console.log(`ClientContext -> ${itemToUpdate} Information was UPDATED!`);
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -176,9 +177,9 @@ const ClientContextProvider = (props) => {
 					clients.push({ ...doc.data(), id: doc.id });
 				});
 				setClients(clients);
-				setIsLoading(false);
-				setIsUpdated(false);
-				setRefresh(false);
+				// setIsLoading(false);
+				// setIsUpdated(false);
+				// setRefresh(false);
 			},
 			(error) => {
 				console.log(error.message);
@@ -188,7 +189,7 @@ const ClientContextProvider = (props) => {
 		return () => {
 			unsubscribe();
 		};
-	}, [isUpdated, refresh]);
+	}, []);
 
 	console.count('ClientContext RENDERED');
 
@@ -197,19 +198,11 @@ const ClientContextProvider = (props) => {
 			value={{
 				client,
 				currentClientID,
-				// currentClient,
 				clients,
 				isLoading,
-				// newClient,
 				CreateNewClient,
-				// lastAddedClient,
-				// addPersonalInformation,
-				// addContactInformation,
-				// addImmigrationInformation,
-				// addMedicalHistory,
-				// addCriminalHistory,
 				updateClientInformation,
-				updateMedicalCriminalHistory,
+				updateMedicalCriminalHistoryNotes,
 				deleteClient
 			}}
 		>
