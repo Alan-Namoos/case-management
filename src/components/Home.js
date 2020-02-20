@@ -6,37 +6,14 @@ import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 
 const Home = () => {
-	const { clients, isLoading } = useContext(ClientContext);
+	const { clients, isLoading, deleteClient } = useContext(ClientContext);
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, button, notSet } = appearance;
 	// const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
 	console.count('Home RENDERED');
 	console.log('Home - clients Array -> ', clients.length);
-
-	// useEffect(() => {
-	// 	if (clients.length > 4) {
-	// 		const lastFive = clients.slice(clients.length, clients.length + 1);
-	// 		setLastFiveClients(lastFive);
-	// 	} else {
-	// 		setLastFiveClients(clients);
-	// 	}
-	// }, [clients]);
-
-	// useEffect(() => {
-	// 	db.collection('clients')
-	// 		.get()
-	// 		.then((snapshot) => {
-	// 			console.log('snapshot.docs: ', snapshot.docs);
-	// 			const data = snapshot.docs.map((doc) => {
-	// 				return { ...doc.data(), id: doc.id };
-	// 			});
-	// 			console.log('data: ', data);
-	// 			setUsers(data);
-	// 		});
-	// }, []);
-
-	// console.log('isLoading: ', isLoading);
+	console.log(clients);
 
 	return clients.length === 0 ? (
 		isLoading ? (
@@ -63,7 +40,6 @@ const Home = () => {
 							<Table striped bordered size='sm' className='text-center'>
 								<thead>
 									<tr>
-										<th>ID</th>
 										<th>Name</th>
 										<th>A#</th>
 										<th>Phone #</th>
@@ -74,7 +50,6 @@ const Home = () => {
 									{clients.map((client, i) => {
 										return (
 											<tr key={client.id}>
-												<td>{client.id}</td>
 												<td>
 													{client.personalInformation.firstName}{' '}
 													{client.personalInformation.lastName}
@@ -88,6 +63,15 @@ const Home = () => {
 														onClick={() => history.push(`/view-client-details/${client.id}`)}
 													>
 														More details
+													</Button>{' '}
+													<Button
+														variant='danger'
+														size={button}
+														onClick={() => {
+															deleteClient(client.id);
+														}}
+													>
+														Delete
 													</Button>
 												</td>
 											</tr>

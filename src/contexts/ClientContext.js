@@ -8,6 +8,7 @@ const ClientContextProvider = (props) => {
 	const [isNewClient, setIsNewClient] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isUpdated, setIsUpdated] = useState(false);
+	const [refresh, setRefresh] = useState(false);
 	const [currentClientID, setCurrentClientID] = useState('');
 	// const [currentClient, setCurrentClient] = useState(null);
 	const [clients, setClients] = useState([]);
@@ -70,136 +71,6 @@ const ClientContextProvider = (props) => {
 		criminalHistory: []
 	});
 
-	// const resetClient = () => {
-	// 	setClient({
-	// 		id: '',
-	// 		personalInformation: {
-	// 			firstName: '',
-	// 			lastName: '',
-	// 			otherNamesUsed: '',
-	// 			dateOfBirth: '',
-	// 			countryOfBirth: '',
-	// 			countryOfResidence: '',
-	// 			nationalityAtBirth: '',
-	// 			currentNationality: '',
-	// 			maritalStatus: '',
-	// 			numberOfChildren: '',
-	// 			religionAndSect: '',
-	// 			raceEthnicityTribalGroup: '',
-	// 			languagesAndFluency: '',
-	// 			bestLanguage: '',
-	// 			employer: '',
-	// 			jobTitle: '',
-	// 			role: '',
-	// 			gender: ''
-	// 		},
-
-	// 		contactInformation: {
-	// 			mobilePhone: '',
-	// 			homePhone: '',
-	// 			email: '',
-	// 			mailingAddress: '',
-	// 			physicalAddress: ''
-	// 		},
-
-	// 		immigrationInformation: {
-	// 			status: {
-	// 				aNumber: '',
-	// 				currentStatus: '',
-	// 				expirationDate: ''
-	// 			},
-	// 			passport: {
-	// 				issuingCountry: '',
-	// 				expirationDate: '',
-	// 				withClient: ''
-	// 			},
-	// 			lastVisitToUS: {
-	// 				dateOfEntry: '',
-	// 				portOfEntry: '',
-	// 				status: '',
-	// 				lawfulEntry: ''
-	// 			},
-	// 			detention: {
-	// 				isDetained: '',
-	// 				dateOfArrest: '',
-	// 				location: '',
-	// 				dateOfRelease: ''
-	// 			}
-	// 		},
-	// 		medicalHistory: [],
-	// 		criminalHistory: []
-	// 	});
-	// };
-
-	// const newClient = (
-	// 	initialPersonalInformation,
-	// 	initialContactInformation,
-	// 	immigrationInformationStatus
-	// ) => {
-	// 	setClients([
-	// 		...clients,
-	// 		{
-	// 			...client,
-	// 			personalInformation: initialPersonalInformation,
-	// 			contactInformation: initialContactInformation,
-	// 			immigrationInformation: {
-	// 				...client.immigrationInformation,
-	// 				status: immigrationInformationStatus
-	// 			},
-	// 			id: uuid()
-	// 		}
-	// 	]);
-	// };
-
-	// const addContactInformation = (newContactInformation, id) => {
-	// 	const index = clients.findIndex((arrayClient) => {
-	// 		return arrayClient.id === id;
-	// 	});
-	// 	// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-	// 	clients[index].contactInformation = newContactInformation;
-	// };
-
-	// const addBasicInformation = (newBasicInformation) => {
-	// 	setClients([...clients, { ...client, basicInformation: newBasicInformation, id: uuid() }]);
-	// 	resetClient();
-	// };
-
-	// const addPersonalInformation = (newPersonalInformation, id) => {
-	// 	const index = clients.findIndex((arrayClient) => {
-	// 		return arrayClient.id === id;
-	// 	});
-	// 	// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-	// 	clients[index].personalInformation = newPersonalInformation;
-	// };
-
-	// const addContactInformation = (newContactInformation, id) => {
-	// 	setClients([...clients, { contactInformation: newContactInformation }]);
-	// };
-
-	const addImmigrationInformation = (newImmigrationInformation, id) => {
-		const index = clients.findIndex((arrayClient) => {
-			return arrayClient.id === id;
-		});
-		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-		clients[index].immigrationInformation = newImmigrationInformation;
-	};
-
-	const addMedicalHistory = (newMedicalHistory, id) => {
-		const index = clients.findIndex((arrayClient) => {
-			return arrayClient.id === id;
-		});
-		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-		clients[index].medicalHistory.push(newMedicalHistory);
-	};
-
-	const addCriminalHistory = (newCriminalHistory, id) => {
-		const index = clients.findIndex((arrayClient) => {
-			return arrayClient.id === id;
-		});
-		// I MIGHT NEED TO FIND A BETTER WAY TO UPDATE THE STATE (clients array)
-		clients[index].criminalHistory.push(newCriminalHistory);
-	};
-
 	const CreateNewClient = (
 		initialPersonalInformation,
 		initialContactInformation,
@@ -248,20 +119,18 @@ const ClientContextProvider = (props) => {
 			});
 	};
 
-	// const addImmigrationInformation = (newImmigrationInformation) => {
-	// 	setClient({ ...client, immigrationInformation: newImmigrationInformation });
-	// };
-
-	// const addMedicalHistory = (newMedicalHistory) => {
-	// 	setClient({ ...client, medicalHistory: [...client.medicalHistory, newMedicalHistory] });
-	// };
-
-	// const addCriminalHistory = (newCriminalHistory) => {
-	// 	setClient({ ...client, criminalHistory: [...client.criminalHistory, newCriminalHistory] });
-
-	// useEffect(() => {
-	// 	resetClient();
-	// }, []);
+	const deleteClient = (id) => {
+		db.collection('clients')
+			.doc(id)
+			.delete()
+			.then(() => {
+				console.log('Clients was deleted');
+				setRefresh(true);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	};
 
 	// [1] Add New Client to Firestore
 	useEffect(() => {
@@ -286,27 +155,43 @@ const ClientContextProvider = (props) => {
 	// [2] tracks client and gets all Firestore clients documents
 	useEffect(() => {
 		setIsLoading(true);
-		db.collection('clients')
-			.get()
-			.then((snapshot) => {
-				const data = snapshot.docs.map((doc) => {
-					return { ...doc.data(), id: doc.id };
+		// db.collection('clients')
+		// 	.get()
+		// 	.then((snapshot) => {
+		// 		const data = snapshot.docs.map((doc) => {
+		// 			return { ...doc.data(), id: doc.id };
+		// 		});
+		// 		// console.log('data: ', data);
+		// 		console.log('ClientContext - useEffect [2] ->  GET ALL CLIENTS');
+		// 		setClients(data);
+		// 		setIsLoading(false);
+		// 		setIsUpdated(false);
+		// 		setRefresh(false);
+		//   });
+
+		const unsubscribe = db.collection('clients').onSnapshot(
+			(querySnapshot) => {
+				const clients = [];
+				querySnapshot.forEach((doc) => {
+					clients.push({ ...doc.data(), id: doc.id });
 				});
-				// console.log('data: ', data);
-				console.log('ClientContext - useEffect [2] ->  GET ALL CLIENTS');
-				setClients(data);
+				setClients(clients);
 				setIsLoading(false);
 				setIsUpdated(false);
-			});
-	}, [isUpdated]);
+				setRefresh(false);
+			},
+			(error) => {
+				console.log(error.message);
+			}
+		);
 
-	// console.log('currentClinetID: ', currentClientID);
-	// console.log('ClientContext -> currentClient: ', currentClient);
-	// console.log('ClientContext -> clients: ', clients);
-	// console.log('ClientContext -> isLoading: ', isLoading);
+		return () => {
+			unsubscribe();
+		};
+	}, [isUpdated, refresh]);
+
 	console.count('ClientContext RENDERED');
 
-	// console.count('counter');
 	return (
 		<ClientContext.Provider
 			value={{
@@ -320,11 +205,12 @@ const ClientContextProvider = (props) => {
 				// lastAddedClient,
 				// addPersonalInformation,
 				// addContactInformation,
-				addImmigrationInformation,
-				addMedicalHistory,
-				addCriminalHistory,
+				// addImmigrationInformation,
+				// addMedicalHistory,
+				// addCriminalHistory,
 				updateClientInformation,
-				updateMedicalCriminalHistory
+				updateMedicalCriminalHistory,
+				deleteClient
 			}}
 		>
 			{props.children}
