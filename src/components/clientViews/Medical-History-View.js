@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 // import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Card, Table, Button, Row, Col } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const MedicalHistoryView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -11,14 +12,7 @@ const MedicalHistoryView = ({ client }) => {
 	// const { medicalHistory } = client;
 
 	return client.medicalHistory.length === 0 ? (
-		<>
-			<Card className='mb-5'>
-				<Card.Body className='text-center'>
-					<h5>No Medical Records found</h5>
-					<Link to={`/add-client-medical-history/${client.id}`}>+ Add Medical History</Link>
-				</Card.Body>
-			</Card>
-		</>
+		<NotFound component='Medical History' action={`/add-client-medical-history/${client.id}`} />
 	) : (
 		<>
 			<Card className='mb-3'>

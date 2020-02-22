@@ -6,6 +6,7 @@ import { Card, Table, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import LoadingSpinner from '../LoadingSpinner';
 import { useHistory } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
+import NotFound from './NotFound';
 
 const NewClientInformationView = () => {
 	const { appearance } = useContext(AppearanceContext);
@@ -17,13 +18,13 @@ const NewClientInformationView = () => {
 	const [currentClient] = useFindClient(clients, currentClientID, history); // <= custom hook
 
 	console.log('NewClientInfoView -> currentClientID:  ', currentClientID);
-	console.log('NewClientInfoView -> clients:          ', clients.length);
+	// console.log('NewClientInfoView -> clients:          ', clients.length);
 	console.log('NewClientInfoView -> currentClient:    ', currentClient);
 	console.log('NewClientInfoView -> isLoading:        ', isLoading);
 
 	useEffect(() => {
-		if (clients.length === 0) {
-			console.log('clients === []');
+		// if (clients.length === 0) {
+		if (!clients) {
 			history.push('/');
 			return;
 		}
@@ -33,19 +34,7 @@ const NewClientInformationView = () => {
 		isLoading ? (
 			<LoadingSpinner />
 		) : (
-			<Container>
-				<Row className='text-center'>
-					<Col>
-						<h4>No New Client Information!</h4>
-						<h4>
-							<Link to='/add-new-client'>+ New Client</Link>
-						</h4>
-						<h4>
-							<Link to='/'>Home</Link>
-						</h4>
-					</Col>
-				</Row>
-			</Container>
+			<NotFound component='New Client Information' action={null} />
 		)
 	) : (
 		<Container>

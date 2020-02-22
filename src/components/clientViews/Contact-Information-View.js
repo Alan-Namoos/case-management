@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Container, Row, Col, Card, Table, Button } from 'react-bootstrap';
-import { useHistory, Link } from 'react-router-dom';
+import { Row, Col, Card, Table, Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const ContactInformationView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -16,22 +17,10 @@ const ContactInformationView = ({ client }) => {
 	} = client.contactInformation;
 
 	return !client.contactInformation ? (
-		<Container>
-			<Row className='text-center'>
-				<Col>
-					<h4>No Contact Information Found!</h4>
-					<h4>
-						<Link to={`/add-client-contact-information/${client.id}`}>+ Contact Information</Link>
-					</h4>
-					<h4>
-						<Link to='/add-new-client'>+ New Client</Link>
-					</h4>
-					<h4>
-						<Link to='/'>Home</Link>
-					</h4>
-				</Col>
-			</Row>
-		</Container>
+		<NotFound
+			component='Contact Information'
+			action={`/add-client-contact-information/${client.id}`}
+		/>
 	) : (
 		<>
 			<Card>

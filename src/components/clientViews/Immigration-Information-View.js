@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Container, Card, Table, Button, Row, Col } from 'react-bootstrap';
-import { useHistory, Link } from 'react-router-dom';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const ImmigrationInformationView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -10,24 +11,10 @@ const ImmigrationInformationView = ({ client }) => {
 	const { status, passport, lastVisitToUS, detention } = client.immigrationInformation;
 
 	return client.immigrationInformation === {} ? (
-		<Container>
-			<Row className='text-center'>
-				<Col>
-					<h4>No Immigration Information Found!</h4>
-					<h4>
-						<Link to={`/add-client-immigration-information/${client.id}`}>
-							+ Immigration Information
-						</Link>
-					</h4>
-					<h4>
-						<Link to='/add-new-client'>+ New Client</Link>
-					</h4>
-					<h4>
-						<Link to='/'>Home</Link>
-					</h4>
-				</Col>
-			</Row>
-		</Container>
+		<NotFound
+			component='Immigration Information'
+			action={`/add-client-immigration-information/${client.id}`}
+		/>
 	) : (
 		<>
 			<Card className=''>

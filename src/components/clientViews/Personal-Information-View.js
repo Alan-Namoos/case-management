@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button, Container, Row, Col } from 'react-bootstrap';
-import { useHistory, Link } from 'react-router-dom';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const PersonalInformationView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -29,22 +30,10 @@ const PersonalInformationView = ({ client }) => {
 	} = client.personalInformation;
 
 	return !client.personalInformation ? (
-		<Container>
-			<Row className='text-center'>
-				<Col>
-					<h4>No Personal Information Found!</h4>
-					<h4>
-						<Link to={`/add-client-personal-information/${client.id}`}>+ Personal Information</Link>
-					</h4>
-					<h4>
-						<Link to='/add-new-client'>+ New Client</Link>
-					</h4>
-					<h4>
-						<Link to='/'>Home</Link>
-					</h4>
-				</Col>
-			</Row>
-		</Container>
+		<NotFound
+			component='Medical History'
+			action={`/add-client-personal-information/${client.id}`}
+		/>
 	) : (
 		<>
 			<Card className='mb-3'>

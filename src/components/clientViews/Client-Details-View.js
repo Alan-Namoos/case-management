@@ -7,8 +7,9 @@ import ImmigrationInformationView from './Immigration-Information-View';
 import ContactInformationView from './Contact-Information-View';
 import MedicalHistoryView from './Medical-History-View';
 import CriminalHistoryView from './Criminal-History-View';
-import { Row, Col, Tabs, Tab, Container } from 'react-bootstrap';
+import { Row, Col, Tabs, Tab, Container, Card } from 'react-bootstrap';
 import NotesView from './NotesView';
+import NotFound from './NotFound';
 
 const ClientDetailsView = () => {
 	const { appearance } = useContext(AppearanceContext);
@@ -17,9 +18,13 @@ const ClientDetailsView = () => {
 	const { id } = useParams();
 	const [currentClient, setCurrentClient] = useState(null);
 	const history = useHistory();
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [aNumber, setaNumber] = useState('');
 
 	useEffect(() => {
-		if (clients.length === 0) {
+		// if (clients.length === 0) {
+		if (!clients) {
 			history.push('/');
 			return;
 		}
@@ -29,51 +34,65 @@ const ClientDetailsView = () => {
 		setCurrentClient(client);
 	}, [id, clients, history]);
 
+	useEffect(() => {
+		if (currentClient) {
+			setFirstName(currentClient.personalInformation.firstName);
+			setLastName(currentClient.personalInformation.lastName);
+			setaNumber(currentClient.immigrationInformation.status.aNumber);
+		}
+	}, [currentClient]);
+
 	return !currentClient ? (
-		'Loding...'
+		<NotFound component='Client Details' action={null} />
 	) : (
 		<>
-			<Container>
+			<Container fluid>
 				<Row>
 					<Col>
-						<h2 className='text-center'>
-							{currentClient.personalInformation.firstName}{' '}
-							{currentClient.personalInformation.lastName}
-							{/* {' | '} */}
-							{/* <i>A-Number: {currentClient.immigrationInformation.status.aNumber || notSet}</i> */}
-						</h2>
-						<h4 className='text-center'>
-							<i>A-Number: {currentClient.immigrationInformation.status.aNumber || notSet}</i>
-						</h4>
-						<hr />
-						<Tabs justify defaultActiveKey='contact-information' id='uncontrolled-tab'>
-							<Tab eventKey='contact-information' title='Contact Information'>
-								<ContactInformationView client={currentClient} notSet={notSet} />
-							</Tab>
+						<Card>
+							<Card.Header>
+								<Row>
+									<Col>
+										<h3 className='float-right'>
+											{firstName} {lastName}
+										</h3>
+									</Col>
 
-							<Tab eventKey='personal-information' title='Personal Information'>
-								<PersonalInformationView client={currentClient} notSet={notSet} />
-							</Tab>
+									<Col>
+										<h3 className=''>
+											<i>A-{aNumber || notSet}</i>
+										</h3>
+									</Col>
+								</Row>
+							</Card.Header>
+							<Card.Body>
+								<Tabs justify defaultActiveKey='contact-information' id='uncontrolled-tab'>
+									<Tab eventKey='contact-information' title='Contact Information'>
+										<ContactInformationView client={currentClient} notSet={notSet} />
+									</Tab>
 
-							<Tab eventKey='immigration-information' title='Immigration Information'>
-								<ImmigrationInformationView client={currentClient} notSet={notSet} />
-							</Tab>
+									<Tab eventKey='personal-information' title='Personal Information'>
+										<PersonalInformationView client={currentClient} notSet={notSet} />
+									</Tab>
 
-							<Tab eventKey='medical-history' title='Medical History'>
-								<MedicalHistoryView client={currentClient} notSet={notSet} />
-							</Tab>
+									<Tab eventKey='immigration-information' title='Immigration Information'>
+										<ImmigrationInformationView client={currentClient} notSet={notSet} />
+									</Tab>
 
-							<Tab eventKey='criminal-history' title='Criminal History'>
-								<CriminalHistoryView client={currentClient} notSet={notSet} />
-							</Tab>
+									<Tab eventKey='medical-history' title='Medical History'>
+										<MedicalHistoryView client={currentClient} notSet={notSet} />
+									</Tab>
 
-							<Tab eventKey='client-notes' title='Notes'>
-								<NotesView client={currentClient} notSet={notSet} />
-							</Tab>
-						</Tabs>
+									<Tab eventKey='criminal-history' title='Criminal History'>
+										<CriminalHistoryView client={currentClient} notSet={notSet} />
+									</Tab>
 
-						{/* </Card.Body>
-						</Card> */}
+									<Tab eventKey='client-notes' title='Notes'>
+										<NotesView client={currentClient} notSet={notSet} />
+									</Tab>
+								</Tabs>
+							</Card.Body>
+						</Card>
 					</Col>
 				</Row>
 			</Container>

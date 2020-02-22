@@ -19,3 +19,10 @@ body {
 	background-color: #007bff;
 	font-size: 1.1rem;
 }
+
+.card-header-tabs {
+	margin-right: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+	border-bottom: 0;
+}

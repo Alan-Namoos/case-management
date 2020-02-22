@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 // import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Card, Table, Button } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const CriminalHistoryView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -11,14 +12,7 @@ const CriminalHistoryView = ({ client }) => {
 	// const { client } = useContext(ClientContext);
 
 	return client.criminalHistory.length === 0 ? (
-		<>
-			<Card className='mb-5'>
-				<Card.Body className='text-center'>
-					<h5>No Criminal History found</h5>
-					<Link to={`/add-client-criminal-history/${client.id}`}>+ Add Criminal History</Link>
-				</Card.Body>
-			</Card>
-		</>
+		<NotFound component='Criminal History' action={`/add-client-criminal-history/${client.id}`} />
 	) : (
 		<>
 			<Card className='mb-3'>

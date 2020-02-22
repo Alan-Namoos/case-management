@@ -12,10 +12,11 @@ const Home = () => {
 	// const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
 	console.count('Home RENDERED');
-	console.log('Home - clients Array -> ', clients.length);
-	console.log(clients);
+	// console.log('Home - clients Array -> ', clients.length);
+	console.log('Home -> clients: ', clients);
+	console.log('Home -> isLoading: ', isLoading);
 
-	return clients.length === 0 ? (
+	return !clients || clients.length === 0 ? (
 		isLoading ? (
 			<LoadingSpinner />
 		) : (
@@ -31,6 +32,22 @@ const Home = () => {
 			</Container>
 		)
 	) : (
+		// <>
+		// 	<h4>Clients Table Loaded</h4>
+		// 	<h4>{typeof isLoading}</h4>
+		// 	{/* <h4>{clients[0].immigrationInformation.status.aNumber}</h4> */}
+		// 	{clients.map((client) => {
+		// 		return (
+		// 			<div>
+		// 				<span key={client.id}>
+		// 					{client.personalInformation.firstName} {client.personalInformation.lastName}
+		// 				</span>{' '}
+		// 				|<span>{client.immigrationInformation.status.aNumber || 'not set'}</span>
+		// 			</div>
+		// 		);
+		// 	})}
+		// </>
+
 		<Container>
 			<Row>
 				<Col>
@@ -47,36 +64,37 @@ const Home = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{clients.map((client, i) => {
-										return (
-											<tr key={client.id}>
-												<td>
-													{client.personalInformation.firstName}{' '}
-													{client.personalInformation.lastName}
-												</td>
+									{clients &&
+										clients.map((client, i) => {
+											return (
+												<tr key={client.id}>
+													<td>
+														{client.personalInformation.firstName}{' '}
+														{client.personalInformation.lastName}
+													</td>
 
-												<td>{client.immigrationInformation.status.aNumber || notSet}</td>
-												<td>{client.contactInformation.mobilePhone}</td>
-												<td>
-													<Button
-														size={button}
-														onClick={() => history.push(`/view-client-details/${client.id}`)}
-													>
-														More details
-													</Button>{' '}
-													<Button
-														variant='danger'
-														size={button}
-														onClick={() => {
-															deleteClient(client.id);
-														}}
-													>
-														Delete
-													</Button>
-												</td>
-											</tr>
-										);
-									})}
+													<td>{client.immigrationInformation.status.aNumber || notSet}</td>
+													<td>{client.contactInformation.mobilePhone}</td>
+													<td>
+														<Button
+															size={button}
+															onClick={() => history.push(`/view-client-details/${client.id}`)}
+														>
+															More details
+														</Button>{' '}
+														<Button
+															variant='danger'
+															size={button}
+															onClick={() => {
+																deleteClient(client.id);
+															}}
+														>
+															Delete
+														</Button>
+													</td>
+												</tr>
+											);
+										})}
 								</tbody>
 							</Table>
 						</Card.Body>

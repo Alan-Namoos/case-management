@@ -9,7 +9,8 @@ export const useFindClient = (clients, id, history) => {
 		// 	return;
 		// }
 		console.log('custom hook started');
-		if (clients.length > 0) {
+		// if (clients.length > 0) {
+		if (clients) {
 			const client = clients.find((arrayClient) => {
 				return arrayClient.id === id;
 			});

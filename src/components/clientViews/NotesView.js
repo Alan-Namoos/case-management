@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Card, Table, Button, Row, Col } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const NotesView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
@@ -9,14 +10,7 @@ const NotesView = ({ client }) => {
 	const history = useHistory();
 
 	return client.notes.length === 0 ? (
-		<>
-			<Card className='mb-5'>
-				<Card.Body className='text-center'>
-					<h5>No Notes found</h5>
-					<Link to={`/add-client-note/${client.id}`}>+ Add New Notes</Link>
-				</Card.Body>
-			</Card>
-		</>
+		<NotFound component='Notes' action={`/add-client-note/${client.id}`} />
 	) : (
 		<>
 			<Card className='mb-3'>
