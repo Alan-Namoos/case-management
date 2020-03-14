@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button, Row, Col } from 'react-bootstrap';
+import { Card, Button, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import NotFound from './NotFound';
 
 const NotesView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
-	const { button, notSet } = appearance;
+	const { button } = appearance;
+
 	const history = useHistory();
 
 	return client.notes.length === 0 ? (
@@ -14,28 +15,21 @@ const NotesView = ({ client }) => {
 	) : (
 		<>
 			<Card className='mb-3'>
-				{/* <Card.Header as={cardTitle}>Medical History</Card.Header> */}
 				<Card.Body>
-					<Table bordered striped hover size='sm'>
-						<thead>
-							<tr>
-								<th>Date</th>
-								<th>Title</th>
-								<th>Text</th>
-							</tr>
-						</thead>
-						<tbody>
-							{client.notes.map((note, i) => {
-								return (
-									<tr key={i}>
-										<td>{note.date || notSet}</td>
-										<td>{note.title || notSet}</td>
-										<td>{note.text || notSet}</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</Table>
+					{client.notes.map((note, i) => {
+						return (
+							<Card style={{ width: '50%', marginBottom: '20px' }} key={i}>
+								<Card.Body>
+									<Card.Title>
+										{note.title} - {note.date}
+									</Card.Title>
+									<Card.Text>{note.text}</Card.Text>
+									<Card.Link href='#'>Edit</Card.Link>
+									<Card.Link href='#'>Delete</Card.Link>
+								</Card.Body>
+							</Card>
+						);
+					})}
 				</Card.Body>
 				<Card.Footer>
 					<Row>

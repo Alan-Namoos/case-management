@@ -98,6 +98,9 @@ const NewClientInformationView = () => {
 										+ Add Criminal History
 									</Link>
 								</ListGroup.Item>
+								<ListGroup.Item>
+									<Link to={`/add-client-note/${currentClient.id}`}>+ Add Note</Link>
+								</ListGroup.Item>
 							</ListGroup>
 						</Card.Body>
 					</Card>

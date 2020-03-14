@@ -69,6 +69,7 @@ const ClientContextProvider = (props) => {
 	};
 	const [client, setClient] = useState(clientInitialValue);
 
+	// ==================== METHODS ============================
 	const CreateNewClient = (
 		initialPersonalInformation,
 		initialContactInformation,
@@ -113,19 +114,19 @@ const ClientContextProvider = (props) => {
 			});
 	};
 
-	const updateMedicalCriminalHistoryNotes = (itemToUpdate, newInformation, id) => {
-		db.collection('clients')
-			.doc(id)
-			.update({
-				[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation)
-			})
-			.then(() => {
-				console.log(`ClientContext -> ${itemToUpdate} Information was UPDATED!`);
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
-	};
+	// const updateMedicalCriminalHistoryNotes = (itemToUpdate, newInformation, id) => {
+	// 	db.collection('clients')
+	// 		.doc(id)
+	// 		.update({
+	// 			[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation)
+	// 		})
+	// 		.then(() => {
+	// 			console.log(`ClientContext -> ${itemToUpdate} Information was UPDATED!`);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error.message);
+	// 		});
+	// };
 
 	const deleteClient = (id) => {
 		db.collection('clients')
@@ -152,8 +153,6 @@ const ClientContextProvider = (props) => {
 		// 		console.log('ClientContext - useEffect [2] ->  GET ALL CLIENTS');
 		// 		setClients(data);
 		// 		setIsLoading(false);
-		// 		setIsUpdated(false);
-		// 		setRefresh(false);
 		//   });
 
 		const unsubscribe = db.collection('clients').onSnapshot(
@@ -185,6 +184,7 @@ const ClientContextProvider = (props) => {
 				.then((docRef) => {
 					// console.log('document reference ID: ', docRef.id);
 					console.log('ClientContext - useEffect [1] ->  ADD NEW CLIENT promise');
+
 					setCurrentClientID(docRef.id); // set currentID to the document ID from Firestore
 					console.log('New Client Added!');
 					setIsNewClient(false);
@@ -195,6 +195,19 @@ const ClientContextProvider = (props) => {
 				});
 		}
 	}, [client, isNewClient]);
+
+	useEffect(() => {
+		db.collection('clients')
+			.doc('1iF7shMGu7aFuKh8ydlF')
+			.collection('cases')
+			.get()
+			.then((snapshot) => {
+				const data = snapshot.docs.map((doc) => {
+					return { ...doc.data(), id: doc.id };
+				});
+				console.log('subCollection data: ', data);
+			});
+	}, []);
 
 	console.count('ClientContext RENDERED');
 	console.log('ClientContext -> clients: ', clients);
@@ -209,7 +222,7 @@ const ClientContextProvider = (props) => {
 				isLoading,
 				CreateNewClient,
 				updateClientInformation,
-				updateMedicalCriminalHistoryNotes,
+				// updateMedicalCriminalHistoryNotes,
 				deleteClient
 			}}
 		>

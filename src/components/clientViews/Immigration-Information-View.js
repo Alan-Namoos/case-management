@@ -19,7 +19,7 @@ const ImmigrationInformationView = ({ client }) => {
 		<>
 			<Card className=''>
 				<Card.Body>
-					<h5 className='text-center'>Status</h5>
+					<h4 className='text-center'>Status</h4>
 					<Table bordered size='sm'>
 						<tbody>
 							<tr>
@@ -37,7 +37,7 @@ const ImmigrationInformationView = ({ client }) => {
 						</tbody>
 					</Table>
 
-					<h5 className='text-center'>Passport</h5>
+					<h4 className='text-center'>Passport</h4>
 					<Table bordered size='sm'>
 						<tbody>
 							<tr>
@@ -55,7 +55,7 @@ const ImmigrationInformationView = ({ client }) => {
 						</tbody>
 					</Table>
 
-					<h5 className='text-center'>Last visit to the US</h5>
+					<h4 className='text-center'>Last visit to the US</h4>
 					<Table bordered size='sm'>
 						<tbody>
 							<tr>
@@ -77,8 +77,8 @@ const ImmigrationInformationView = ({ client }) => {
 						</tbody>
 					</Table>
 
-					<h5 className='text-center'>Dentention</h5>
-					<Table bordered striped hover size='sm'>
+					<h4 className='text-center'>Dentention</h4>
+					<Table bordered size='sm'>
 						<tbody>
 							<tr>
 								<th width='50%'>Detained ?</th>
