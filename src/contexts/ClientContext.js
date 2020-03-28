@@ -114,6 +114,14 @@ const ClientContextProvider = (props) => {
 			});
 	};
 
+	const updateClientNotes = (itemToUpdate, newInformation, id) => {
+		db.collection('clients')
+			.doc(id)
+			.update({
+				[itemToUpdate]: newInformation
+			});
+	};
+
 	// const updateMedicalCriminalHistoryNotes = (itemToUpdate, newInformation, id) => {
 	// 	db.collection('clients')
 	// 		.doc(id)
@@ -167,6 +175,7 @@ const ClientContextProvider = (props) => {
 			},
 			(error) => {
 				console.log('Error Message: ', error.message);
+				console.log('****** OFF LINE *******');
 			}
 		);
 
@@ -223,7 +232,8 @@ const ClientContextProvider = (props) => {
 				CreateNewClient,
 				updateClientInformation,
 				// updateMedicalCriminalHistoryNotes,
-				deleteClient
+				deleteClient,
+				updateClientNotes
 			}}
 		>
 			{props.children}

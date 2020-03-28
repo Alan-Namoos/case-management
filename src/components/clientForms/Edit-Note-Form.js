@@ -1,17 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ClientContext } from '../../contexts/ClientContext';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
-import uuid from 'uuid/v1';
 
-const NotesForm = () => {
+const EditNoteForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, updateClientInformation } = useContext(ClientContext);
+	const { clients, updateClientNotes } = useContext(ClientContext);
 	const history = useHistory();
-	const { id } = useParams();
+	const { id, noteID } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
 	const [note, setNote] = useState({
 		noteID: '',
@@ -20,19 +19,39 @@ const NotesForm = () => {
 		text: ''
 	});
 
+	const [notesWithEditNoteRemoved, setNotesWithEditNoteRemoved] = useState([]);
+	const [finalUpdatedNotes, setFinalUpdatedNotes] = useState(null);
+
 	const handleChange = (e) => {
 		setNote({ ...note, [e.target.name]: e.target.value });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		const newNote = { ...note, noteID: uuid() };
-		updateClientInformation('notes', newNote, id);
+		updateClientNotes('notes', finalUpdatedNotes, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
-	return !currentClient.notes ? (
+	useEffect(() => {
+		if (currentClient.notes && noteID) {
+			const noteIndex = currentClient.notes.findIndex((note) => {
+				return noteID === note.noteID;
+			});
+
+			const foundNoteToEdit = currentClient.notes[noteIndex];
+			const notesWithoutEditNote = currentClient.notes.filter((note, index) => {
+				return noteIndex !== index;
+			});
+			setNotesWithEditNoteRemoved(notesWithoutEditNote);
+			setNote(foundNoteToEdit);
+		}
+	}, [currentClient.notes, noteID]);
+
+	useEffect(() => {
+		setFinalUpdatedNotes([...notesWithEditNoteRemoved, note]);
+	}, [notesWithEditNoteRemoved, note]);
+
+	return !note ? (
 		'No Note Found'
 	) : (
 		<>
@@ -114,4 +133,4 @@ const NotesForm = () => {
 	);
 };
 
-export default NotesForm;
+export default EditNoteForm;

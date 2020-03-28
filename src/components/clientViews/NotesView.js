@@ -18,7 +18,7 @@ const NotesView = ({ client }) => {
 				<Card.Body>
 					{client.notes.map((note, i) => {
 						return (
-							<Card style={{ width: '50%', marginBottom: '20px' }} key={i}>
+							<Card style={{ width: '50%', marginBottom: '20px' }} key={note.noteID}>
 								<Card.Body>
 									<Card.Title>
 										{note.title} - {note.date}
@@ -26,6 +26,14 @@ const NotesView = ({ client }) => {
 									<Card.Text>{note.text}</Card.Text>
 									<Card.Link href='#'>Edit</Card.Link>
 									<Card.Link href='#'>Delete</Card.Link>
+
+									<Button
+										variant='primary'
+										size={button}
+										onClick={() => history.push(`/edit-client-note/${client.id}/${note.noteID}`)}
+									>
+										Edit
+									</Button>
 								</Card.Body>
 							</Card>
 						);
