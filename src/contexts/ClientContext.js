@@ -103,9 +103,6 @@ const ClientContextProvider = (props) => {
 		db.collection('clients')
 			.doc(id)
 			.update(updateOperation)
-			// .update({
-			// 	[itemToUpdate]: newInformation
-			// })
 			.then(() => {
 				console.log('ClientContext -> Information was UPDATED!');
 			})
@@ -119,22 +116,14 @@ const ClientContextProvider = (props) => {
 			.doc(id)
 			.update({
 				[itemToUpdate]: newInformation
+			})
+			.then(() => {
+				console.log('ClientContext -> Note was UPDATED!');
+			})
+			.catch((error) => {
+				console.log(error.message);
 			});
 	};
-
-	// const updateMedicalCriminalHistoryNotes = (itemToUpdate, newInformation, id) => {
-	// 	db.collection('clients')
-	// 		.doc(id)
-	// 		.update({
-	// 			[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation)
-	// 		})
-	// 		.then(() => {
-	// 			console.log(`ClientContext -> ${itemToUpdate} Information was UPDATED!`);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error.message);
-	// 		});
-	// };
 
 	const deleteClient = (id) => {
 		db.collection('clients')

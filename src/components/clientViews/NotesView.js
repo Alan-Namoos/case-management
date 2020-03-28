@@ -3,12 +3,26 @@ import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import NotFound from './NotFound';
+import { ClientContext } from '../../contexts/ClientContext';
 
 const NotesView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
 	const { button } = appearance;
-
+	const { updateClientNotes } = useContext(ClientContext);
 	const history = useHistory();
+
+	const deleteNote = (noteID) => {
+		if (noteID) {
+			const noteIndex = client.notes.findIndex((note) => {
+				return noteID === note.noteID;
+			});
+
+			const updatedNotes = client.notes.filter((note, index) => {
+				return noteIndex !== index;
+			});
+			updateClientNotes('notes', updatedNotes, client.id);
+		}
+	};
 
 	return client.notes.length === 0 ? (
 		<NotFound component='Notes' action={`/add-client-note/${client.id}`} />
@@ -21,11 +35,11 @@ const NotesView = ({ client }) => {
 							<Card style={{ width: '50%', marginBottom: '20px' }} key={note.noteID}>
 								<Card.Body>
 									<Card.Title>
-										{note.title} - {note.date}
+										{note.title} - <i>{note.date}</i>
 									</Card.Title>
 									<Card.Text>{note.text}</Card.Text>
-									<Card.Link href='#'>Edit</Card.Link>
-									<Card.Link href='#'>Delete</Card.Link>
+									{/* <Card.Link href='#'>Edit</Card.Link>
+									<Card.Link href='#'>Delete</Card.Link> */}
 
 									<Button
 										variant='primary'
@@ -33,6 +47,15 @@ const NotesView = ({ client }) => {
 										onClick={() => history.push(`/edit-client-note/${client.id}/${note.noteID}`)}
 									>
 										Edit
+									</Button>
+
+									<Button
+										variant='danger'
+										size={button}
+										// onClick={() => history.push(`/edit-client-note/${client.id}/${note.noteID}`)}
+										onClick={() => deleteNote(note.noteID)}
+									>
+										Delete
 									</Button>
 								</Card.Body>
 							</Card>
