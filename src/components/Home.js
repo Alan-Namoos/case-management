@@ -80,7 +80,7 @@ const Home = () => {
 															size={button}
 															onClick={() => history.push(`/view-client-details/${client.id}`)}
 														>
-															More details
+															<i className='fas fa-info-circle'></i> More details
 														</Button>{' '}
 														<Button
 															variant='danger'
@@ -89,7 +89,7 @@ const Home = () => {
 																deleteClient(client.id);
 															}}
 														>
-															Delete
+															<i className='far fa-trash-alt'></i> Delete
 														</Button>
 													</td>
 												</tr>

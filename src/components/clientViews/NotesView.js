@@ -1,15 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import NotFound from './NotFound';
 import { ClientContext } from '../../contexts/ClientContext';
+import { orderBy } from 'lodash';
 
 const NotesView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
 	const { button } = appearance;
 	const { updateClientNotes } = useContext(ClientContext);
 	const history = useHistory();
+	const [sortedNotes, setSortedNotes] = useState(null);
 
 	const deleteNote = (noteID) => {
 		if (noteID) {
@@ -24,40 +26,58 @@ const NotesView = ({ client }) => {
 		}
 	};
 
-	return client.notes.length === 0 ? (
+	useEffect(() => {
+		if (client.notes) {
+			console.log('client.notes: ', client.notes);
+			const notesWithconvertedDates = client.notes.map((note) => {
+				return { ...note, date: note.date.toDate() };
+			});
+			console.log('notesWithconvertedDates: ', notesWithconvertedDates);
+			const notesSorted = orderBy(notesWithconvertedDates, ['date'], ['desc']);
+			setSortedNotes(notesSorted);
+		}
+	}, [client.notes]);
+
+	// return client.notes.length === 0 ? (
+	return !sortedNotes ? (
 		<NotFound component='Notes' action={`/add-client-note/${client.id}`} />
 	) : (
 		<>
 			<Card className='mb-3'>
 				<Card.Body>
-					{client.notes.map((note, i) => {
+					{sortedNotes.map((note, i) => {
 						return (
-							<Card style={{ width: '50%', marginBottom: '20px' }} key={note.noteID}>
+							<Card style={{ width: '70%', margin: '0 auto 20px' }} key={note.noteID}>
 								<Card.Body>
 									<Card.Title>
-										{note.title} - <i>{note.date}</i>
+										<Row>
+											<Col>{note.title}</Col>
+										</Row>
 									</Card.Title>
-									<Card.Text>{note.text}</Card.Text>
-									{/* <Card.Link href='#'>Edit</Card.Link>
-									<Card.Link href='#'>Delete</Card.Link> */}
-
-									<Button
-										variant='primary'
-										size={button}
-										onClick={() => history.push(`/edit-client-note/${client.id}/${note.noteID}`)}
-									>
-										Edit
-									</Button>
-
-									<Button
-										variant='danger'
-										size={button}
-										// onClick={() => history.push(`/edit-client-note/${client.id}/${note.noteID}`)}
-										onClick={() => deleteNote(note.noteID)}
-									>
-										Delete
-									</Button>
+									<Card.Text style={{ whiteSpace: 'pre-wrap' }}>{note.text}</Card.Text>
 								</Card.Body>
+								<Card.Footer>
+									<Row>
+										<Col>
+											<i className='note-date'>{note.date.toDateString()}</i>
+										</Col>
+										<Col className='text-right'>
+											<Button
+												variant='link'
+												size={button}
+												onClick={() =>
+													history.push(`/edit-client-note/${client.id}/${note.noteID}`)
+												}
+											>
+												<i className='far fa-edit'></i> Edit
+											</Button>
+											{'  '}
+											<Button variant='link' size={button} onClick={() => deleteNote(note.noteID)}>
+												<i className='far fa-trash-alt'></i> Delete
+											</Button>
+										</Col>
+									</Row>
+								</Card.Footer>
 							</Card>
 						);
 					})}
@@ -66,7 +86,7 @@ const NotesView = ({ client }) => {
 					<Row>
 						<Col className='text-center'>
 							<Button
-								variant='primary float-right'
+								variant='primary'
 								size={button}
 								onClick={() => {
 									history.push(`/add-client-note/${client.id}`);

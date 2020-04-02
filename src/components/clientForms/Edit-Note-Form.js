@@ -4,6 +4,7 @@ import { AppearanceContext } from '../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
 
 const EditNoteForm = () => {
 	const { appearance } = useContext(AppearanceContext);
@@ -21,9 +22,16 @@ const EditNoteForm = () => {
 
 	const [notesWithEditNoteRemoved, setNotesWithEditNoteRemoved] = useState([]);
 	const [finalUpdatedNotes, setFinalUpdatedNotes] = useState(null);
+	// const [startDate, setStartDate] = useState(new Date());
 
 	const handleChange = (e) => {
 		setNote({ ...note, [e.target.name]: e.target.value });
+	};
+
+	const handleDateChange = (date) => {
+		// setStartDate(date);
+		setNote({ ...note, date: date });
+		console.log('DatePicker date: ', date);
 	};
 
 	const handleSubmit = (e) => {
@@ -34,12 +42,15 @@ const EditNoteForm = () => {
 
 	useEffect(() => {
 		if (currentClient.notes && noteID) {
-			const noteIndex = currentClient.notes.findIndex((note) => {
+			const notesWithconvertedDates = currentClient.notes.map((note) => {
+				return { ...note, date: note.date.toDate() };
+			});
+			const noteIndex = notesWithconvertedDates.findIndex((note) => {
 				return noteID === note.noteID;
 			});
 
-			const foundNoteToEdit = currentClient.notes[noteIndex];
-			const notesWithoutEditNote = currentClient.notes.filter((note, index) => {
+			const foundNoteToEdit = notesWithconvertedDates[noteIndex];
+			const notesWithoutEditNote = notesWithconvertedDates.filter((note, index) => {
 				return noteIndex !== index;
 			});
 			setNotesWithEditNoteRemoved(notesWithoutEditNote);
@@ -50,7 +61,7 @@ const EditNoteForm = () => {
 	useEffect(() => {
 		setFinalUpdatedNotes([...notesWithEditNoteRemoved, note]);
 	}, [notesWithEditNoteRemoved, note]);
-
+	console.log('note.date: ', note.date);
 	return !note ? (
 		'No Note Found'
 	) : (
@@ -68,16 +79,26 @@ const EditNoteForm = () => {
 								<Form onSubmit={handleSubmit}>
 									<Row>
 										<Col md={4}>
+											{/* <DatePicker selected={startDate} onChange={handleDateChange} /> */}
 											<Form.Group>
 												<Form.Label>Date:</Form.Label>
-												<Form.Control
+												<DatePicker
+													// selected={startDate}
+													selected={note.date}
+													onChange={handleDateChange}
+													className='form-control form-control-sm'
+													showMonthDropdown
+													showYearDropdown
+													dropdownMode='select'
+												/>
+												{/* <Form.Control
 													type='text'
 													size={textField}
 													name='date'
 													value={note.date}
 													onChange={handleChange}
 													required
-												/>
+												/> */}
 											</Form.Group>
 										</Col>
 										<Col md={8}>

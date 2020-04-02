@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-// import { ClientContext } from '../../contexts/ClientContextProvider';
 import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { Card, Table, Button } from 'react-bootstrap';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import NotFound from './NotFound';
 
@@ -42,15 +41,19 @@ const CriminalHistoryView = ({ client }) => {
 					</Table>
 				</Card.Body>
 				<Card.Footer>
-					<Button
-						variant='primary float-right'
-						size={button}
-						onClick={() => {
-							history.push(`/add-client-criminal-history/${client.id}`);
-						}}
-					>
-						Add Criminal History
-					</Button>
+					<Row>
+						<Col className='text-center'>
+							<Button
+								variant='primary'
+								size={button}
+								onClick={() => {
+									history.push(`/add-client-criminal-history/${client.id}`);
+								}}
+							>
+								Add Criminal History
+							</Button>
+						</Col>
+					</Row>
 				</Card.Footer>
 			</Card>
 		</>

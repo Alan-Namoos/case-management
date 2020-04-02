@@ -43,7 +43,7 @@ const MedicalHistoryView = ({ client }) => {
 					<Row>
 						<Col className='text-center'>
 							<Button
-								variant='primary float-right'
+								variant='primary'
 								size={button}
 								onClick={() => {
 									history.push(`/add-client-medical-history/${client.id}`);

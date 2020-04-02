@@ -26,3 +26,20 @@ body {
 	margin-left: 0;
 	border-bottom: 0;
 }
+
+button {
+	/* width: 30%; */
+}
+
+.react-datepicker-wrapper {
+	display: block;
+}
+
+.card-footer {
+	padding: 0.4rem 1.25rem;
+}
+
+.note-date {
+	margin-top: 5px;
+	display: block;
+}

@@ -5,6 +5,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 import uuid from 'uuid/v1';
+import DatePicker from 'react-datepicker';
 
 const NotesForm = () => {
 	const { appearance } = useContext(AppearanceContext);
@@ -20,8 +21,16 @@ const NotesForm = () => {
 		text: ''
 	});
 
+	const [startDate, setStartDate] = useState(new Date());
+
 	const handleChange = (e) => {
 		setNote({ ...note, [e.target.name]: e.target.value });
+	};
+
+	const handleDateChange = (date) => {
+		setStartDate(date);
+		setNote({ ...note, date: date });
+		console.log('DatePicker date: ', date);
 	};
 
 	const handleSubmit = (e) => {
@@ -51,14 +60,22 @@ const NotesForm = () => {
 										<Col md={4}>
 											<Form.Group>
 												<Form.Label>Date:</Form.Label>
-												<Form.Control
+												<DatePicker
+													selected={startDate}
+													onChange={handleDateChange}
+													className='form-control form-control-sm'
+													showMonthDropdown
+													showYearDropdown
+													dropdownMode='select'
+												/>
+												{/* <Form.Control
 													type='text'
 													size={textField}
 													name='date'
 													value={note.date}
 													onChange={handleChange}
 													required
-												/>
+												/> */}
 											</Form.Group>
 										</Col>
 										<Col md={8}>
