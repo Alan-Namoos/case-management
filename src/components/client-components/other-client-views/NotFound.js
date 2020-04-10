@@ -13,8 +13,6 @@ const NotFound = ({ component, action }) => {
 							{action && <Link to={action}> + {component}</Link>} |{' '}
 							<Link to='/add-new-client'>Add New Client</Link> | <Link to='/'>Home</Link>
 						</div>
-						<div></div>
-						<div></div>
 					</Card.Body>
 				</Card>
 			</Col>

@@ -111,7 +111,7 @@ const ClientContextProvider = (props) => {
 			});
 	};
 
-	const updateClientNotes = (itemToUpdate, newInformation, id) => {
+	const updateClientMedicalCriminalNotes = (itemToUpdate, newInformation, id) => {
 		db.collection('clients')
 			.doc(id)
 			.update({
@@ -220,9 +220,8 @@ const ClientContextProvider = (props) => {
 				isLoading,
 				CreateNewClient,
 				updateClientInformation,
-				// updateMedicalCriminalHistoryNotes,
 				deleteClient,
-				updateClientNotes
+				updateClientMedicalCriminalNotes
 			}}
 		>
 			{props.children}

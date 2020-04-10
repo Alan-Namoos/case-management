@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { Link } from 'react-router-dom';
 import { Card, Table, Container, Row, Col, ListGroup } from 'react-bootstrap';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../../LoadingSpinner';
 import { useHistory } from 'react-router-dom';
-import { useFindClient } from '../customHooks/useFindClient';
-import NotFound from './NotFound';
+import { useFindClient } from '../../customHooks/useFindClient';
+import NotFound from '../other-client-views/NotFound';
 
 const NewClientInformationView = () => {
 	const { appearance } = useContext(AppearanceContext);

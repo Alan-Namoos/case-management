@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import NotFound from './NotFound';
-import { ClientContext } from '../../contexts/ClientContext';
+import NotFound from '../other-client-views/NotFound';
+import { ClientContext } from '../../../contexts/ClientContext';
 import { orderBy } from 'lodash';
 
 const NotesView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
 	const { button } = appearance;
-	const { updateClientNotes } = useContext(ClientContext);
+	const { updateClientMedicalCriminalNotes } = useContext(ClientContext);
 	const history = useHistory();
 	const [sortedNotes, setSortedNotes] = useState(null);
 
@@ -22,23 +22,22 @@ const NotesView = ({ client }) => {
 			const updatedNotes = client.notes.filter((note, index) => {
 				return noteIndex !== index;
 			});
-			updateClientNotes('notes', updatedNotes, client.id);
+			updateClientMedicalCriminalNotes('notes', updatedNotes, client.id);
 		}
 	};
 
 	useEffect(() => {
 		if (client.notes) {
-			console.log('client.notes: ', client.notes);
-			const notesWithconvertedDates = client.notes.map((note) => {
+			// convert the date that is coming form firestore from TIMESTAMP to JS Date Object
+			const notesWithConvertedDates = client.notes.map((note) => {
 				return { ...note, date: note.date.toDate() };
 			});
-			console.log('notesWithconvertedDates: ', notesWithconvertedDates);
-			const notesSorted = orderBy(notesWithconvertedDates, ['date'], ['desc']);
+
+			const notesSorted = orderBy(notesWithConvertedDates, ['date'], ['desc']);
 			setSortedNotes(notesSorted);
 		}
 	}, [client.notes]);
 
-	// return client.notes.length === 0 ? (
 	return !sortedNotes ? (
 		<NotFound component='Notes' action={`/add-client-note/${client.id}`} />
 	) : (

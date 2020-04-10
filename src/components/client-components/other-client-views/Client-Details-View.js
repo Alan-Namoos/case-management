@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { useParams, useHistory } from 'react-router-dom';
-import PersonalInformationView from './Personal-Information-View';
-import ImmigrationInformationView from './Immigration-Information-View';
-import ContactInformationView from './Contact-Information-View';
-import MedicalHistoryView from './Medical-History-View';
-import CriminalHistoryView from './Criminal-History-View';
+import PersonalInformationView from '../personal-information/Personal-Information-View';
+import ImmigrationInformationView from '../immigration-information/Immigration-Information-View';
+import ContactInformationView from '../contact-information/Contact-Information-View';
+import MedicalHistoryView from '../medical-history/Medical-History-View';
+import CriminalHistoryView from '../criminal-history/Criminal-History-View';
 import { Row, Col, Tabs, Tab, Container, Card } from 'react-bootstrap';
-import NotesView from './NotesView';
-import NotFound from './NotFound';
+import NotesView from '../notes/Notes-View';
+import NotFound from '../other-client-views/NotFound';
 
 const ClientDetailsView = () => {
 	const { appearance } = useContext(AppearanceContext);

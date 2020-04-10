@@ -1,69 +1,47 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import React, { useState, useContext } from 'react';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
-import { useFindClient } from '../customHooks/useFindClient';
+import { useFindClient } from '../../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
+import uuid from 'uuid/v1';
 import DatePicker from 'react-datepicker';
 
-const EditNoteForm = () => {
+const CriminalHistoryForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, updateClientNotes } = useContext(ClientContext);
+	const { clients, updateClientInformation } = useContext(ClientContext);
 	const history = useHistory();
-	const { id, noteID } = useParams();
+	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
-	const [note, setNote] = useState({
-		noteID: '',
+	const [criminalRecord, setCriminalRecord] = useState({
+		criminalRecordID: '',
 		date: '',
-		title: '',
-		text: ''
+		location: '',
+		CaseNumber: '',
+		description: ''
 	});
 
-	const [notesWithEditNoteRemoved, setNotesWithEditNoteRemoved] = useState([]);
-	const [finalUpdatedNotes, setFinalUpdatedNotes] = useState(null);
-	// const [startDate, setStartDate] = useState(new Date());
+	const [startDate, setStartDate] = useState(new Date());
 
 	const handleChange = (e) => {
-		setNote({ ...note, [e.target.name]: e.target.value });
+		setCriminalRecord({ ...criminalRecord, [e.target.name]: e.target.value });
 	};
 
 	const handleDateChange = (date) => {
-		// setStartDate(date);
-		setNote({ ...note, date: date });
-		console.log('DatePicker date: ', date);
+		setStartDate(date);
+		setCriminalRecord({ ...criminalRecord, date: date });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		updateClientNotes('notes', finalUpdatedNotes, id);
+		const newCriminalRecord = { ...criminalRecord, criminalRecordID: uuid() };
+		updateClientInformation('criminalHistory', newCriminalRecord, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
-	useEffect(() => {
-		if (currentClient.notes && noteID) {
-			const notesWithconvertedDates = currentClient.notes.map((note) => {
-				return { ...note, date: note.date.toDate() };
-			});
-			const noteIndex = notesWithconvertedDates.findIndex((note) => {
-				return noteID === note.noteID;
-			});
-
-			const foundNoteToEdit = notesWithconvertedDates[noteIndex];
-			const notesWithoutEditNote = notesWithconvertedDates.filter((note, index) => {
-				return noteIndex !== index;
-			});
-			setNotesWithEditNoteRemoved(notesWithoutEditNote);
-			setNote(foundNoteToEdit);
-		}
-	}, [currentClient.notes, noteID]);
-
-	useEffect(() => {
-		setFinalUpdatedNotes([...notesWithEditNoteRemoved, note]);
-	}, [notesWithEditNoteRemoved, note]);
-	console.log('note.date: ', note.date);
-	return !note ? (
-		'No Note Found'
+	return !currentClient.criminalHistory ? (
+		'No Criminal History Found!'
 	) : (
 		<>
 			<Container>
@@ -73,18 +51,16 @@ const EditNoteForm = () => {
 							<Card.Header as={cardTitle}>
 								{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
 								{currentClient.personalInformation && currentClient.personalInformation.lastName} -
-								Notes
+								Criminal History
 							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>
-										<Col md={4}>
-											{/* <DatePicker selected={startDate} onChange={handleDateChange} /> */}
+										<Col>
 											<Form.Group>
 												<Form.Label>Date:</Form.Label>
 												<DatePicker
-													// selected={startDate}
-													selected={note.date}
+													selected={startDate}
 													onChange={handleDateChange}
 													className='form-control form-control-sm'
 													showMonthDropdown
@@ -95,20 +71,33 @@ const EditNoteForm = () => {
 													type='text'
 													size={textField}
 													name='date'
-													value={note.date}
+													value={criminalRecord.date}
 													onChange={handleChange}
 													required
 												/> */}
 											</Form.Group>
 										</Col>
-										<Col md={8}>
+										<Col>
 											<Form.Group>
-												<Form.Label>Title:</Form.Label>
+												<Form.Label>Location:</Form.Label>
 												<Form.Control
 													type='text'
 													size={textField}
-													name='title'
-													value={note.title}
+													name='location'
+													value={criminalRecord.location}
+													onChange={handleChange}
+													required
+												/>
+											</Form.Group>
+										</Col>
+										<Col>
+											<Form.Group>
+												<Form.Label>Criminal Case #:</Form.Label>
+												<Form.Control
+													type='text'
+													size={textField}
+													name='CaseNumber'
+													value={criminalRecord.CaseNumber}
 													onChange={handleChange}
 													required
 												/>
@@ -119,13 +108,14 @@ const EditNoteForm = () => {
 									<Row>
 										<Col>
 											<Form.Group>
-												<Form.Label>Note:</Form.Label>
+												<Form.Label>Description:</Form.Label>
 												<Form.Control
-													as='textarea'
-													rows='3'
-													name='text'
-													value={note.text}
+													type='text'
+													size={textField}
+													name='description'
+													value={criminalRecord.description}
 													onChange={handleChange}
+													required
 												/>
 											</Form.Group>
 										</Col>
@@ -154,4 +144,4 @@ const EditNoteForm = () => {
 	);
 };
 
-export default EditNoteForm;
+export default CriminalHistoryForm;
