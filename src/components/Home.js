@@ -11,10 +11,9 @@ const Home = () => {
 	const { cardTitle, button, notSet } = appearance;
 	// const [lastFiveClients, setLastFiveClients] = useState([]);
 	const history = useHistory();
-	console.count('Home RENDERED');
-	// console.log('Home - clients Array -> ', clients.length);
-	console.log('Home -> clients: ', clients);
-	console.log('Home -> isLoading: ', isLoading);
+	// console.count('Home RENDERED');
+	// console.log('Home -> clients: ', clients);
+	// console.log('Home -> isLoading: ', isLoading);
 
 	return !clients || clients.length === 0 ? (
 		isLoading ? (
@@ -32,22 +31,6 @@ const Home = () => {
 			</Container>
 		)
 	) : (
-		// <>
-		// 	<h4>Clients Table Loaded</h4>
-		// 	<h4>{typeof isLoading}</h4>
-		// 	{/* <h4>{clients[0].immigrationInformation.status.aNumber}</h4> */}
-		// 	{clients.map((client) => {
-		// 		return (
-		// 			<div>
-		// 				<span key={client.id}>
-		// 					{client.personalInformation.firstName} {client.personalInformation.lastName}
-		// 				</span>{' '}
-		// 				|<span>{client.immigrationInformation.status.aNumber || 'not set'}</span>
-		// 			</div>
-		// 		);
-		// 	})}
-		// </>
-
 		<Container>
 			<Row>
 				<Col>
@@ -60,7 +43,7 @@ const Home = () => {
 										<th>Name</th>
 										<th>A#</th>
 										<th>Phone #</th>
-										<th>Action</th>
+										<th>Actions</th>
 									</tr>
 								</thead>
 								<tbody>

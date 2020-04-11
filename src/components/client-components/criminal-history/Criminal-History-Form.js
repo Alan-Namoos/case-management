@@ -16,10 +16,10 @@ const CriminalHistoryForm = () => {
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
 	const [criminalRecord, setCriminalRecord] = useState({
 		criminalRecordID: '',
-		date: '',
+		date: new Date(),
 		location: '',
 		CaseNumber: '',
-		description: ''
+		description: '',
 	});
 
 	const [startDate, setStartDate] = useState(new Date());
@@ -66,6 +66,12 @@ const CriminalHistoryForm = () => {
 													showMonthDropdown
 													showYearDropdown
 													dropdownMode='select'
+													// showTimeSelect
+													// timeFormat='h:mm aa'
+													// timeIntervals={15}
+													// timeCaption='time'
+													// withPortal
+													required
 												/>
 												{/* <Form.Control
 													type='text'

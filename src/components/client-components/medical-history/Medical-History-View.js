@@ -14,29 +14,39 @@ const MedicalHistoryView = ({ client }) => {
 	const [sortedMedicalRecords, setSortedMedicalRecords] = useState(null);
 
 	const deleteMedicalRecord = (medicalRecordID) => {
-		if (medicalRecordID) {
-			const medicalRecordIndex = client.medicalHistory.findIndex((medicalRecord) => {
-				return medicalRecordID === medicalRecord.medicalRecordID;
-			});
+		if (window.confirm('Are you sure you want to DELETE this Medical Record ?')) {
+			if (medicalRecordID) {
+				const medicalRecordIndex = sortedMedicalRecords.findIndex((medicalRecord) => {
+					return medicalRecordID === medicalRecord.medicalRecordID;
+				});
 
-			const updatedMedicalRecords = client.medicalHistory.filter((medicalRecord, index) => {
-				return medicalRecordIndex !== index;
-			});
-			updateClientMedicalCriminalNotes('medicalHistory', updatedMedicalRecords, client.id);
+				const updatedMedicalRecords = sortedMedicalRecords.filter((medicalRecord, index) => {
+					return medicalRecordIndex !== index;
+				});
+				updateClientMedicalCriminalNotes('medicalHistory', updatedMedicalRecords, client.id);
+			}
+		} else {
+			return;
 		}
 	};
 
 	useEffect(() => {
-		if (client.medicalHistory) {
+		if (client.medicalHistory.length > 0) {
 			// convert the date that is coming form firestore from TIMESTAMP to JS Date Object
 			const medicalRecordsWithConvertedDates = client.medicalHistory.map((medicalRecord) => {
 				return { ...medicalRecord, date: medicalRecord.date.toDate() };
 			});
 
-			const medicalRecordsSorted = orderBy(medicalRecordsWithConvertedDates, ['date'], ['desc']);
+			const medicalRecordsSorted = orderBy(medicalRecordsWithConvertedDates, ['date'], ['asc']);
 			setSortedMedicalRecords(medicalRecordsSorted);
 		}
 	}, [client.medicalHistory]);
+
+	useEffect(() => {
+		if (client.medicalHistory.length === 0) {
+			setSortedMedicalRecords(null);
+		}
+	}, [client.medicalHistory.length]);
 
 	return !sortedMedicalRecords ? (
 		<NotFound component='Medical History' action={`/add-client-medical-history/${client.id}`} />

@@ -14,34 +14,38 @@ const CriminalHistoryView = ({ client }) => {
 	const [sortedCriminalRecords, setSortedCriminalRecords] = useState(null);
 
 	const deleteCriminalRecord = (criminalRecordID) => {
-		if (criminalRecordID) {
-			const criminalRecordIndex = client.criminalHistory.findIndex((criminalRecord) => {
-				return criminalRecordID === criminalRecord.criminalRecordID;
-			});
+		if (window.confirm('Are you sure you want to DELETE this Criminal Record ?')) {
+			if (criminalRecordID) {
+				const criminalRecordIndex = sortedCriminalRecords.findIndex((criminalRecord) => {
+					return criminalRecordID === criminalRecord.criminalRecordID;
+				});
 
-			const updatedCriminalRecords = client.criminalHistory.filter((criminalRecord, index) => {
-				return criminalRecordIndex !== index;
-			});
-			updateClientMedicalCriminalNotes('criminalHistory', updatedCriminalRecords, client.id);
+				const updatedCriminalRecords = sortedCriminalRecords.filter((criminalRecord, index) => {
+					return criminalRecordIndex !== index;
+				});
+				updateClientMedicalCriminalNotes('criminalHistory', updatedCriminalRecords, client.id);
+			}
+		} else {
+			return;
 		}
 	};
 
 	useEffect(() => {
-		if (client.criminalHistory) {
+		if (client.criminalHistory.length > 0) {
 			// convert the date that is coming form firestore from TIMESTAMP to JS Date Object
 			const criminalRecordsWithConvertedDates = client.criminalHistory.map((criminalRecord) => {
 				return { ...criminalRecord, date: criminalRecord.date.toDate() };
 			});
-			const criminalRecordsSorted = orderBy(criminalRecordsWithConvertedDates, ['date'], ['desc']);
+			const criminalRecordsSorted = orderBy(criminalRecordsWithConvertedDates, ['date'], ['asc']);
 			setSortedCriminalRecords(criminalRecordsSorted);
 		}
 	}, [client.criminalHistory]);
 
 	useEffect(() => {
-		if (!sortedCriminalRecords) {
+		if (client.criminalHistory.length === 0) {
 			setSortedCriminalRecords(null);
 		}
-	}, [sortedCriminalRecords]);
+	}, [client.criminalHistory.length]);
 
 	return !sortedCriminalRecords ? (
 		<NotFound component='Criminal History' action={`/add-client-criminal-history/${client.id}`} />

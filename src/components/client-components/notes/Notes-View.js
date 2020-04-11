@@ -14,15 +14,19 @@ const NotesView = ({ client }) => {
 	const [sortedNotes, setSortedNotes] = useState(null);
 
 	const deleteNote = (noteID) => {
-		if (noteID) {
-			const noteIndex = client.notes.findIndex((note) => {
-				return noteID === note.noteID;
-			});
+		if (window.confirm('Are you sure you want to DELETE this Note ?')) {
+			if (noteID) {
+				const noteIndex = sortedNotes.findIndex((note) => {
+					return noteID === note.noteID;
+				});
 
-			const updatedNotes = client.notes.filter((note, index) => {
-				return noteIndex !== index;
-			});
-			updateClientMedicalCriminalNotes('notes', updatedNotes, client.id);
+				const updatedNotes = sortedNotes.filter((note, index) => {
+					return noteIndex !== index;
+				});
+				updateClientMedicalCriminalNotes('notes', updatedNotes, client.id);
+			}
+		} else {
+			return;
 		}
 	};
 
@@ -37,6 +41,12 @@ const NotesView = ({ client }) => {
 			setSortedNotes(notesSorted);
 		}
 	}, [client.notes]);
+
+	useEffect(() => {
+		if (client.notes.length === 0) {
+			setSortedNotes(null);
+		}
+	}, [client.notes.length]);
 
 	return !sortedNotes ? (
 		<NotFound component='Notes' action={`/add-client-note/${client.id}`} />

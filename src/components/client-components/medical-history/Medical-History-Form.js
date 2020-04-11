@@ -16,9 +16,9 @@ const MedicalHistoryForm = () => {
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
 	const [medicalRecord, setMedicalRecord] = useState({
 		medicalRecordID: '',
-		date: '',
+		date: new Date(),
 		location: '',
-		description: ''
+		description: '',
 	});
 
 	const [startDate, setStartDate] = useState(new Date());

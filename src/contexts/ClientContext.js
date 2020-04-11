@@ -28,7 +28,7 @@ const ClientContextProvider = (props) => {
 			employer: '',
 			jobTitle: '',
 			role: '',
-			gender: ''
+			gender: '',
 		},
 
 		contactInformation: {
@@ -36,36 +36,36 @@ const ClientContextProvider = (props) => {
 			homePhone: '',
 			email: '',
 			mailingAddress: '',
-			physicalAddress: ''
+			physicalAddress: '',
 		},
 
 		immigrationInformation: {
 			status: {
 				aNumber: '',
 				currentStatus: '',
-				expirationDate: ''
+				expirationDate: '',
 			},
 			passport: {
 				issuingCountry: '',
 				expirationDate: '',
-				withClient: ''
+				withClient: '',
 			},
 			lastVisitToUS: {
 				dateOfEntry: '',
 				portOfEntry: '',
 				status: '',
-				lawfulEntry: ''
+				lawfulEntry: '',
 			},
 			detention: {
 				isDetained: '',
 				dateOfArrest: '',
 				location: '',
-				dateOfRelease: ''
-			}
+				dateOfRelease: '',
+			},
 		},
 		medicalHistory: [],
 		criminalHistory: [],
-		notes: []
+		notes: [],
 	};
 	const [client, setClient] = useState(clientInitialValue);
 
@@ -81,8 +81,8 @@ const ClientContextProvider = (props) => {
 			contactInformation: initialContactInformation,
 			immigrationInformation: {
 				...client.immigrationInformation,
-				status: immigrationInformationStatus
-			}
+				status: immigrationInformationStatus,
+			},
 		});
 		setIsNewClient(true);
 	};
@@ -97,7 +97,7 @@ const ClientContextProvider = (props) => {
 			updateOperation = { [itemToUpdate]: newInformation };
 		} else {
 			updateOperation = {
-				[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation)
+				[itemToUpdate]: firebase.firestore.FieldValue.arrayUnion(newInformation),
 			};
 		}
 		db.collection('clients')
@@ -115,7 +115,7 @@ const ClientContextProvider = (props) => {
 		db.collection('clients')
 			.doc(id)
 			.update({
-				[itemToUpdate]: newInformation
+				[itemToUpdate]: newInformation,
 			})
 			.then(() => {
 				console.log('ClientContext -> Note was UPDATED!');
@@ -126,15 +126,19 @@ const ClientContextProvider = (props) => {
 	};
 
 	const deleteClient = (id) => {
-		db.collection('clients')
-			.doc(id)
-			.delete()
-			.then(() => {
-				console.log('Client was deleted');
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
+		if (window.confirm('Are you sure you want to DELETE this Client ?')) {
+			db.collection('clients')
+				.doc(id)
+				.delete()
+				.then(() => {
+					console.log('Client was deleted');
+				})
+				.catch((error) => {
+					console.log(error.message);
+				});
+		} else {
+			return;
+		}
 	};
 
 	// [1] Gets all Firestore clients documents (if any)
@@ -158,7 +162,7 @@ const ClientContextProvider = (props) => {
 				querySnapshot.forEach((doc) => {
 					firestoreClients.push({ ...doc.data(), id: doc.id });
 				});
-				console.log('ClientContext -> useEffect -> Get all Firestore clients: ', firestoreClients);
+				// console.log('ClientContext -> useEffect -> Get all Firestore clients: ', firestoreClients);
 				setClients(firestoreClients);
 				setIsLoading(false);
 			},
@@ -194,22 +198,22 @@ const ClientContextProvider = (props) => {
 		}
 	}, [client, isNewClient]);
 
-	useEffect(() => {
-		db.collection('clients')
-			.doc('1iF7shMGu7aFuKh8ydlF')
-			.collection('cases')
-			.get()
-			.then((snapshot) => {
-				const data = snapshot.docs.map((doc) => {
-					return { ...doc.data(), id: doc.id };
-				});
-				console.log('subCollection data: ', data);
-			});
-	}, []);
+	// useEffect(() => {
+	// 	db.collection('clients')
+	// 		.doc('1iF7shMGu7aFuKh8ydlF')
+	// 		.collection('cases')
+	// 		.get()
+	// 		.then((snapshot) => {
+	// 			const data = snapshot.docs.map((doc) => {
+	// 				return { ...doc.data(), id: doc.id };
+	// 			});
+	// 			console.log('subCollection data: ', data);
+	// 		});
+	// }, []);
 
-	console.count('ClientContext RENDERED');
-	console.log('ClientContext -> clients: ', clients);
-	console.log('ClientContext -> isLoading: ', isLoading);
+	// console.count('ClientContext RENDERED');
+	// console.log('ClientContext -> clients: ', clients);
+	// console.log('ClientContext -> isLoading: ', isLoading);
 
 	return (
 		<ClientContext.Provider
@@ -221,7 +225,7 @@ const ClientContextProvider = (props) => {
 				CreateNewClient,
 				updateClientInformation,
 				deleteClient,
-				updateClientMedicalCriminalNotes
+				updateClientMedicalCriminalNotes,
 			}}
 		>
 			{props.children}

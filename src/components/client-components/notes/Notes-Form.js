@@ -16,9 +16,9 @@ const NotesForm = () => {
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
 	const [note, setNote] = useState({
 		noteID: '',
-		date: '',
+		date: new Date(),
 		title: '',
-		text: ''
+		text: '',
 	});
 
 	const [startDate, setStartDate] = useState(new Date());
