@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
-import { useFindClient } from '../customHooks/useFindClient';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
+import { useFindClient } from '../../customHooks/useFindClient';
 import { useHistory, useParams } from 'react-router-dom';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 

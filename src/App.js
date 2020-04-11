@@ -4,16 +4,18 @@ import AppearanceContextProvider from './contexts/AppearanceContext';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
-import ContactInformationForm from './components/clientForms/Contact-Information-Form';
-import PersonalInformationForm from './components/clientForms/Personal-Information-Form';
-import ImmigrationInformationForm from './components/clientForms/Immigration-Information-Form';
-import MedicalHistoryForm from './components/clientForms/Medical-History-Form';
-import CriminalHistoryForm from './components/clientForms/Criminal-History-Form';
-import ClientDetailsView from './components/clientViews/Client-Details-View';
-import NewClientInformationView from './components/clientViews/New-Client-Information-View';
-import NewClientForm from './components/clientForms/New-Client-Form';
-import NotesForm from './components/clientForms/Notes-Form';
-import EditNoteForm from './components/clientForms/Edit-Note-Form';
+import ContactInformationForm from './components/client-components/contact-information/Contact-Information-Form';
+import PersonalInformationForm from './components/client-components/personal-information/Personal-Information-Form';
+import ImmigrationInformationForm from './components/client-components/immigration-information/Immigration-Information-Form';
+import MedicalHistoryForm from './components/client-components/medical-history/Medical-History-Form';
+import CriminalHistoryForm from './components/client-components/criminal-history/Criminal-History-Form';
+import ClientDetailsView from './components/client-components/other-client-views/Client-Details-View';
+import NewClientInformationView from './components/client-components/new-client/New-Client-Information-View';
+import NewClientForm from './components/client-components/new-client/New-Client-Form';
+import NotesForm from './components/client-components/notes/Notes-Form';
+import EditNoteForm from './components/client-components/notes/Edit-Note-Form';
+import EditMedicalRecordForm from './components/client-components/medical-history/Edit-Medical-Record-Form';
+import EditCriminalRecordForm from './components/client-components/criminal-history/Edit-Criminal-Record-From';
 
 function App() {
 	return (
@@ -44,6 +46,14 @@ function App() {
 							<Route path='/view-client-details/:id' component={ClientDetailsView} />
 							<Route path='/add-client-note/:id/' component={NotesForm} />
 							<Route path='/edit-client-note/:id/:noteID' component={EditNoteForm} />
+							<Route
+								path='/edit-client-medical-record/:id/:medicalRecordID'
+								component={EditMedicalRecordForm}
+							/>
+							<Route
+								path='/edit-client-criminal-record/:id/:criminalRecordID'
+								component={EditCriminalRecordForm}
+							/>
 						</Switch>
 					</AppearanceContextProvider>
 				</ClientContextProvider>

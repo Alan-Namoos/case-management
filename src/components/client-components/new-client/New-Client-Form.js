@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { useHistory } from 'react-router-dom';
 
 const NewClientForm = () => {

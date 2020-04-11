@@ -1,48 +1,35 @@
-import React, { useState, useContext } from 'react';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import React, { useState, useContext, useEffect } from 'react';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
+import { useFindClient } from '../../customHooks/useFindClient';
 import { useHistory, useParams } from 'react-router-dom';
-import { useFindClient } from '../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
-import uuid from 'uuid/v1';
-import DatePicker from 'react-datepicker';
 
-const NotesForm = () => {
+const ContactInformationForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
 	const { clients, updateClientInformation } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
-	const [note, setNote] = useState({
-		noteID: '',
-		date: '',
-		title: '',
-		text: ''
-	});
+	const [contactInformation, setContactInformation] = useState({});
 
-	const [startDate, setStartDate] = useState(new Date());
+	useEffect(() => {
+		setContactInformation(currentClient.contactInformation);
+	}, [currentClient]);
 
 	const handleChange = (e) => {
-		setNote({ ...note, [e.target.name]: e.target.value });
-	};
-
-	const handleDateChange = (date) => {
-		setStartDate(date);
-		setNote({ ...note, date: date });
-		console.log('DatePicker date: ', date);
+		setContactInformation({ ...contactInformation, [e.target.name]: e.target.value });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		const newNote = { ...note, noteID: uuid() };
-		updateClientInformation('notes', newNote, id);
+		updateClientInformation('contactInformation', contactInformation, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
-	return !currentClient.notes ? (
-		'No Note Found'
+	return !contactInformation ? (
+		'No Contact Information Found!'
 	) : (
 		<>
 			<Container>
@@ -52,56 +39,72 @@ const NotesForm = () => {
 							<Card.Header as={cardTitle}>
 								{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
 								{currentClient.personalInformation && currentClient.personalInformation.lastName} -
-								Notes
+								Contact Information
 							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>
-										<Col md={4}>
+										<Col>
 											<Form.Group>
-												<Form.Label>Date:</Form.Label>
-												<DatePicker
-													selected={startDate}
-													onChange={handleDateChange}
-													className='form-control form-control-sm'
-													showMonthDropdown
-													showYearDropdown
-													dropdownMode='select'
-												/>
-												{/* <Form.Control
-													type='text'
-													size={textField}
-													name='date'
-													value={note.date}
-													onChange={handleChange}
-													required
-												/> */}
-											</Form.Group>
-										</Col>
-										<Col md={8}>
-											<Form.Group>
-												<Form.Label>Title:</Form.Label>
+												<Form.Label>Mobile Phone:</Form.Label>
 												<Form.Control
 													type='text'
+													name='mobilePhone'
 													size={textField}
-													name='title'
-													value={note.title}
+													value={contactInformation.mobilePhone || ''}
 													onChange={handleChange}
 													required
+												/>
+											</Form.Group>
+										</Col>
+										<Col>
+											<Form.Group>
+												<Form.Label>Home Phone:</Form.Label>
+												<Form.Control
+													type='text'
+													name='homePhone'
+													size={textField}
+													value={contactInformation.homePhone || ''}
+													onChange={handleChange}
 												/>
 											</Form.Group>
 										</Col>
 									</Row>
-
 									<Row>
 										<Col>
 											<Form.Group>
-												<Form.Label>Note:</Form.Label>
+												<Form.Label>Email Address:</Form.Label>
 												<Form.Control
-													as='textarea'
-													rows='3'
-													name='text'
-													value={note.text}
+													type='text'
+													name='email'
+													size={textField}
+													value={contactInformation.email || ''}
+													onChange={handleChange}
+												/>
+											</Form.Group>
+										</Col>
+									</Row>
+									<Row>
+										<Col>
+											<Form.Group>
+												<Form.Label>Mailing Address:</Form.Label>
+												<Form.Control
+													type='text'
+													name='mailingAddress'
+													size={textField}
+													value={contactInformation.mailingAddress || ''}
+													onChange={handleChange}
+												/>
+											</Form.Group>
+										</Col>
+										<Col>
+											<Form.Group>
+												<Form.Label>Physical Address:</Form.Label>
+												<Form.Control
+													type='text'
+													name='physicalAddress'
+													size={textField}
+													value={contactInformation.physicalAddress || ''}
 													onChange={handleChange}
 												/>
 											</Form.Group>
@@ -131,4 +134,4 @@ const NotesForm = () => {
 	);
 };
 
-export default NotesForm;
+export default ContactInformationForm;

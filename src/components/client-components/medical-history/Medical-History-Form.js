@@ -1,35 +1,46 @@
 import React, { useState, useContext } from 'react';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
-import { useFindClient } from '../customHooks/useFindClient';
+import { useFindClient } from '../../customHooks/useFindClient';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
+import uuid from 'uuid/v1';
+import DatePicker from 'react-datepicker';
 
-const CriminalHistoryForm = () => {
+const MedicalHistoryForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
-	const { clients, updateMedicalCriminalHistoryNotes } = useContext(ClientContext);
+	const { clients, updateClientInformation } = useContext(ClientContext);
 	const history = useHistory();
 	const { id } = useParams();
 	const [currentClient] = useFindClient(clients, id, history); // <= custom hook
-	const [criminalHistory, setCriminalHistory] = useState({
+	const [medicalRecord, setMedicalRecord] = useState({
+		medicalRecordID: '',
 		date: '',
 		location: '',
-		CaseNumber: '',
 		description: ''
 	});
+
+	const [startDate, setStartDate] = useState(new Date());
+
 	const handleChange = (e) => {
-		setCriminalHistory({ ...criminalHistory, [e.target.name]: e.target.value });
+		setMedicalRecord({ ...medicalRecord, [e.target.name]: e.target.value });
+	};
+
+	const handleDateChange = (date) => {
+		setStartDate(date);
+		setMedicalRecord({ ...medicalRecord, date: date });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		updateMedicalCriminalHistoryNotes('criminalHistory', criminalHistory, id);
+		const newMedicalRecord = { ...medicalRecord, medicalRecordID: uuid() };
+		updateClientInformation('medicalHistory', newMedicalRecord, id);
 		history.push(`/view-client-details/${id}`);
 	};
 
-	return !criminalHistory ? (
-		'No Criminal History'
+	return !currentClient.medicalHistory ? (
+		'No Medical History Found!'
 	) : (
 		<>
 			<Container>
@@ -39,45 +50,40 @@ const CriminalHistoryForm = () => {
 							<Card.Header as={cardTitle}>
 								{currentClient.personalInformation && currentClient.personalInformation.firstName}{' '}
 								{currentClient.personalInformation && currentClient.personalInformation.lastName} -
-								Criminal History
+								Medical History
 							</Card.Header>
 							<Card.Body>
 								<Form onSubmit={handleSubmit}>
 									<Row>
-										<Col>
+										<Col xs={4}>
 											<Form.Group>
 												<Form.Label>Date:</Form.Label>
-												<Form.Control
-													type='text'
-													size={textField}
-													name='date'
-													value={criminalHistory.date}
-													onChange={handleChange}
-													required
+												<DatePicker
+													selected={startDate}
+													onChange={handleDateChange}
+													className='form-control form-control-sm'
+													showMonthDropdown
+													showYearDropdown
+													dropdownMode='select'
 												/>
+												{/* <Form.Control
+														type='text'
+														size={textField}
+														name='date'
+														value={medicalHistory.date}
+														onChange={handleChange}
+														required
+													/> */}
 											</Form.Group>
 										</Col>
-										<Col>
+										<Col xs={8}>
 											<Form.Group>
 												<Form.Label>Location:</Form.Label>
 												<Form.Control
 													type='text'
 													size={textField}
 													name='location'
-													value={criminalHistory.location}
-													onChange={handleChange}
-													required
-												/>
-											</Form.Group>
-										</Col>
-										<Col>
-											<Form.Group>
-												<Form.Label>Criminal Case #:</Form.Label>
-												<Form.Control
-													type='text'
-													size={textField}
-													name='CaseNumber'
-													value={criminalHistory.CaseNumber}
+													value={medicalRecord.location}
 													onChange={handleChange}
 													required
 												/>
@@ -93,7 +99,7 @@ const CriminalHistoryForm = () => {
 													type='text'
 													size={textField}
 													name='description'
-													value={criminalHistory.description}
+													value={medicalRecord.description}
 													onChange={handleChange}
 													required
 												/>
@@ -124,4 +130,4 @@ const CriminalHistoryForm = () => {
 	);
 };
 
-export default CriminalHistoryForm;
+export default MedicalHistoryForm;

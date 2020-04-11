@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, ListGroup, Container } from 'react-bootstrap';
-import { ClientContext } from '../../contexts/ClientContext';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { ClientContext } from '../../../contexts/ClientContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { useHistory, useParams } from 'react-router-dom';
-import { useFindClient } from '../customHooks/useFindClient';
+import { useFindClient } from '../../customHooks/useFindClient';
 
 const ImmigrationInformationForm = () => {
 	const { appearance } = useContext(AppearanceContext);

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { AppearanceContext } from '../../contexts/AppearanceContext';
+import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { Row, Col, Card, Table, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import NotFound from './NotFound';
+import NotFound from '../other-client-views/NotFound';
 
 const ContactInformationView = ({ client }) => {
 	const { appearance } = useContext(AppearanceContext);
