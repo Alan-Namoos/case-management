@@ -1,5 +1,6 @@
 body {
-	background-color: #f5f5f5;
+	background-color: #ededed;
+	/* background-color: #f5f5f5; */
 	color: #000000;
 }
 .form-label {
@@ -7,7 +8,9 @@ body {
 }
 
 .card {
-	border: 1px solid #838383e0;
+	/* border: 1px solid #838383e0; */
+	border: 1px solid #9ba4b5;
+	/* box-shadow: 0 2px 10px #d0d0d0; */
 }
 
 .client-personal-information-table {
@@ -15,9 +18,24 @@ body {
 }
 
 .nav-tabs .nav-link.active {
+	/* color: #007bff; */
 	color: #ffffff;
-	background-color: #007bff;
-	font-size: 1.1rem;
+	/* color: #000000; */
+	/* background-color: #94c4f8; */
+	background-color: #347ecd;
+	border-color: #347ecd;
+
+	/* font-size: 1.1rem; */
+}
+
+a,
+.btn-link {
+	color: #347ecd;
+}
+
+.btn-primary {
+	background-color: #347ecd;
+	border-color: #347ecd;
 }
 
 .card-header-tabs {
