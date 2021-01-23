@@ -1,10 +1,12 @@
 import React, { useState, createContext, useEffect } from 'react';
 import firebase from '../firebase';
 import { db } from '../firebase';
+// import { AuthContext } from './AuthContext';
 
 export const ClientContext = createContext();
 
 const ClientContextProvider = (props) => {
+	// const { user } = useContext(AuthContext);
 	const [isNewClient, setIsNewClient] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentClientID, setCurrentClientID] = useState(null);
@@ -68,6 +70,9 @@ const ClientContextProvider = (props) => {
 		notes: [],
 	};
 	const [client, setClient] = useState(clientInitialValue);
+	// const [appUser, setAppUser] = useState(user);
+
+	console.log('**** ClientContext ****');
 
 	// ==================== METHODS ============================
 	const CreateNewClient = (
@@ -86,6 +91,8 @@ const ClientContextProvider = (props) => {
 		});
 		setIsNewClient(true);
 	};
+
+	// ---------------------------------------------------------------------------------------------------------
 
 	const updateClientInformation = (itemToUpdate, newInformation, id) => {
 		let updateOperation = {};
@@ -111,6 +118,8 @@ const ClientContextProvider = (props) => {
 			});
 	};
 
+	// ---------------------------------------------------------------------------------------------------------
+
 	const updateClientMedicalCriminalNotes = (itemToUpdate, newInformation, id) => {
 		db.collection('clients')
 			.doc(id)
@@ -118,12 +127,14 @@ const ClientContextProvider = (props) => {
 				[itemToUpdate]: newInformation,
 			})
 			.then(() => {
-				console.log('ClientContext -> Note was UPDATED!');
+				console.log(`ClientContext -> ${itemToUpdate} was UPDATED!`);
 			})
 			.catch((error) => {
 				console.log(error.message);
 			});
 	};
+
+	// ---------------------------------------------------------------------------------------------------------
 
 	const deleteClient = (id) => {
 		if (window.confirm('Are you sure you want to DELETE this Client ?')) {
@@ -141,8 +152,13 @@ const ClientContextProvider = (props) => {
 		}
 	};
 
+	// ---------------------------------------------------------------------------------------------------------
+
 	// [1] Gets all Firestore clients documents (if any)
 	useEffect(() => {
+		// console.log('ClientContext - USER: ', appUser);
+		// console.log('ClientContext - Getting All Clients');
+
 		setIsLoading(true);
 		// db.collection('clients')
 		// 	.get()
@@ -155,6 +171,7 @@ const ClientContextProvider = (props) => {
 		// 		setClients(data);
 		// 		setIsLoading(false);
 		//   });
+		// if (appUser) {
 
 		const unsubscribe = db.collection('clients').onSnapshot(
 			(querySnapshot) => {
@@ -167,8 +184,8 @@ const ClientContextProvider = (props) => {
 				setIsLoading(false);
 			},
 			(error) => {
-				console.log('Error Message: ', error.message);
-				console.log('****** OFF LINE *******');
+				console.log('ClientContext - Error Message: ', error.message);
+				console.log('ClientContext - ****** OFF LINE *******');
 			}
 		);
 
@@ -197,23 +214,6 @@ const ClientContextProvider = (props) => {
 				});
 		}
 	}, [client, isNewClient]);
-
-	// useEffect(() => {
-	// 	db.collection('clients')
-	// 		.doc('1iF7shMGu7aFuKh8ydlF')
-	// 		.collection('cases')
-	// 		.get()
-	// 		.then((snapshot) => {
-	// 			const data = snapshot.docs.map((doc) => {
-	// 				return { ...doc.data(), id: doc.id };
-	// 			});
-	// 			console.log('subCollection data: ', data);
-	// 		});
-	// }, []);
-
-	// console.count('ClientContext RENDERED');
-	// console.log('ClientContext -> clients: ', clients);
-	// console.log('ClientContext -> isLoading: ', isLoading);
 
 	return (
 		<ClientContext.Provider

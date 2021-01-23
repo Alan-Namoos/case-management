@@ -1,13 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Form, Button, Card, Col, Row, Container } from 'react-bootstrap';
 import { ClientContext } from '../../../contexts/ClientContext';
 import { AppearanceContext } from '../../../contexts/AppearanceContext';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 const NewClientForm = () => {
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, textField, button } = appearance;
 	const { CreateNewClient } = useContext(ClientContext);
+	const { user } = useContext(AuthContext);
 	const [personalInformation, setPersonalInformation] = useState({
 		firstName: '',
 		lastName: '',
@@ -26,23 +28,30 @@ const NewClientForm = () => {
 		employer: '',
 		jobTitle: '',
 		role: '',
-		gender: ''
+		gender: '',
 	});
 	const [contactInformation, setContactInformation] = useState({
 		mobilePhone: '',
 		homePhone: '',
 		email: '',
 		mailingAddress: '',
-		physicalAddress: ''
+		physicalAddress: '',
 	});
 
 	const [immigrationInformationStatus, setImmigrationInformationStatus] = useState({
 		aNumber: '',
 		currentStatus: '',
-		expirationDate: ''
+		expirationDate: '',
 	});
 
 	const history = useHistory();
+
+	// This checks if user is signed in, if not, redirect to sign-in route
+	useEffect(() => {
+		if (!user) {
+			history.push('/sign-in');
+		}
+	}, [user, history]);
 
 	const handlePersonalInformationChange = (e) => {
 		setPersonalInformation({ ...personalInformation, [e.target.name]: e.target.value });
@@ -55,7 +64,7 @@ const NewClientForm = () => {
 	const handleImmigrationInformationChange = (e) => {
 		setImmigrationInformationStatus({
 			...immigrationInformationStatus,
-			[e.target.name]: e.target.value
+			[e.target.name]: e.target.value,
 		});
 	};
 

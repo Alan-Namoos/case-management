@@ -1,8 +1,9 @@
-import React from 'react';
-import ClientContextProvider from './contexts/ClientContext';
-import AppearanceContextProvider from './contexts/AppearanceContext';
+import React, { useContext } from 'react';
+// import ClientContextProvider from './contexts/ClientContext';
+// import AppearanceContextProvider from './contexts/AppearanceContext';
+// import AuthContextProvider from './contexts/AuthContext';
 import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 import ContactInformationForm from './components/client-components/contact-information/Contact-Information-Form';
 import PersonalInformationForm from './components/client-components/personal-information/Personal-Information-Form';
@@ -16,48 +17,49 @@ import NotesForm from './components/client-components/notes/Notes-Form';
 import EditNoteForm from './components/client-components/notes/Edit-Note-Form';
 import EditMedicalRecordForm from './components/client-components/medical-history/Edit-Medical-Record-Form';
 import EditCriminalRecordForm from './components/client-components/criminal-history/Edit-Criminal-Record-From';
+import SignInForm from './components/authentication/Sign-In-Form';
+import { AuthContext } from './contexts/AuthContext';
 
 function App() {
+	const user = useContext(AuthContext);
+	console.log('App component USER: ', user);
 	return (
 		<>
-			<Router>
-				<ClientContextProvider>
-					<AppearanceContextProvider>
-						<Navbar />
-						<Switch>
-							<Route exact path='/' component={Home} />
-							<Route path='/add-new-client' component={NewClientForm} />
-							<Route
-								path='/add-client-contact-information/:id'
-								component={ContactInformationForm}
-							/>
-							<Route
-								path='/add-client-personal-information/:id'
-								component={PersonalInformationForm}
-							/>
+			{/* <Router>
+				<AuthContextProvider>
+					<ClientContextProvider>
+						<AppearanceContextProvider> */}
+			{user && <Navbar />}
+			<Switch>
+				<Route exact path='/' component={Home} />
+				<Route path='/sign-in' component={SignInForm} />
+				<Route path='/add-new-client' component={NewClientForm} />
+				<Route path='/add-client-contact-information/:id' component={ContactInformationForm} />
+				<Route path='/add-client-personal-information/:id' component={PersonalInformationForm} />
 
-							<Route
-								path='/add-client-immigration-information/:id'
-								component={ImmigrationInformationForm}
-							/>
-							<Route path='/add-client-medical-history/:id' component={MedicalHistoryForm} />
-							<Route path='/add-client-criminal-history/:id' component={CriminalHistoryForm} />
-							<Route path='/view-new-client-information' component={NewClientInformationView} />
-							<Route path='/view-client-details/:id' component={ClientDetailsView} />
-							<Route path='/add-client-note/:id/' component={NotesForm} />
-							<Route path='/edit-client-note/:id/:noteID' component={EditNoteForm} />
-							<Route
-								path='/edit-client-medical-record/:id/:medicalRecordID'
-								component={EditMedicalRecordForm}
-							/>
-							<Route
-								path='/edit-client-criminal-record/:id/:criminalRecordID'
-								component={EditCriminalRecordForm}
-							/>
-						</Switch>
-					</AppearanceContextProvider>
-				</ClientContextProvider>
-			</Router>
+				<Route
+					path='/add-client-immigration-information/:id'
+					component={ImmigrationInformationForm}
+				/>
+				<Route path='/add-client-medical-history/:id' component={MedicalHistoryForm} />
+				<Route path='/add-client-criminal-history/:id' component={CriminalHistoryForm} />
+				<Route path='/view-new-client-information' component={NewClientInformationView} />
+				<Route path='/view-client-details/:id' component={ClientDetailsView} />
+				<Route path='/add-client-note/:id/' component={NotesForm} />
+				<Route path='/edit-client-note/:id/:noteID' component={EditNoteForm} />
+				<Route
+					path='/edit-client-medical-record/:id/:medicalRecordID'
+					component={EditMedicalRecordForm}
+				/>
+				<Route
+					path='/edit-client-criminal-record/:id/:criminalRecordID'
+					component={EditCriminalRecordForm}
+				/>
+			</Switch>
+			{/* </AppearanceContextProvider>
+					</ClientContextProvider>
+				</AuthContextProvider>
+			</Router> */}
 		</>
 	);
 }

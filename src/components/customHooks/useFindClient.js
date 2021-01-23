@@ -8,7 +8,7 @@ export const useFindClient = (clients, id, history) => {
 		// 	history.push('/');
 		// 	return;
 		// }
-		console.log('custom hook started');
+		console.log('custom hook useFineClient - STARTED');
 		// if (clients.length > 0) {
 		if (clients) {
 			const client = clients.find((arrayClient) => {

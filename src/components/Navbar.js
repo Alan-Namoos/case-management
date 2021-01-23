@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 const Navbar = () => {
+	const { user, userSignIn, userSignOut } = useContext(AuthContext);
+	console.log('**** NAVBAR ****');
 	return (
 		<nav className='nav bg-light mb-3'>
 			<Link className='nav-link' to='/'>
@@ -10,21 +13,31 @@ const Navbar = () => {
 				+ New Client
 			</Link>
 
-			{/* <Link className='nav-link' to='/add-client-personal-information'>
-				Personal Information
-			</Link>
-			<Link className='nav-link' to='/add-client-contact-information'>
-				Contact Information
-			</Link>
-			<Link className='nav-link' to='/add-client-immigration-information'>
-				Immigration Information
-			</Link>
-			<Link className='nav-link' to='/add-client-medical-history'>
-				Medical History
-			</Link>
-			<Link className='nav-link' to='/add-client-criminal-history'>
-				Criminal History
-			</Link> */}
+			{!user && (
+				<Link
+					className='nav-link'
+					to='/'
+					onClick={() => {
+						userSignIn('anzarouth.office@gmail.com', 'ZCB135adg');
+					}}
+				>
+					Sign-in
+				</Link>
+			)}
+
+			{user && (
+				<Link
+					className='nav-link'
+					to='/sign-in'
+					onClick={() => {
+						userSignOut();
+					}}
+				>
+					Sign-out
+				</Link>
+			)}
+
+			{user ? <p> signed in as: {user.email}</p> : <p>You're not signed in</p>}
 		</nav>
 	);
 };

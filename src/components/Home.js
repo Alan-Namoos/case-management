@@ -1,19 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ClientContext } from '../contexts/ClientContext';
 import { AppearanceContext } from '../contexts/AppearanceContext';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Home = () => {
 	const { clients, isLoading, deleteClient } = useContext(ClientContext);
 	const { appearance } = useContext(AppearanceContext);
 	const { cardTitle, button, notSet } = appearance;
-	// const [lastFiveClients, setLastFiveClients] = useState([]);
+	const { user } = useContext(AuthContext);
+
 	const history = useHistory();
-	// console.count('Home RENDERED');
-	// console.log('Home -> clients: ', clients);
-	// console.log('Home -> isLoading: ', isLoading);
+
+	// This checks if user is signed in, if not, redirect to sign-in route
+	useEffect(() => {
+		if (!user) {
+			history.push('/sign-in');
+		}
+	}, [user, history]);
+
+	console.log('**** HOME ****');
 
 	return !clients || clients.length === 0 ? (
 		isLoading ? (

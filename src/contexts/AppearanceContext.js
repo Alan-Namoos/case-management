@@ -6,8 +6,9 @@ const AppearanceContextProvider = (props) => {
 		cardTitle: 'h5',
 		textField: 'sm',
 		button: 'sm',
-		notSet: <i style={{ color: '#5d5d5d' }}>Not Set</i>
+		notSet: <i style={{ color: '#5d5d5d' }}>Not Set</i>,
 	};
+	console.log('**** AppearanceContext ****');
 	return (
 		<AppearanceContext.Provider value={{ appearance }}>{props.children}</AppearanceContext.Provider>
 	);
